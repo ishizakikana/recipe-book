@@ -16,6 +16,18 @@ export function useListItemsState(initialListItems: ListItem[]) {
     };
 
     /**
+    * リストアイテム全チェック状態変更
+    * 
+    * @param ids チェック状態を変更するアイテムのIDリスト
+    * @param isDone チェック状態
+    */
+    const modifyAll = (ids: number[], isDone: boolean) => {
+        setListItems((prev) =>
+            prev.map((item) => (ids.includes(item.id) ? { ...item, isDone } : item))
+        );
+    };
+
+    /**
      * リストアイテム全削除
      * 
      * @param ids 削除するアイテムのIDリスト
@@ -24,17 +36,5 @@ export function useListItemsState(initialListItems: ListItem[]) {
         setListItems((prev) => prev.filter((item) => !ids.includes(item.id)));
     };
 
-    /**
-     * リストアイテム全チェック状態変更
-     * 
-     * @param ids チェック状態を変更するアイテムのIDリスト
-     * @param isDone チェック状態
-     */
-    const toggleAll = (ids: number[], isDone: boolean) => {
-        setListItems((prev) =>
-            prev.map((item) => (ids.includes(item.id) ? { ...item, isDone } : item))
-        );
-    };
-
-    return { listItems, add, removeAll, toggleAll };
+    return { listItems, add, modifyAll, removeAll };
 }

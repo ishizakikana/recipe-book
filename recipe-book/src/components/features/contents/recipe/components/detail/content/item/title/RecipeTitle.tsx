@@ -1,6 +1,7 @@
 import Chip, { ChipColors } from '@/components/ui/display/chip/Chip';
 import { RecipeCategorySummary, RecipeDetail } from '@/types/entity';
 import { Stack, Typography } from '@mui/material';
+import RecipeEditButton from './editButton/RecipeEditButton';
 
 /**
  * レシピタイトル
@@ -33,6 +34,8 @@ export default function RecipeTitle({
                             <Typography variant='body2'>{recipe.calories}kcal</Typography>}
                     </Stack>
                 )}
+
+                <RecipeEditButton />
             </Stack>
         </>
     )

@@ -1,29 +1,32 @@
 'use client'
-import Modal from "@/components/ui/dialog/Modal";
-import Alert from "@/components/ui/feedback/alert/Alert";
-import TextBox from "@/components/ui/form/input/text/TextBox";
-import SelectBox, { SelectItem } from "@/components/ui/form/select/SelectBox";
-import { ERROR_MESSAGES } from "@/lib/constants/messages";
-import { zodResolver } from "@hookform/resolvers/zod";
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Stack } from "@mui/material";
-import { ListCategory } from "@prisma/client";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { createSchema } from "../../schema";
-import { CreateFormInput } from "../../type";
-import ListButton from "./ListButton";
+import Modal from '@/components/ui/dialog/Modal';
+import Alert from '@/components/ui/feedback/alert/Alert';
+import TextBox from '@/components/ui/form/input/text/TextBox';
+import SelectBox, { SelectItem } from '@/components/ui/form/select/SelectBox';
+import { ERROR_MESSAGES } from '@/lib/constants/messages';
+import { zodResolver } from '@hookform/resolvers/zod';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Stack } from '@mui/material';
+import { ListCategory } from '@prisma/client';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { createSchema } from '../../../../schema';
+import { CreateFormInput } from '../../../../type';
+import ListButton from '../ListButton';
 
 // TODO カテゴリの選択をアイテム名から推測して自動でできるといい
 
+/**
+ * リストアイテム新規作成ボタン
+ */
 export default function CreateButton({
     listCategories,
-    createItemRemote,
-    isMobile
+    mobile,
+    onCreate,
 }: {
     listCategories: ListCategory[]
-    createItemRemote: (item: CreateFormInput) => void
-    isMobile: boolean
+    mobile: boolean
+    onCreate: (item: CreateFormInput) => void
 }) {
 
     const {
@@ -51,7 +54,7 @@ export default function CreateButton({
         try {
 
             // リストアイテム追加
-            createItemRemote(data);
+            onCreate(data);
 
             reset();        // 入力値リセット
             setError(null);     // エラーメッセージクリア
@@ -65,15 +68,15 @@ export default function CreateButton({
     return (
         <>
             <ListButton
-                text={"項目を追加"}
+                text={'項目を追加'}
                 icon={<AddIcon />}
-                isMobile={isMobile}
+                mobile={mobile}
                 onClick={() => setOpen(true)} />
 
             <Modal
                 open={open}
                 disableBackDropClick
-                title="リストアイテム追加"
+                title='リストアイテム追加'
                 loading={isSubmitting}
                 slotProps={{
                     paper: {
@@ -86,14 +89,14 @@ export default function CreateButton({
                 <Box sx={{ px: 3, pt: 2, pb: 1 }}>
 
                     {/* エラーメッセージ */}
-                    <Alert severity="error" visible={!!error}>{error}</Alert>
+                    <Alert severity='error' visible={!!error}>{error}</Alert>
 
                     {/* フォーム */}
                     <Stack gap={1}>
-                        <Controller name="categoryId" control={control} render={({ field, fieldState }) => (
+                        <Controller name='categoryId' control={control} render={({ field, fieldState }) => (
                             <SelectBox
-                                id="category"
-                                label="カテゴリー"
+                                id='category'
+                                label='カテゴリー'
                                 value={field.value?.toString() || '0'}
                                 error={!!fieldState.error}
                                 helperText={fieldState.error?.message}
@@ -103,17 +106,17 @@ export default function CreateButton({
                                     field.onChange(value);
                                 }}
                             />)} />
-                        <Box display={"flex"} gap={2}>
+                        <Box display={'flex'} gap={2}>
                             <TextBox
-                                label="アイテム名"
-                                width={"70%"}
+                                label='アイテム名'
+                                width={'70%'}
                                 {...register('name')}
                                 error={!!errors.name}
                                 helperText={errors.name?.message}
                             />
                             <TextBox
-                                label="数量"
-                                width={"30%"}
+                                label='数量'
+                                width={'30%'}
                                 {...register('volume')}
                                 error={!!errors.volume}
                                 helperText={errors.volume?.message}

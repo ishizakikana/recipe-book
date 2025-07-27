@@ -1,6 +1,6 @@
 import RecipeContainer from '@/components/features/contents/recipe/components/detail/container/card/RecipeDetailCard';
-import { apiGetServer } from "@/lib/fetchServer";
-import { RecipeDetail } from "@/types/entity";
+import { apiGetServer } from '@/lib/fetchServer';
+import { RecipeDetail } from '@/types/entity';
 
 export default async function RecipePage({
     params

@@ -2,21 +2,24 @@ import Button from "@/components/ui/button/button/Button"
 import { CircularProgress, ListItemIcon, ListItemText, MenuItem } from "@mui/material"
 import { MouseEventHandler, ReactNode } from "react"
 
+/**
+ * リストボタン
+ */
 export default function ListButton({
     text,
     icon,
     loading,
-    isMobile,
+    mobile,
     onClick
 }: {
     text: string
     icon: ReactNode
     loading?: boolean
-    isMobile: boolean
+    mobile: boolean
     onClick: MouseEventHandler<HTMLElement> | undefined
 }) {
 
-    if (isMobile) return (
+    if (mobile) return (
         <MenuItem dense onClick={onClick}>
             <ListItemIcon>
                 {loading ? <CircularProgress size={16} color="ui" /> : icon}

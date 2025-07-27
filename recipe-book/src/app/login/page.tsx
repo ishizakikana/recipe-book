@@ -1,7 +1,7 @@
-import LoginForm from "@/components/features/login/components/LoginForm";
-import CenteredContainer from "@/components/layout/container/center/CenteredContainer";
-import { getUserFromAuthToken } from "@/lib/token";
-import { redirect } from "next/navigation";
+import LoginForm from '@/components/features/login/components/LoginForm';
+import CenteredContainer from '@/components/layout/container/center/CenteredContainer';
+import { getUserFromAuthToken } from '@/lib/token';
+import { redirect } from 'next/navigation';
 
 export default async function LoginPage() {
     const user = await getUserFromAuthToken();

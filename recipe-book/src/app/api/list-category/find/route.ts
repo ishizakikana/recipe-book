@@ -1,6 +1,6 @@
-import { getRequestParams, handleApi } from "@/lib/api";
-import { listCategoryRepository } from "@/lib/repositories/listCategoryRepository";
-import { NextResponse } from "next/server";
+import { getRequestParams, handleApi } from '@/lib/api';
+import { listCategoryRepository } from '@/lib/repositories/listCategoryRepository';
+import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
     return handleApi(req, async () => {

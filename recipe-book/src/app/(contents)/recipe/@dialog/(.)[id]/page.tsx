@@ -1,6 +1,6 @@
-import RecipeDialog from '@/components/features/contents/recipe/components/detail/RecipeDialog';
-import { apiGetServer } from "@/lib/fetchServer";
-import { RecipeDetail } from "@/types/entity";
+import RecipeDetailDialog from '@/components/features/contents/recipe/components/detail/container/dialog/RecipeDetailDialog';
+import { apiGetServer } from '@/lib/fetchServer';
+import { RecipeDetail } from '@/types/entity';
 
 export default async function RecipeDialogPage({
     params
@@ -15,6 +15,6 @@ export default async function RecipeDialogPage({
     }
 
     return (
-        <RecipeDialog recipe={recipe} />
+        <RecipeDetailDialog recipe={recipe} />
     )
 }

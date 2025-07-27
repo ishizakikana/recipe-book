@@ -1,4 +1,4 @@
-import { categorizedItem } from "./type";
+import { categorizedItem } from './type';
 
 /**
  * 完了済みアイテムのIDリスト取得

@@ -1,8 +1,8 @@
-import { Metadata } from "next";
-import { ReactNode } from "react";
+import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-    title: "ログイン"
+    title: 'ログイン'
 };
 
 export default function LoginLayout({

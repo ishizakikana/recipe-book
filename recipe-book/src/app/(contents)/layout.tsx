@@ -1,14 +1,14 @@
-import CenteredContainer from "@/components/layout/container/center/CenteredContainer";
-import Header from "@/components/layout/header/components/Header";
-import { getUserFromAuthToken } from "@/lib/token";
-import "@/styles/globals.css";
-import { Box } from "@mui/material";
-import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import CenteredContainer from '@/components/layout/container/center/CenteredContainer';
+import Header from '@/components/layout/header/components/Header';
+import { getUserFromAuthToken } from '@/lib/token';
+import '@/styles/globals.css';
+import { Box } from '@mui/material';
+import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-    title: "RECIPE BOOK",
-    description: "わたしのレシピ本",
+    title: 'RECIPE BOOK',
+    description: 'わたしのレシピ本',
 };
 
 export default async function ContentsLayout({
@@ -25,9 +25,9 @@ export default async function ContentsLayout({
     }
 
     return (
-        <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ display: 'flex', height: '100%' }}>
             <Header user={user} />
-            <Box component={"main"}
+            <Box component={'main'}
                 sx={{ width: '100%', height: '100%', pt: 8 }}>
                 <CenteredContainer sx={{ py: 2, px: 4, overflow: 'auto' }}>
                     {children}

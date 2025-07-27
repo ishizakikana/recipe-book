@@ -1,23 +1,23 @@
-import EmotionCacheProvider from "@/components/providers/EmotionCacheProvider";
-import ThemeProvider from "@/components/providers/ThemeProvider";
-import "@/styles/globals.css";
-import { Box } from "@mui/material";
-import type { Metadata } from "next";
-import { Geist, Noto_Sans_JP } from "next/font/google";
+import EmotionCacheProvider from '@/components/providers/EmotionCacheProvider';
+import ThemeProvider from '@/components/providers/ThemeProvider';
+import '@/styles/globals.css';
+import { Box } from '@mui/material';
+import type { Metadata } from 'next';
+import { Geist, Noto_Sans_JP } from 'next/font/google';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Noto_Sans_JP({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "RECIPE BOOK",
-  description: "わたしのレシピ本",
+  title: 'RECIPE BOOK',
+  description: 'わたしのレシピ本',
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang='ja'>
       <head />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <EmotionCacheProvider>
