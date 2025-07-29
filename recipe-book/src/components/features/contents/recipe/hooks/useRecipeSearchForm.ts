@@ -2,7 +2,7 @@ import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { RecipeSearchInput } from '../types';
+import { RecipeSearchInput } from '../type';
 import { buildSearchQuery } from '../util';
 
 export function useRecipeSearchForm({

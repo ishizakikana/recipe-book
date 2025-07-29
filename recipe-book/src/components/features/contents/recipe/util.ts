@@ -1,4 +1,4 @@
-import { RecipeSearchInput } from './types';
+import { RecipeSearchInput } from './hooks/useRecipeSearchForm';
 
 /**
  * 検索パラメータをもとにクエリ文字列を作成

@@ -18,7 +18,7 @@ export default function Error({
 
     return (
         <Container>
-            <Stack direction='column' gap={2} sx={{ pt: 8 }}>
+            <Stack direction='column' gap={2} sx={{ pt: 8, textAlign: 'center' }}>
 
                 <Typography variant='h5' fontWeight={700}>エラーが発生しました</Typography>
                 <Typography variant='body1'>{error.message}</Typography>

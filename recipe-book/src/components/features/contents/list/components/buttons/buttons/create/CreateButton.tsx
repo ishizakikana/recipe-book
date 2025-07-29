@@ -2,7 +2,7 @@
 import Modal from '@/components/ui/dialog/Modal';
 import Alert from '@/components/ui/feedback/alert/Alert';
 import TextBox from '@/components/ui/form/input/text/TextBox';
-import SelectBox, { SelectItem } from '@/components/ui/form/select/SelectBox';
+import SelectBox, { SelectOption } from '@/components/ui/form/select/SelectBox';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,8 +10,7 @@ import { Box, Stack } from '@mui/material';
 import { ListCategory } from '@prisma/client';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { createSchema } from '../../../../schema';
-import { CreateFormInput } from '../../../../type';
+import { CreateFormInput, createSchema } from '../../../../types';
 import ListButton from '../ListButton';
 
 // TODO カテゴリの選択をアイテム名から推測して自動でできるといい
@@ -39,7 +38,7 @@ export default function CreateButton({
         resolver: zodResolver(createSchema)
     });
 
-    const categories: SelectItem[] = listCategories.map((category) => ({
+    const categories: SelectOption[] = listCategories.map((category) => ({
         label: category.name,
         value: category.id.toString()
     }));
@@ -97,10 +96,10 @@ export default function CreateButton({
                             <SelectBox
                                 id='category'
                                 label='カテゴリー'
-                                value={field.value?.toString() || '0'}
+                                defaultValue={field.value?.toString() || '0'}
                                 error={!!fieldState.error}
                                 helperText={fieldState.error?.message}
-                                items={categories}
+                                options={categories}
                                 onChange={(e) => {
                                     const value = Number((e.target as HTMLSelectElement).value);
                                     field.onChange(value);

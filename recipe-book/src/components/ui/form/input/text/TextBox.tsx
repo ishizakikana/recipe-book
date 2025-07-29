@@ -13,6 +13,8 @@ export default function TextBox({
     variant = 'outlined',
     size,
     width,
+    value,
+    defaultValue,
     required,
     disabled,
     readOnly,
@@ -32,6 +34,8 @@ export default function TextBox({
     variant?: 'outlined' | 'filled' | 'standard'
     size?: OverridableStringUnion<'small' | 'medium', FormControlPropsSizeOverrides>
     width?: string | number
+    value?: unknown
+    defaultValue?: unknown
     required?: boolean
     disabled?: boolean
     readOnly?: boolean
@@ -44,7 +48,6 @@ export default function TextBox({
     ref?: Ref<HTMLInputElement>
     onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
 }) {
-
     const hasAdornment = startAdornment || endAdornment;
     let input: ReactNode;
 
@@ -58,6 +61,8 @@ export default function TextBox({
                 label={label}
                 variant={variant}
                 type={type}
+                value={value}
+                defaultValue={defaultValue}
                 required={required}
                 disabled={disabled}
                 error={error}
@@ -84,6 +89,8 @@ export default function TextBox({
             type: type,
             readOnly: readOnly,
             error: error,
+            value: value,
+            defaultValue: defaultValue,
             helperText: helperText,
             multiline: multiline,
             rows: rows,

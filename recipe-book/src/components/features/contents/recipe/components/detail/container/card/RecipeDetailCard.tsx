@@ -1,4 +1,3 @@
-import CenteredContainer from '@/components/layout/container/center/CenteredContainer';
 import { RecipeDetail } from '@/types/entity';
 import { Box, Divider, Paper, Stack } from '@mui/material';
 import RecipeContent from '../../content/RecipeContent';
@@ -14,7 +13,7 @@ export default function RecipeDetailCard({
 }) {
 
     return (
-        <CenteredContainer sx={{ py: 2 }}>
+        <Box>
             <Paper elevation={10}
                 component={Stack}
                 sx={{ height: '100%', width: '100%', overflow: 'auto' }}>
@@ -26,8 +25,10 @@ export default function RecipeDetailCard({
                 <Divider />
 
                 {/* content */}
-                <RecipeContent recipe={recipe} />
+                <Box sx={{ px: 3, py: 2 }}>
+                    <RecipeContent recipe={recipe} />
+                </Box>
             </Paper>
-        </CenteredContainer>
+        </Box>
     )
 }

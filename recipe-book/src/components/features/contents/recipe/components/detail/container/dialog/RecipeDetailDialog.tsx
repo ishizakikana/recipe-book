@@ -2,7 +2,7 @@
 import { RecipeDetail } from '@/types/entity';
 import { DialogContent, DialogTitle } from '@mui/material';
 import MuiDialog from '@mui/material/Dialog';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import RecipeContent from '../../content/RecipeContent';
 import RecipeTitle from '../../content/item/title/RecipeTitle';
 
@@ -17,13 +17,17 @@ export default function RecipeDetailDialog({
     open?: boolean
 }) {
     const router = useRouter();
+    const pathname = usePathname();
+
+    const segments = pathname.split('/');
+    const isModalOpen = !isNaN(Number(segments[segments.length - 1]));
 
     // 非表示イベント
     const onClose = () => router.back();
 
     return (
         <MuiDialog
-            open={open !== undefined ? open : true}
+            open={open !== undefined ? open : isModalOpen}
             fullWidth
             maxWidth='lg'
             scroll='paper'

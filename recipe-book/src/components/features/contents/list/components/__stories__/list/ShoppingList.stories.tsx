@@ -1,6 +1,6 @@
 import { categorizedItemsSample } from "@/stories/sample/ListItem";
 import { Meta, StoryObj } from "@storybook/nextjs";
-import ShoppingList from "./ShoppingList";
+import ShoppingList from '../../list/ShoppingList';
 
 const meta: Meta<typeof ShoppingList> = {
     title: 'Features/List/List/ShoppingList',

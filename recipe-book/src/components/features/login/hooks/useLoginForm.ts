@@ -1,5 +1,3 @@
-'use client'
-
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { apiPost } from '@/lib/fetch';
 import { FormReturn } from '@/types/form';

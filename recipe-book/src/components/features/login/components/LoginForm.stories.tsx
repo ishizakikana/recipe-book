@@ -1,6 +1,6 @@
 import { FormReturn } from '@/types/form';
 import { expect } from '@storybook/jest';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/nextjs';
 import { within } from '@storybook/testing-library';
 import { LoginFormInput } from '../hooks/useLoginForm';
 import LoginForm from './LoginForm';

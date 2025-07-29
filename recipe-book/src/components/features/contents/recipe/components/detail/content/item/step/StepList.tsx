@@ -23,8 +23,8 @@ export default function StepList({
                             secondary={step.seasonings && step.seasonings.length > 0 && (
                                 <List>
                                     {step.seasonings.map(seasoning => (
-                                        <ListItem key={seasoning.id} disablePadding>
-                                            <Typography component='span' fontSize={14}>
+                                        <ListItem key={seasoning.id} disablePadding component='div'>
+                                            <Typography component='div' fontSize={14}>
                                                 {seasoning.name} - {seasoning.volume}
                                             </Typography>
                                         </ListItem>

@@ -88,7 +88,7 @@ const meta: Meta<typeof SelectBox> = {
                 category: 'data'
             }
         },
-        items: {
+        options: {
             control: false,
             description: '選択肢',
             table: {
@@ -123,7 +123,7 @@ const meta: Meta<typeof SelectBox> = {
         name: 'fruit',
         label: 'fruit',
         width: '200px',
-        items: [
+        options: [
             { value: '1', label: 'Apple' },
             { value: '2', label: 'Banana' },
             { value: '3', label: 'Orange' },

@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import RecipeEditButton from "./RecipeEditButton";
 
 const meta: Meta<typeof RecipeEditButton> = {
-    title: 'Features/Recipe/Detail/Container/Content/Item/RecipeTitle/EditButton',
+    title: 'Features/Recipe/Detail/Container/Content/Item/RecipeTitle/RecipeEditButton',
     component: RecipeEditButton,
 }
 

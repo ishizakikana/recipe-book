@@ -24,18 +24,20 @@ export default function RecipeTitle({
                         color={category.color as ChipColors} />
                 </Stack>
 
-                {recipe.calories && recipe.shelfLife && (
-                    <Stack sx={{ flexDirection: 'row', gap: 1 }}>
-                        {recipe.shelfLife &&
-                            <Typography variant='body2'>{recipe.shelfLife}</Typography>}
-                        {recipe.calories && recipe.shelfLife &&
-                            <Typography variant='body2'>/</Typography>}
-                        {recipe.calories &&
-                            <Typography variant='body2'>{recipe.calories}kcal</Typography>}
-                    </Stack>
-                )}
-
-                <RecipeEditButton />
+                <Stack sx={{ flexDirection: 'row', gap: 1, alignItems: 'center' }}>
+                    {recipe.calories && recipe.shelfLife &&
+                        <>
+                            {recipe.shelfLife &&
+                                <Typography variant='body2'>{recipe.shelfLife}</Typography>
+                            }
+                            {recipe.calories && recipe.shelfLife &&
+                                <Typography variant='body2'>/</Typography>}
+                            {recipe.calories &&
+                                <Typography variant='body2'>{recipe.calories}kcal</Typography>}
+                        </>
+                    }
+                    <RecipeEditButton />
+                </Stack>
             </Stack>
         </>
     )
