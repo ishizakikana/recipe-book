@@ -1,6 +1,18 @@
 import { ListItem } from '@prisma/client';
 import { useState } from 'react';
 
+/**
+ * リストアイテム配列の状態管理カスタムフック
+ * 
+ * 初期データをもとに、アイテムの追加・一括変更・一括削除などの機能を提供します。
+ * 
+ * @param initialListItems 初期リストアイテム一覧
+ * @returns 
+ *  listItems（現在のアイテム配列）、
+ *  add（リストアイテム追加関数）、
+ *  modifyAll（リストアイテム一括変更関数）、
+ *  removeAll（リストアイテム一括削除関数）
+ */
 export function useListItemsState(initialListItems: ListItem[]) {
 
     // リストアイテム管理
@@ -8,6 +20,8 @@ export function useListItemsState(initialListItems: ListItem[]) {
 
     /**
      * リストアイテム追加
+     * 
+     * listItems の末尾にアイテムを追加します。
      * 
      * @param item 追加するアイテム
      */
@@ -17,6 +31,8 @@ export function useListItemsState(initialListItems: ListItem[]) {
 
     /**
     * リストアイテム全チェック状態変更
+    * 
+    * listItems 内の指定されたすべてのアイテムの完了状態（isDone）を変更します。
     * 
     * @param ids チェック状態を変更するアイテムのIDリスト
     * @param isDone チェック状態
@@ -29,6 +45,8 @@ export function useListItemsState(initialListItems: ListItem[]) {
 
     /**
      * リストアイテム全削除
+     * 
+     * listItems 内の指定されたすべてのアイテムを削除します。
      * 
      * @param ids 削除するアイテムのIDリスト
      */

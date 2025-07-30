@@ -1,11 +1,25 @@
-import { ERROR_MESSAGES } from '@/lib/constants/messages';
+import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
 import { apiPost } from '@/lib/fetch';
 import { ListItem } from '@prisma/client';
-import { categorizedItem, CreateFormInput } from '../type';
-import { getDoneIds, getUndoneIds } from '../utils';
+import { CategorizedItem, CreateFormInput } from '../types';
+import { getDoneIds, getUndoneIds } from '../utils/itemStatus';
 
+/**
+ * リストアイテムDB操作カスタムフック
+ * 
+ * DBへリストアイテムの作成・更新・削除を行い、ローカル状態との同期を行います。
+ * 
+ * @param categorizedItems カテゴリごとに分類されたリストアイテム
+ * @param stateActions リストアイテムに対する状態更新関数群（追加・一括変更・一括削除）
+ * @param setError エラー設定関数
+ * @returns 
+ *  create（リストアイテム追加関数）
+ *  update（リストアイテム更新関数）
+ *  updateAll（リストアイテム一括変更関数）
+ *  deleteAll（リストアイテム一括削除関数）
+ */
 export function useItemListActions(
-    categorizedItems: categorizedItem[],
+    categorizedItems: CategorizedItem[],
     stateActions: {
         add: (item: ListItem) => void
         modifyAll: (ids: number[], isDone: boolean) => void
@@ -14,10 +28,17 @@ export function useItemListActions(
     setError: (msg: string) => void
 ) {
 
+    /**
+     * リストアイテム新規作成
+     * 
+     * DB に新しいリストアイテムを作成し、ローカル状態に追加します。
+     * 
+     * @param data 作成するリストアイテム
+     * @return {void}
+     * @throws {Error}
+     */
     const create = async (data: CreateFormInput) => {
         try {
-
-            // リストアイテム追加
             const item: ListItem = await apiPost('/list-item/create', { data: data });
             stateActions.add(item);
         } catch (e) {
@@ -26,6 +47,16 @@ export function useItemListActions(
         }
     }
 
+    /**
+     * リストアイテム完了状態更新
+     * 
+     * 指定したリストアイテムの完了状態（isDone）を変更し、ローカル状態に反映します。
+     * 
+     * @param id 更新対象のリストアイテムID
+     * @param isDone true 完了済み, false 未完了
+     * @param onFinally 処理後に呼び出す関数
+     * @returns {void}
+     */
     const update = async (id: number, isDone: boolean, onFinally: () => void) => {
         try {
 
@@ -34,12 +65,23 @@ export function useItemListActions(
             stateActions.modifyAll([id], isDone);
         } catch (e) {
             console.error(e);
-            setError(ERROR_MESSAGES.UPDATE_FAILED);
+
+            const msg = formatMessage(ERROR_MESSAGES.UPDATE_FAILED, 'リストアイテム');
+            setError(msg);
         } finally {
             onFinally();
         }
     }
 
+    /**
+     * リストアイテム完了状態一括更新
+     * 
+     * リスト内のアイテムの完了状態（isDone）を一括で変更し、ローカル状態に反映します。
+     * 
+     * @param isDone true 完了済み, false 未完了
+     * @param onFinally 処理後に呼び出す関数
+     * @returns {void}
+     */
     const updateAll = async (isDone: boolean, onFinally: () => void) => {
         try {
 
@@ -55,12 +97,22 @@ export function useItemListActions(
 
         } catch (e) {
             console.error(e);
-            setError(ERROR_MESSAGES.UPDATE_FAILED);
+
+            const msg = formatMessage(ERROR_MESSAGES.UPDATE_FAILED, 'リストアイテム');
+            setError(msg);
         } finally {
             onFinally();
         }
     }
 
+    /**
+     * 完了済みリストアイテム全削除
+     * 
+     * DB からリスト内の完了済みアイテムをすべて削除し、ローカル状態からも削除します。
+     * 
+     * @param onFinally 処理後に呼び出す関数
+     * @returns {void}
+     */
     const deleteAll = async (onFinally: () => void) => {
         try {
 
@@ -76,7 +128,9 @@ export function useItemListActions(
 
         } catch (e) {
             console.error(e);
-            setError(ERROR_MESSAGES.DELETE_FAILED);
+
+            const msg = formatMessage(ERROR_MESSAGES.DELETE_FAILED, 'リストアイテム');
+            setError(msg);
         } finally {
             onFinally();
         }

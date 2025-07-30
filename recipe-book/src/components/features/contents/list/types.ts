@@ -1,11 +1,10 @@
 import { ListCategory, ListItem } from '@prisma/client';
 import { z } from 'zod';
-import { createSchema } from './schema';
 
 /**
  * カテゴリごとに分類されたリストアイテム型
  */
-export type categorizedItem = {
+export type CategorizedItem = {
     category: ListCategory,
     items: ListItem[]
 }
@@ -15,3 +14,9 @@ export type categorizedItem = {
  */
 export type CreateFormInput = z.infer<typeof createSchema>;
 
+//　スキーマ
+export const createSchema = z.object({
+    name: z.string().min(1, '入力してください'),
+    volume: z.string(),
+    categoryId: z.coerce.number().min(1, '選択してください'),
+});

@@ -1,12 +1,14 @@
-import { categorizedItem } from './type';
+import { CategorizedItem } from '../types';
 
 /**
  * 完了済みアイテムのIDリスト取得
  * 
+ * isDone が true のアイテムIDをすべて取得します。
+ * 
  * @param categorizedItems カテゴリごとに分類されたリストアイテム
  * @returns すべての完了済みアイテムのIDリスト
  */
-export function getDoneIds(categorizedItems: categorizedItem[]): number[] {
+export function getDoneIds(categorizedItems: CategorizedItem[]): number[] {
     return categorizedItems.flatMap(({ items }) =>
         items.filter(item => item.isDone)
             .map(item => item.id)
@@ -19,7 +21,7 @@ export function getDoneIds(categorizedItems: categorizedItem[]): number[] {
  * @param categorizedItems カテゴリごとに分類されたリストアイテム
  * @returns すべての未完了アイテムのIDリスト
  */
-export function getUndoneIds(categorizedItems: categorizedItem[]): number[] {
+export function getUndoneIds(categorizedItems: CategorizedItem[]): number[] {
     return categorizedItems.flatMap(({ items }) =>
         items.filter(item => !item.isDone)
             .map(item => item.id)

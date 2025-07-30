@@ -1,7 +1,7 @@
 import { listCategoriesSample } from "@/stories/sample/ListCategory";
 import { listItemsSample } from "@/stories/sample/ListItem";
 import { Meta, StoryObj } from "@storybook/nextjs";
-import ShoppingListCard from "./ShoppingListCard";
+import ShoppingListCard from '../ShoppingListCard';
 
 const meta: Meta<typeof ShoppingListCard> = {
     title: 'Features/List/ShoppingListCard',

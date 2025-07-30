@@ -1,6 +1,6 @@
 import SearchAccordion from '@/components/features/contents/recipe/components/search/SearchAccordion';
 import RecipeCard from '@/components/features/contents/recipe/components/summary/RecipeSummaryCard';
-import { RecipeSearchInput } from '@/components/features/contents/recipe/types';
+import { RecipeSearchInput } from '@/components/features/contents/recipe/type';
 import { apiGetServer } from '@/lib/fetchServer';
 import { RecipeSummary } from '@/types/entity';
 import { Box, Grid } from '@mui/material';

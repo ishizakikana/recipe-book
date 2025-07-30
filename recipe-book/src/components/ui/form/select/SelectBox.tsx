@@ -3,7 +3,7 @@ import MuiSelect from '@mui/material/Select';
 import { OverridableStringUnion } from '@mui/types';
 import { ChangeEvent, ReactNode, Ref } from 'react';
 
-export type SelectItem = {
+export type SelectOption = {
     label: string
     value: string
 }
@@ -20,8 +20,9 @@ export default function SelectBox({
     error,
     helperText,
     value,
+    defaultValue,
     ref,
-    items,
+    options,
     disableDefaultOption,
     onChange
 }: {
@@ -35,9 +36,10 @@ export default function SelectBox({
     disabled?: boolean
     error?: boolean
     helperText?: ReactNode
-    value?: unknown
+    value?: string | number
+    defaultValue?: string | number
     ref?: Ref<HTMLSelectElement>
-    items?: SelectItem[]
+    options?: SelectOption[]
     disableDefaultOption?: boolean
     onChange?: ((event: ChangeEvent<HTMLInputElement> | (Event & { target: { value: unknown; name: string; }; }), child: ReactNode) => void) | undefined
 }) {
@@ -64,8 +66,8 @@ export default function SelectBox({
                     id={id}
                     name={name}
                     label={label}
-                    value={value}
                     inputRef={ref}
+                    defaultValue={defaultValue?.toString()}
                     onChange={onChange}
                 >
 
@@ -74,9 +76,9 @@ export default function SelectBox({
                         <MenuItem value='0'>---</MenuItem>
                     }
 
-                    {items?.map((item) => (
-                        <MenuItem key={item.value} value={item.value}>
-                            {item.label}
+                    {options?.map((o) => (
+                        <MenuItem key={o.value} value={o.value}>
+                            {o.label}
                         </MenuItem>
                     ))}
                 </MuiSelect>

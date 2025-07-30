@@ -1,0 +1,23 @@
+import { z } from 'zod';
+
+/**
+ * レシピ検索フォーム入力型
+ */
+export type RecipeSearchInput = {
+    categoryIds: number[],
+    keyword: string
+}
+
+/**
+ * レシピ更新フォーム入力型
+ */
+export type RecipeUpdateFormInput = z.infer<typeof schema>;
+
+// バリデーションスキーマ
+export const schema = z.object({
+    name: z.string().min(1, '入力してください'),
+    categoryId: z.string(),
+    imageUrl: z.string(),
+    shelfLife: z.string(),
+    calories: z.string(),
+})
