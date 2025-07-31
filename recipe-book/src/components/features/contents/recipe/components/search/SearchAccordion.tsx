@@ -1,8 +1,8 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SearchIcon from '@mui/icons-material/Search';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import { RecipeCategory } from '@prisma/client';
-import { RecipeSearchInput } from '../../types';
+import { RecipeSearchInput } from '../../type';
 import SearchForm from './form/SearchForm';
 
 /**

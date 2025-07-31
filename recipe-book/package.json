@@ -11,11 +11,7 @@
     "update-prisma": "npx prisma migrate dev",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "npx test-storybook --coverage",
-    "coverage:prepare": "mkdir -p .nyc_output && cp coverage-temp/jest/coverage-final.json .nyc_output/jest-coverage.json && cp coverage-temp/storybook/coverage-final.json .nyc_output/storybook-coverage.json",
-    "coverage:merge": "nyc merge .nyc_output .nyc_output/merged-coverage.json",
-    "coverage:report": "nyc report --reporter=lcov --reporter=text --reporter=html",
-    "test:combined": "npm run test && npm run test-storybook && npm run coverage:prepare && npm run coverage:merge && npm run coverage:report"
+    "test-storybook": "npx test-storybook --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,7 +24,6 @@
     "@mui/material": "^7.1.0",
     "@neondatabase/serverless": "^1.0.1",
     "@prisma/client": "^6.9.0",
-    "@storybook/addon-actions": "^9.0.8",
     "@storybook/jest": "^0.2.3",
     "@storybook/testing-library": "^0.2.2",
     "@testing-library/react": "^16.3.0",
@@ -47,6 +42,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@storybook/addon-actions": "^9.0.8",
     "@storybook/addon-coverage": "^2.0.0",
     "@storybook/addon-docs": "^9.0.16",
     "@storybook/nextjs": "^9.0.16",

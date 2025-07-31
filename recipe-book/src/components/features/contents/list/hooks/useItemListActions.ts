@@ -1,7 +1,7 @@
 import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
 import { apiPost } from '@/lib/fetch';
 import { ListItem } from '@prisma/client';
-import { CategorizedItem, CreateFormInput } from '../types';
+import { CategorizedItem, CreateItemFormInput } from '../types';
 import { getDoneIds, getUndoneIds } from '../utils/itemStatus';
 
 /**
@@ -37,8 +37,14 @@ export function useItemListActions(
      * @return {void}
      * @throws {Error}
      */
-    const create = async (data: CreateFormInput) => {
+    const create = async (data: CreateItemFormInput) => {
         try {
+
+            // カテゴリが未選択のとき、その他（6）として登録
+            if (!data.categoryId || data.categoryId == 0) {
+                data.categoryId = 6;
+            }
+
             const item: ListItem = await apiPost('/list-item/create', { data: data });
             stateActions.add(item);
         } catch (e) {

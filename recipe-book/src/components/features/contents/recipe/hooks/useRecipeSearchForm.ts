@@ -42,13 +42,11 @@ export function useRecipeSearchForm({
         }
     }
 
-    const onSubmit = handleSubmit(search);
-
     return {
         register,
         control,
         loading: isSubmitting,
         submitError,
-        onSubmit
+        onSubmit: handleSubmit(search)
     }
 }

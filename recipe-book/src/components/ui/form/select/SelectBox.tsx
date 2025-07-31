@@ -67,6 +67,7 @@ export default function SelectBox({
                     name={name}
                     label={label}
                     inputRef={ref}
+                    value={value?.toString()}
                     defaultValue={defaultValue?.toString()}
                     onChange={onChange}
                 >

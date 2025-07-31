@@ -9,6 +9,6 @@ module.exports = {
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
   },
   collectCoverage: true,
-  coverageReporters: ['default'],
-  coverageDirectory: 'coverage/jest', // nyc用に出力先を変更
+  coverageReporters: ['text', 'html', 'lcov', 'json'],
+  coverageDirectory: 'coverage/jest'
 };

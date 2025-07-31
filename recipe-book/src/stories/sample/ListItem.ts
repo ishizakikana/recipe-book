@@ -1,4 +1,4 @@
-import { categorizedItem } from "@/components/features/contents/list/type"
+import { CategorizedItem } from '@/components/features/contents/list/types'
 
 export const listItemsSample = [
     {
@@ -27,7 +27,14 @@ export const listItemsSample = [
     }
 ]
 
-export const categorizedItemsSample: categorizedItem[] = [
+export const categorizedItemsSample: CategorizedItem[] = [
+    {
+        category: { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
+        items: [
+            { id: 4, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
+            { id: 6, name: 'キャベツ', volume: '1玉', categoryId: 1, recipeName: null, isDone: false }
+        ]
+    },
     {
         category: { id: 2, name: '肉', icon: 'bacon', color: 'red' },
         items: [
@@ -44,6 +51,12 @@ export const categorizedItemsSample: categorizedItem[] = [
         category: { id: 4, name: '乳製品', icon: 'cheese', color: 'orange' },
         items: [
             { id: 3, name: '牛乳', volume: null, categoryId: 4, recipeName: null, isDone: false }
+        ]
+    },
+    {
+        category: { id: 5, name: '調味料', icon: 'seedling', color: 'brown' },
+        items: [
+            { id: 8, name: '醤油', volume: '500ml', categoryId: 5, recipeName: null, isDone: false }
         ]
     }
 ]

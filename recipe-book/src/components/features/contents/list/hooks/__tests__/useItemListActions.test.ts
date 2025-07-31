@@ -64,6 +64,19 @@ describe('useItemListActions', () => {
             expect(setError).not.toHaveBeenCalled();
         })
 
+        test('カテゴリが未選択のとき、その他（6）として登録する', async () => {
+            const { result } = renderHook(() => useItemListActions(mockData, stateActions, setError));
+            const newItem = { id: 6, name: 'アイテム6', volume: '600', recipeName: 'レシピ6', categoryId: 0, isDone: true };
+
+            mockedApiPost.mockResolvedValue(newItem);
+
+            await act(async () => {
+                await result.current.create(newItem);
+            })
+
+            expect(mockedApiPost).toHaveBeenCalledWith('/list-item/create', { data: { ...newItem, categoryId: 6 } });
+        })
+
         test('エラーが発生したとき、エラーをスローする', async () => {
             const { result } = renderHook(() => useItemListActions(mockData, stateActions, setError));
             const newItem = { id: 6, name: 'アイテム6', volume: '600', recipeName: 'レシピ6', categoryId: 3, isDone: true };

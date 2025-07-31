@@ -1,9 +1,10 @@
 'use client'
 import Snackbar from '@/components/ui/feedback/snackbar/Snackbar';
-import { Paper, Stack } from '@mui/material';
+import { Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { ListCategory, ListItem } from '@prisma/client';
 import { useItemList } from '../hooks/useItemList';
-import ListButtonContainer from './buttons/ListButtonContainer';
+import DesktopListButtons from './buttons/DesktopListButtons';
+import MobileListButtons from './buttons/MobileListButtons';
 import ShoppingList from './list/ShoppingList';
 
 /**
@@ -11,11 +12,17 @@ import ShoppingList from './list/ShoppingList';
  */
 export default function ShoppingListCard({
     listCategories,
-    initialListItems
+    initialListItems,
+    useItemListHook = useItemList
 }: {
-    listCategories: ListCategory[],
+    listCategories: ListCategory[]
     initialListItems: ListItem[]
+    useItemListHook?: typeof useItemList
 }) {
+
+    // スマホ判定
+    const theme = useTheme();
+    const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const {
         categorizedItems,
@@ -25,7 +32,9 @@ export default function ShoppingListCard({
         updateAll,
         deleteAll,
         setError
-    } = useItemList(listCategories, initialListItems);
+    } = useItemListHook(listCategories, initialListItems);
+
+    const buttonsProps = { listCategories, create, updateAll, deleteAll };
 
     return (
         <Paper elevation={5}
@@ -35,11 +44,10 @@ export default function ShoppingListCard({
             }}>
 
             <Stack direction='column' gap={3} sx={{ width: '100%', py: 4 }}>
-                <ListButtonContainer
-                    listCategories={listCategories}
-                    onCreate={create}
-                    onUpdateAll={updateAll}
-                    onDeleteAll={deleteAll} />
+                {mobile
+                    ? <MobileListButtons {...buttonsProps} />
+                    : <DesktopListButtons {...buttonsProps} />
+                }
 
                 <ShoppingList
                     categorizedItems={categorizedItems}

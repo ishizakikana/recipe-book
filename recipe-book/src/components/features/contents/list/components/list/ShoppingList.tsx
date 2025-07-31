@@ -1,5 +1,5 @@
-import { List } from '@mui/material'
-import { categorizedItem } from '../../type'
+import { List, Typography } from '@mui/material'
+import { CategorizedItem } from '../../types'
 import ShoppingCategoryList from './categoryList/ShoppingCategoryList'
 
 /**
@@ -9,7 +9,7 @@ export default function ShoppingList({
     categorizedItems,
     update
 }: {
-    categorizedItems: categorizedItem[],
+    categorizedItems: CategorizedItem[],
     update: (id: number, isDone: boolean, onFinally: () => void) => void
 }) {
 
@@ -29,6 +29,15 @@ export default function ShoppingList({
                     items={items}
                     update={update} />
             ))}
+
+            {/* 表示するアイテムがないとき */}
+            {categorizedItems.length === 0 && (
+                <Typography
+                    variant='body2'
+                    sx={{ textAlign: 'center', color: 'text.secondary', mt: 2 }}>
+                    アイテムがありません
+                </Typography>
+            )}
         </List>
     )
 }

@@ -7,7 +7,7 @@ import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { RecipeCategory } from '@prisma/client';
 import { Controller } from 'react-hook-form';
 import { useRecipeSearchForm as defaultUseRecipeSearchForm } from '../../../hooks/useRecipeSearchForm';
-import { RecipeSearchInput } from '../../../types';
+import { RecipeSearchInput } from '../../../type';
 
 /**
  * 検索フォーム 
