@@ -3,8 +3,8 @@ import { RecipeDetail } from '@/types/entity';
 import { DialogContent, DialogTitle } from '@mui/material';
 import MuiDialog from '@mui/material/Dialog';
 import { usePathname, useRouter } from 'next/navigation';
-import RecipeContent from '../../content/RecipeContent';
-import RecipeTitle from '../../content/item/title/RecipeTitle';
+import RecipeTitle from './content/item/title/RecipeTitle';
+import RecipeContent from './content/RecipeContent';
 
 /**
  * レシピ詳細ダイアログ 

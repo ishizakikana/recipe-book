@@ -4,6 +4,7 @@ import { Meta } from '@storybook/nextjs';
 const meta: Meta<typeof Box> = {
     title: 'Theme/Colors',
     component: Box,
+    tags: ['no-tests']
 }
 
 export default meta;

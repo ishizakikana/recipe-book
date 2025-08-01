@@ -1,10 +1,17 @@
 import { recipeDetailSample } from '@/stories/sample/RecipeDetail';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import RecipeDetailCard from './RecipeDetailCard';
+import RecipeDetailCard from '../../detail/RecipeDetailCard';
 
 const meta: Meta<typeof RecipeDetailCard> = {
-    title: 'Features/Recipe/Detail/Container/RecipeDetailCard',
+    title: 'Features/Recipe/Detail/RecipeDetailCard',
     component: RecipeDetailCard,
+    parameters: {
+        docs: {
+            source: {
+                code: '<RecipeDetailCard recipe={recipe} />'
+            }
+        }
+    },
     argTypes: {
         recipe: {
             control: false,
@@ -23,12 +30,4 @@ const meta: Meta<typeof RecipeDetailCard> = {
 export default meta;
 type Story = StoryObj<typeof RecipeDetailCard>;
 
-export const Default: Story = {
-    parameters: {
-        docs: {
-            source: {
-                code: '<RecipeDetailCard recipe={recipe} />'
-            }
-        }
-    }
-}
+export const Default: Story = {}

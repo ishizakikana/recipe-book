@@ -2,10 +2,10 @@ import Button from '@/components/ui/button/button/Button';
 import { recipeDetailSample } from '@/stories/sample/RecipeDetail';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { useState } from 'react';
-import RecipeDetailDialog from './RecipeDetailDialog';
+import RecipeDetailDialog from '../../detail/RecipeDetailDialog';
 
 const meta: Meta<typeof RecipeDetailDialog> = {
-    title: 'Features/Recipe/Detail/Container/RecipeDetailDialog',
+    title: 'Features/Recipe/Detail/RecipeDetailDialog',
     component: RecipeDetailDialog,
     argTypes: {
         recipe: {

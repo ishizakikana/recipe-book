@@ -1,4 +1,4 @@
-import RecipeContainer from '@/components/features/contents/recipe/components/detail/container/card/RecipeDetailCard';
+import RecipeContainer from '@/components/features/contents/recipe/components/detail/RecipeDetailCard';
 import { apiGetServer } from '@/lib/fetchServer';
 import { RecipeDetail } from '@/types/entity';
 

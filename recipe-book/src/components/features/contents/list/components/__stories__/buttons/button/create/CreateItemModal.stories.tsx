@@ -1,36 +1,46 @@
+import Button from '@/components/ui/button/button/Button';
 import { expect } from '@storybook/jest';
-import type { Meta, StoryObj } from '@storybook/nextjs';
-import { screen, userEvent, waitForElementToBeRemoved, within } from '@storybook/testing-library';
+import { Meta, StoryObj } from '@storybook/nextjs';
+import { screen, userEvent, within } from '@storybook/testing-library';
+import { useState } from 'react';
 import { fn } from 'storybook/test';
-import CreateButton from '../../../buttons/button/CreateButton';
+import CreateItemModal from '../../../../buttons/button/create/CreateItemModal';
 
-const categories = [
+const mockCategories = [
     { id: 1, name: 'A', icon: '', color: '' },
     { id: 2, name: 'B', icon: '', color: '' },
     { id: 3, name: 'C', icon: '', color: '' },
 ]
 
-const meta: Meta<typeof CreateButton> = {
-    title: 'Features/List/Buttons/Button/CreateButton',
-    component: CreateButton,
+const meta: Meta<typeof CreateItemModal> = {
+    title: 'Features/List/Buttons/Button/Create/CreateItemModal',
+    component: CreateItemModal,
+    parameters: {
+        docs: {
+            description: {
+                component: 'リストアイテム新規作成モーダル',
+            },
+        },
+    },
     args: {
-        listCategories: categories,
-        mobile: false,
-        create: fn()
+        open: true,
+        listCategories: mockCategories,
+        create: fn(),
+        onClose: fn(),
     },
     argTypes: {
+        open: {
+            control: 'boolean',
+            description: 'モーダルの開閉状態',
+            table: {
+                category: 'props'
+            }
+        },
         listCategories: {
             control: false,
             description: 'カテゴリー一覧',
             table: {
                 category: 'data'
-            }
-        },
-        mobile: {
-            control: 'boolean',
-            description: 'モバイル表示',
-            table: {
-                category: 'props'
             }
         },
         create: {
@@ -40,67 +50,31 @@ const meta: Meta<typeof CreateButton> = {
                 category: 'function'
             }
         },
-    },
-    parameters: {
-        docs: {
-            source: {
-                code: '<CreateButton listCategories={listCategories} create={create} />'
+        onClose: {
+            action: 'close',
+            description: 'モーダル非表示イベント',
+            table: {
+                category: 'event'
             }
         }
     }
 }
 
 export default meta;
-type Story = StoryObj<typeof CreateButton>;
+type Story = StoryObj<typeof CreateItemModal>;
 
-export const Desktop: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'デスクトップ'
-            }
-        }
-    }
-}
+export const Default: Story = {
+    render: (args) => {
+        const [open, setOpen] = useState(false);
 
-export const Mobile: Story = {
-    args: {
-        mobile: true
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'モバイル'
-            },
-            source: {
-                code: '<CreateButton mobile listCategories={listCategories} create={create} />'
-            }
-        }
-    }
-}
+        const onClose = () => setOpen(false);
 
-export const ClickInteraction: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'クリックテスト'
-            }
-        }
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        const button = canvas.getByRole('button', { name: '項目を追加' });
-
-        await userEvent.click(button);
-
-        // モーダルが開くことを確認
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
-
-        const closeButton = screen.getByRole('button', { name: 'キャンセル' });
-        await userEvent.click(closeButton);
-
-        // モーダルが閉じることを確認
-        await waitForElementToBeRemoved(() => screen.queryByRole('dialog'));
+        return (
+            <>
+                <Button onClick={() => setOpen(true)}>項目を追加</Button>
+                <CreateItemModal {...args} open={open} onClose={onClose} />
+            </>
+        )
     }
 }
 
@@ -112,15 +86,7 @@ export const SubmitSuccess: Story = {
             }
         }
     },
-    args: {
-        create: (data) => {
-            return true;
-        }
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        await userEvent.click(canvas.getByRole('button', { name: '項目を追加' }));
-
+    play: async ({ args }) => {
         const dialog = screen.getByRole('dialog');
 
         const categorySelect = within(dialog).getByRole('combobox', { name: 'カテゴリー' });
@@ -138,8 +104,8 @@ export const SubmitSuccess: Story = {
         const submitButton = within(dialog).getByRole('button', { name: '登録' });
         await userEvent.click(submitButton);
 
-        // モーダルが閉じることを確認
-        await waitForElementToBeRemoved(() => screen.queryByRole('dialog'));
+        // モーダル画面非表示イベントが呼ばれることを確認
+        await expect(args.onClose).toHaveBeenCalled();
     }
 }
 
@@ -152,14 +118,11 @@ export const SubmitError: Story = {
         }
     },
     args: {
-        create: (data) => {
+        create: () => {
             throw new Error('サーバーでエラーが発生しました。');
         }
     },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        await userEvent.click(canvas.getByRole('button', { name: '項目を追加' }));
-
+    play: async () => {
         const dialog = screen.getByRole('dialog');
 
         const categorySelect = within(dialog).getByRole('combobox', { name: 'カテゴリー' });
@@ -187,10 +150,7 @@ export const ValidationError: Story = {
             }
         }
     },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        await userEvent.click(canvas.getByRole('button', { name: '項目を追加' }));
-
+    play: async () => {
         const dialog = screen.getByRole('dialog');
 
         // フォーム送信

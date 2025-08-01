@@ -50,8 +50,8 @@ const meta: Meta<typeof DesktopListButtons> = {
     args: {
         listCategories: listCategoriesSample,
         create: () => { },
-        updateAll: (_, onFinally) => { onFinally(); },
-        deleteAll: (onFinally) => { onFinally(); },
+        updateAll: () => { },
+        deleteAll: () => { },
     }
 };
 
