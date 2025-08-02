@@ -5,14 +5,16 @@ const config: StorybookConfig = {
     '../**/*.mdx',
     '../**/*.stories.@(js|jsx|mjs|ts|tsx)',     // .stories.* のファイルを読み込む
   ],
-  'addons': [// 基本セット
+  'addons': [
+    // 基本セット
     '@storybook/addon-essentials', // テスト用の操作を追加
     '@storybook/addon-interactions', // コンポーネントの属性を操作し、リアルタイムに変化を確認する
     '@storybook/controls', // ドキュメントを自動生成
     '@storybook/addon-docs', // レスポンシブ対応
     '@storybook/test',
     '@storybook/viewport',
-    '@storybook/addon-coverage'],
+    '@storybook/addon-coverage'
+  ],
   'framework': {
     'name': '@storybook/nextjs',
     'options': {}

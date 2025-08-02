@@ -52,8 +52,8 @@ const meta: Meta<typeof MobileListButtons> = {
     args: {
         listCategories: listCategoriesSample,
         create: () => { },
-        updateAll: (_, onFinally) => { onFinally(); },
-        deleteAll: (onFinally) => { onFinally(); },
+        updateAll: () => { },
+        deleteAll: () => { },
     }
 };
 

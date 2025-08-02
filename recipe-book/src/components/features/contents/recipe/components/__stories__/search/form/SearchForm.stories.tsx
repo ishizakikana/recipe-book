@@ -74,11 +74,11 @@ type Story = StoryObj<typeof SearchForm>;
 
 export const Default: Story = {}
 
-export const SubmitError: Story = {
+export const SubmitSuccess: Story = {
     parameters: {
         docs: {
             description: {
-                story: '送信エラー'
+                story: 'フォーム送信成功テスト'
             }
         }
     },
@@ -95,7 +95,7 @@ export const SubmitError: Story = {
 
         const checkbox1 = canvas.getByRole('checkbox', { name: '主菜' });
         await userEvent.click(checkbox1);
-        await userEvent.click(checkbox1);
+        await userEvent.click(checkbox1, { delay: 100 });
 
         const submitButton = await canvas.findByRole('button', { name: '検索' });
         await userEvent.click(submitButton);
