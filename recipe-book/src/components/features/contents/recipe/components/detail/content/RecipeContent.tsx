@@ -1,8 +1,8 @@
 import { RecipeDetail } from '@/types/entity';
 import { Stack } from '@mui/material';
-import RecipeImage from './item/image/RecipeImage';
-import IngredientList from './item/ingredient/IngredientList';
-import StepList from './item/step/StepList';
+import IngredientList from './item/IngredientList';
+import RecipeImage from './item/RecipeImage';
+import StepList from './item/StepList';
 
 /**
  * レシピコンテンツ

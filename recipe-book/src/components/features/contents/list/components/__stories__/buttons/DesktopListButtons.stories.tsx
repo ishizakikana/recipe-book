@@ -1,6 +1,12 @@
-import { listCategoriesSample } from '@/stories/sample/ListCategory';
+import { ListCategory } from '@prisma/client';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import DesktopListButtons from '../../buttons/DesktopListButtons';
+
+const mockCategories: ListCategory[] = [
+    { id: 1, name: 'A', icon: '', color: '' },
+    { id: 2, name: 'B', icon: '', color: '' },
+    { id: 3, name: 'C', icon: '', color: '' },
+]
 
 const meta: Meta<typeof DesktopListButtons> = {
     title: 'Features/List/Buttons/DesktopListButtons',
@@ -48,7 +54,7 @@ const meta: Meta<typeof DesktopListButtons> = {
         },
     },
     args: {
-        listCategories: listCategoriesSample,
+        listCategories: mockCategories,
         create: () => { },
         updateAll: () => { },
         deleteAll: () => { },

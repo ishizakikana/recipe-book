@@ -1,7 +1,7 @@
 import Chip, { ChipColors } from '@/components/ui/display/chip/Chip';
 import { RecipeCategorySummary, RecipeDetail } from '@/types/entity';
 import { Stack, Typography } from '@mui/material';
-import RecipeEditButton from './editButton/RecipeEditButton';
+import RecipeEditButton from './edit/RecipeEditButton';
 
 /**
  * レシピタイトル

@@ -1,6 +1,17 @@
-import { recipeDetailSample } from '@/stories/sample/RecipeDetail';
+import { StepSummary } from '@/types/entity';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import StepList from './StepList';
+import StepList from '../../../../detail/content/item/StepList';
+
+const mockSteps: StepSummary[] = [
+    { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [] },
+    {
+        id: 2, stepNumber: 2, text: 'レシピ手順2', seasonings: [
+            { id: 1, name: '塩', volume: '少々' },
+            { id: 2, name: 'にんにくチューブ', volume: '少々' },
+        ]
+    },
+    { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [] },
+]
 
 const meta: Meta<typeof StepList> = {
     title: 'Features/Recipe/Detail/Container/Content/Item/StepList',
@@ -16,7 +27,7 @@ const meta: Meta<typeof StepList> = {
         }
     },
     args: {
-        steps: recipeDetailSample.steps
+        steps: mockSteps
     }
 }
 

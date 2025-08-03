@@ -1,7 +1,25 @@
-import { categorizedItemsSample } from '@/stories/sample/ListItem';
 import { Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { CategorizedItem } from '../../../../types';
 import ShoppingCategoryList from '../../../list/categoryList/ShoppingCategoryList';
+
+const mockItems: CategorizedItem[] = [
+    {
+        category: { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
+        items: [
+            { id: 1, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
+            { id: 2, name: 'キャベツ', volume: '1玉', categoryId: 1, recipeName: null, isDone: false },
+            { id: 3, name: '鮭', volume: '３切れ', categoryId: 1, recipeName: null, isDone: false },
+        ]
+    },
+    {
+        category: { id: 2, name: '肉', icon: 'bacon', color: 'red' },
+        items: [
+            { id: 4, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false },
+            { id: 5, name: '牛肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false },
+        ]
+    }
+]
 
 const meta: Meta<typeof ShoppingCategoryList> = {
     title: 'Features/List/List/Category/CategoryList',
@@ -47,8 +65,8 @@ const meta: Meta<typeof ShoppingCategoryList> = {
         }
     },
     args: {
-        category: categorizedItemsSample[0].category,
-        items: categorizedItemsSample[0].items,
+        category: mockItems[0].category,
+        items: mockItems[0].items,
     }
 }
 
@@ -67,7 +85,7 @@ export const Variant: Story = {
     },
     render: () => (
         <Stack>
-            {categorizedItemsSample.map((categoryItem, index) => (
+            {mockItems.map((categoryItem, index) => (
                 <ShoppingCategoryList
                     key={index}
                     category={categoryItem.category}

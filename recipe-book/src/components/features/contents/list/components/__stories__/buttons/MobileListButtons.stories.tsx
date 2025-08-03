@@ -1,8 +1,14 @@
-import { listCategoriesSample } from '@/stories/sample/ListCategory';
+import { ListCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import MobileListButtons from '../../buttons/MobileListButtons';
+
+const mockCategories: ListCategory[] = [
+    { id: 1, name: 'A', icon: '', color: '' },
+    { id: 2, name: 'B', icon: '', color: '' },
+    { id: 3, name: 'C', icon: '', color: '' },
+]
 
 const meta: Meta<typeof MobileListButtons> = {
     title: 'Features/List/Buttons/MobileListButtons',
@@ -50,7 +56,7 @@ const meta: Meta<typeof MobileListButtons> = {
         },
     },
     args: {
-        listCategories: listCategoriesSample,
+        listCategories: mockCategories,
         create: () => { },
         updateAll: () => { },
         deleteAll: () => { },

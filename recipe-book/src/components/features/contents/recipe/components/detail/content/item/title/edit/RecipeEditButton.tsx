@@ -1,12 +1,16 @@
 'use client'
 import IconButton from "@/components/ui/button/iconButton/IconButton";
-import { useNavigation } from '@/hooks/useNavigation';
+import { useNavigation as defaultUseNavigation } from "@/hooks/useNavigation";
 import EditIcon from '@mui/icons-material/Edit';
 
 /**
  * レシピ編集ボタン
  */
-export default function RecipeEditButton() {
+export default function RecipeEditButton({
+    useNavigation = defaultUseNavigation
+}: {
+    useNavigation?: typeof defaultUseNavigation
+}) {
     const { navigateAppend } = useNavigation();
 
     // クリックイベント

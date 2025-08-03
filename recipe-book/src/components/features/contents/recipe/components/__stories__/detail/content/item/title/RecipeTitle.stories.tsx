@@ -1,6 +1,6 @@
 import { RecipeDetail } from '@/types/entity';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import RecipeDetailCard from '../../detail/RecipeDetailCard';
+import RecipeTitle from '../../../../../detail/content/item/title/RecipeTitle';
 
 const mockRecipe: RecipeDetail = {
     id: 1,
@@ -26,16 +26,9 @@ const mockRecipe: RecipeDetail = {
     ]
 }
 
-const meta: Meta<typeof RecipeDetailCard> = {
-    title: 'Features/Recipe/Detail/RecipeDetailCard',
-    component: RecipeDetailCard,
-    parameters: {
-        docs: {
-            source: {
-                code: '<RecipeDetailCard recipe={recipe} />'
-            }
-        }
-    },
+const meta: Meta<typeof RecipeTitle> = {
+    title: 'Features/Recipe/Detail/Content/Item/Header/RecipeTitle',
+    component: RecipeTitle,
     argTypes: {
         recipe: {
             control: false,
@@ -52,6 +45,14 @@ const meta: Meta<typeof RecipeDetailCard> = {
 }
 
 export default meta;
-type Story = StoryObj<typeof RecipeDetailCard>;
+type Story = StoryObj<typeof RecipeTitle>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    parameters: {
+        docs: {
+            source: {
+                code: '<RecipeTitle recipe={recipe} />'
+            }
+        }
+    }
+}

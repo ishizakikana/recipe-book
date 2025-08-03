@@ -1,9 +1,8 @@
-import { recipeDetailSample } from '@/stories/sample/RecipeDetail';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import RecipeImage from './RecipeImage';
+import RecipeImage from '../../../../detail/content/item/RecipeImage';
 
 const meta: Meta<typeof RecipeImage> = {
-    title: 'Features/Recipe/Detail/Container/Content/Item/RecipeImage',
+    title: 'Features/Recipe/Detail/Content/Item/RecipeImage',
     component: RecipeImage,
     argTypes: {
         imageUrl: {
@@ -24,8 +23,8 @@ const meta: Meta<typeof RecipeImage> = {
         }
     },
     args: {
-        imageUrl: recipeDetailSample.imageUrl,
-        recipeName: recipeDetailSample.name
+        imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
+        recipeName: 'レシピ1'
     }
 }
 

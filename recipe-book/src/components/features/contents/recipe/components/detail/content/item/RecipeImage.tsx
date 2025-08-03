@@ -6,10 +6,10 @@ import Image from 'next/image';
  */
 export default function RecipeImage({
     imageUrl,
-    recipeName = 'Recipe'
+    recipeName
 }: {
     imageUrl: string;
-    recipeName?: string;
+    recipeName: string;
 }) {
 
     return (

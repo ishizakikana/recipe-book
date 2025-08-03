@@ -13,7 +13,7 @@ export default function RecipeDetailCard({
 }) {
 
     return (
-        <Box>
+        <Box sx={{ height: '100%', width: '100%' }}>
             <Paper elevation={10}
                 component={Stack}
                 sx={{ height: '100%', width: '100%', overflow: 'auto' }}>
