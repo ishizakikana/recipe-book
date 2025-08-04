@@ -1,4 +1,4 @@
-import { SelectOption } from '@/components/ui/form/select/SelectBox';
+import { SelectOption } from '@/components/ui/form/SelectBox';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ListCategory } from '@prisma/client';

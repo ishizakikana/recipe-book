@@ -1,5 +1,5 @@
 'use client'
-import Checkbox from '@/components/ui/form/checkbox/Checkbox';
+import Checkbox from '@/components/ui/form/Checkbox';
 import { ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 import MuiListItem from '@mui/material/ListItem';
 import { ListItem } from '@prisma/client';

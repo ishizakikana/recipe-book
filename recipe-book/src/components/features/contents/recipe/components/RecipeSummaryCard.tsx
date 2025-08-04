@@ -1,5 +1,5 @@
 'use client'
-import Chip, { ChipColors } from "@/components/ui/display/chip/Chip";
+import Chip, { ChipColors } from "@/components/ui/display/Chip";
 import { useNavigation } from '@/hooks/useNavigation';
 import { RecipeSummary } from "@/types/entity";
 import { Card, CardActionArea, CardContent, CardHeader, CardMedia, Stack, Typography } from "@mui/material";

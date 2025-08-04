@@ -1,4 +1,4 @@
-import Button from "@/components/ui/button/button/Button"
+import Button from "@/components/ui/button/Button"
 import { CircularProgress, ListItemIcon, ListItemText, MenuItem } from "@mui/material"
 import { MouseEventHandler, ReactNode } from "react"
 

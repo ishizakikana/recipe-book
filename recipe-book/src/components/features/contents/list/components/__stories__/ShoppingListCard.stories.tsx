@@ -1,6 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { waitFor, within } from '@storybook/testing-library';
+import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import { useState } from 'react';
 import ShoppingListCard from '../ShoppingListCard';
 
@@ -79,7 +79,16 @@ const meta: Meta<typeof ShoppingListCard> = {
 export default meta;
 type Story = StoryObj<typeof ShoppingListCard>
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const addButton = canvas.getByRole('button', { name: '項目を追加' });
+        await userEvent.click(addButton);
+
+        const closeButton = screen.getByRole('button', { name: 'キャンセル' });
+        await userEvent.click(closeButton);
+    }
+}
 
 export const Mobile: Story = {
     parameters: {
@@ -94,6 +103,22 @@ export const Mobile: Story = {
     },
     globals: {
         viewport: { value: 'mobile1', isRotated: false }
+    },
+    play: async ({ canvasElement }) => {
+
+        // 少し待ってからテスト開始（viewport適用を待つ）
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const canvas = within(canvasElement);
+        const menuButton = await canvas.findByRole('button', { name: 'メニューを開く' });
+        await userEvent.click(menuButton);
+        const addButton = await screen.findByText('項目を追加');
+        await userEvent.click(addButton);
+
+        const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
+        if (backdrop) {
+            await userEvent.click(backdrop);
+        }
     }
 }
 
@@ -107,10 +132,26 @@ export const Empty: Story = {
     },
     args: {
         initialListItems: []
+    },
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const addButton = await canvas.findByRole('button', { name: '項目を追加' });
+        await userEvent.click(addButton);
+
+        const closeButton = screen.getByRole('button', { name: 'キャンセル' });
+        await userEvent.click(closeButton);
     }
 }
 
 export const Error: StoryObj<typeof ShoppingListCard> = {
+    parameters: {
+        docs: {
+            description: {
+                story: 'エラー時'
+            }
+        },
+        testTimeout: 10000
+    },
     render: () => {
 
         const [error, setError] = useState<string | null>('通信エラーが発生しました');
@@ -132,13 +173,6 @@ export const Error: StoryObj<typeof ShoppingListCard> = {
                 useItemListHook={mockUseItemList}
             />
         )
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'エラー時'
-            }
-        }
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);

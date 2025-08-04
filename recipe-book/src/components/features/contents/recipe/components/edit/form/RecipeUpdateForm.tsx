@@ -1,10 +1,10 @@
 'use client'
-import Button from '@/components/ui/button/button/Button'
-import Alert from '@/components/ui/feedback/alert/Alert'
-import DynamicTextBoxList from '@/components/ui/form/input/dynamic/DynamicTextBoxList'
-import ImageBox from '@/components/ui/form/input/image/ImageBox'
-import TextBox from '@/components/ui/form/input/text/TextBox'
-import SelectBox, { SelectOption } from '@/components/ui/form/select/SelectBox'
+import Button from '@/components/ui/button/Button'
+import Alert from '@/components/ui/feedback/Alert'
+import DynamicTextBoxList from '@/components/ui/form/input/DynamicTextBoxList'
+import ImageBox from '@/components/ui/form/input/ImageBox'
+import TextBox from '@/components/ui/form/input/TextBox'
+import SelectBox, { SelectOption } from '@/components/ui/form/SelectBox'
 import { RecipeDetail } from '@/types/entity'
 import { FormReturn } from '@/types/form'
 import { Stack } from '@mui/material'
@@ -13,6 +13,9 @@ import { Controller } from 'react-hook-form'
 import { useRecipeUpdateForm as defaultRecipeUpdateForm } from '../../../hooks/useRecipeUpdateForm'
 import { RecipeUpdateFormInput } from '../../../type'
 
+/**
+ * レシピ更新フォーム
+ */
 export default function RecipeUpdateForm({
     recipe,
     recipeCategories,
@@ -78,7 +81,8 @@ export default function RecipeUpdateForm({
                             helperText={formErrors?.calories?.message} />
                     </Stack>
 
-                    <DynamicTextBoxList />
+                    <DynamicTextBoxList
+                        labels={['材料', '量']} />
                 </Stack>
                 <Button type='submit' loading={loading}>保存</Button>
             </Stack>

@@ -1,8 +1,8 @@
-import Button from '@/components/ui/button/button/Button';
+import Button from '@/components/ui/button/Button';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, within } from '@storybook/testing-library';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { fn } from 'storybook/test';
 import CreateItemModal from '../../../../buttons/button/create/CreateItemModal';
 
@@ -67,11 +67,19 @@ export const Default: Story = {
     render: (args) => {
         const [open, setOpen] = useState(false);
 
+        useEffect(() => {
+            const searchParams = new URLSearchParams(window?.location?.search);
+            const isDocs = searchParams.get('viewMode') === 'docs';
+            if (!isDocs) {
+                setOpen(true); // Canvasモードのときのみ開く
+            }
+        }, []);
+
         const onClose = () => setOpen(false);
 
         return (
             <>
-                <Button onClick={() => setOpen(true)}>項目を追加</Button>
+                <Button onClick={() => setOpen(true)}>開く</Button>
                 <CreateItemModal {...args} open={open} onClose={onClose} />
             </>
         )

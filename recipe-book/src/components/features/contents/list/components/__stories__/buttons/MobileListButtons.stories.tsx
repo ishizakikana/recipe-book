@@ -66,7 +66,18 @@ const meta: Meta<typeof MobileListButtons> = {
 export default meta;
 type Story = StoryObj<typeof MobileListButtons>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const addButton = canvas.getByRole('button', { name: 'メニューを開く' });
+        userEvent.click(addButton);
+
+        const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
+        if (backdrop) {
+            await userEvent.click(backdrop);
+        }
+    }
+}
 
 export const ClickInteraction: Story = {
     parameters: {

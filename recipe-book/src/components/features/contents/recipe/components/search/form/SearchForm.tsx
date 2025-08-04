@@ -1,7 +1,7 @@
 'use client'
-import Button from '@/components/ui/button/button/Button';
-import Alert from '@/components/ui/feedback/alert/Alert';
-import TextBox from '@/components/ui/form/input/text/TextBox';
+import Button from '@/components/ui/button/Button';
+import Alert from '@/components/ui/feedback/Alert';
+import TextBox from '@/components/ui/form/input/TextBox';
 import { FormReturn } from '@/types/form';
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { RecipeCategory } from '@prisma/client';

@@ -1,4 +1,4 @@
-import IconButton from '@/components/ui/button/iconButton/IconButton';
+import IconButton from '@/components/ui/button/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Menu } from '@mui/material';
 import { ListCategory } from '@prisma/client';

@@ -1,7 +1,6 @@
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { userEvent, within } from '@storybook/testing-library';
-import { waitFor } from '@testing-library/react';
+import { userEvent, waitFor, within } from '@storybook/testing-library';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 import ShoppingListItem from '../../../../list/categoryList/item/ShoppingListItem';
@@ -44,7 +43,14 @@ const meta: Meta<typeof ShoppingListItem> = {
 export default meta;
 type Story = StoryObj<typeof ShoppingListItem>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const checkbox = await canvas.findByRole('checkbox');
+        await userEvent.click(checkbox);
+        await userEvent.click(checkbox);
+    }
+}
 
 export const Checked: Story = {
     parameters: {
@@ -55,7 +61,15 @@ export const Checked: Story = {
         }
     },
     args: {
-        item: { ...listItem, isDone: true }
+        item: { ...listItem, isDone: true },
+        update: (id, isDone, onFinally) => {
+            onFinally();
+        }
+    },
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const checkbox = await canvas.findByRole('checkbox');
+        expect(checkbox).toBeChecked();
     }
 }
 
@@ -68,8 +82,10 @@ export const Loading: Story = {
         }
     },
     args: {
-        update: () => {
-            // onFinallyを呼ばないことでローディング状態を維持
+        update: (id, isDone, onFinally) => {
+            setTimeout(() => {
+                onFinally();
+            }, 5000);
         }
     },
     play: async ({ canvasElement }) => {

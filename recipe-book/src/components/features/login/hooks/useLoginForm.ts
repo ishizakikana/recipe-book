@@ -1,6 +1,5 @@
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { apiPost } from '@/lib/fetch';
-import { FormReturn } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -16,7 +15,7 @@ const schema = z.object({
 // 入力型推論
 export type LoginFormInput = z.infer<typeof schema>;
 
-export const useLoginForm = (): FormReturn<LoginFormInput> => {
+export const useLoginForm = () => {
     const router = useRouter();
     const {
         register,
@@ -30,7 +29,7 @@ export const useLoginForm = (): FormReturn<LoginFormInput> => {
     const [submitError, setSubmitError] = useState<string | null>(null);
 
     // フォーム送信イベント
-    const onSubmit = async (data: LoginFormInput) => {
+    const onLogin = async (data: LoginFormInput) => {
         try {
             await apiPost('/auth/login', data);
             router.push('/recipe');
@@ -42,7 +41,9 @@ export const useLoginForm = (): FormReturn<LoginFormInput> => {
 
     return {
         register,
-        onSubmit: handleSubmit(onSubmit),
+        handleSubmit,
+        onLogin: onLogin,
+        onSubmit: handleSubmit(onLogin),
         submitError,
         formErrors: errors,
         loading: isSubmitting,

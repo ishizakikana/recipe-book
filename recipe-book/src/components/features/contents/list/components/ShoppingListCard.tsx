@@ -1,5 +1,5 @@
 'use client'
-import Snackbar from '@/components/ui/feedback/snackbar/Snackbar';
+import Snackbar from '@/components/ui/feedback/Snackbar';
 import { Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { ListCategory, ListItem } from '@prisma/client';
 import { useItemList } from '../hooks/useItemList';

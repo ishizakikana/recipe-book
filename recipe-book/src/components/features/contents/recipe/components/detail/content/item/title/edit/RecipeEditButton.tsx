@@ -1,5 +1,5 @@
 'use client'
-import IconButton from "@/components/ui/button/iconButton/IconButton";
+import IconButton from "@/components/ui/button/IconButton";
 import { useNavigation as defaultUseNavigation } from "@/hooks/useNavigation";
 import EditIcon from '@mui/icons-material/Edit';
 

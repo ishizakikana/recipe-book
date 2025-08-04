@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RecipeSearchInput } from '../type';
-import { buildSearchQuery } from '../util';
+import { buildSearchQuery } from '../utils/searchQuery';
 
 export function useRecipeSearchForm({
     searchInput

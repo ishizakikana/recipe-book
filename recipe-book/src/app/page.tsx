@@ -1,5 +1,5 @@
 import StartButton from '@/components/features/index/components/StartButton';
-import CenteredContainer from '@/components/layout/container/center/CenteredContainer';
+import CenteredContainer from '@/components/layout/CenteredContainer';
 import { Typography } from '@mui/material';
 
 export default function IndexPage() {

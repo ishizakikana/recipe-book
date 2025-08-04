@@ -1,5 +1,5 @@
 'use client'
-import Button from '@/components/ui/button/button/Button';
+import Button from '@/components/ui/button/Button';
 import { useNavigation } from '@/hooks/useNavigation';
 
 export default function StartButton({

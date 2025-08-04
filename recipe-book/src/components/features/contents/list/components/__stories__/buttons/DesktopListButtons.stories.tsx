@@ -1,5 +1,6 @@
 import { ListCategory } from '@prisma/client';
 import type { Meta, StoryObj } from '@storybook/nextjs';
+import { screen, userEvent, within } from '@storybook/testing-library';
 import DesktopListButtons from '../../buttons/DesktopListButtons';
 
 const mockCategories: ListCategory[] = [
@@ -64,4 +65,13 @@ const meta: Meta<typeof DesktopListButtons> = {
 export default meta;
 type Story = StoryObj<typeof DesktopListButtons>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const addButton = canvas.getByRole('button', { name: '項目を追加' });
+        await userEvent.click(addButton);
+
+        const closeButton = screen.getByRole('button', { name: 'キャンセル' });
+        await userEvent.click(closeButton);
+    }
+}

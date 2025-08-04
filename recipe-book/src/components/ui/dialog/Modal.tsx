@@ -1,5 +1,5 @@
-import Button from '@/components/ui/button/button/Button';
-import IconButton from '@/components/ui/button/iconButton/IconButton';
+import Button from '@/components/ui/button/Button';
+import IconButton from '@/components/ui/button/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogActions, DialogContent, DialogTitle, ModalProps, SlotProps } from '@mui/material';
 import Dialog, { DialogBackdropSlotPropsOverrides, DialogContainerSlotPropsOverrides, DialogOwnerState, DialogPaperSlotPropsOverrides, DialogRootSlotPropsOverrides } from '@mui/material/Dialog';
