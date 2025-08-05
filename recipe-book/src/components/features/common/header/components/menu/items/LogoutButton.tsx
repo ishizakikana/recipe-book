@@ -1,22 +1,17 @@
 'use client'
 import IconButton from '@/components/ui/button/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useLogout } from '../../../../hooks/useLogout';
+import { useLogout as defaultUseLogout } from '../../../hooks/useLogout';
 
 /**
  * ログアウトボタン
  */
 export default function LogoutButton({
-    onLogout
+    useLogout = defaultUseLogout,
 }: {
-    onLogout?: () => void
+    useLogout?: typeof defaultUseLogout
 }) {
     const { logout } = useLogout();
-
-    const onClick = () => {
-        onLogout?.();
-        logout();
-    }
 
     return (
         <IconButton
@@ -25,6 +20,6 @@ export default function LogoutButton({
             tipTitle='ログアウト'
             tipPlacement='top'
             tipOffset={[0, -14]}
-            onClick={onClick} />
+            onClick={() => logout()} />
     )
 }

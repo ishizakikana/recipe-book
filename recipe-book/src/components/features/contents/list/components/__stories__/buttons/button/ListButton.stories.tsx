@@ -7,7 +7,7 @@ const meta: Meta<typeof ListButton> = {
     title: 'Features/List/Buttons/Button/ListButton',
     component: ListButton,
     argTypes: {
-        text: {
+        children: {
             control: 'text',
             description: 'ボタンのテキスト',
             table: {
@@ -44,7 +44,7 @@ const meta: Meta<typeof ListButton> = {
         }
     },
     args: {
-        text: 'Button',
+        children: 'Button',
         icon: <AddIcon />,
     }
 }
@@ -60,19 +60,11 @@ export const Desktop: Story = {
             },
             source: {
                 code: `
-                <ListButton
-                    text='Button',
-                    icon={<AddIcon />}
-                    loading={false}
-                    mobile={false}
-                    onClick={() => console.log('Button clicked')}
-                    />`.trim()
+                <ListButton icon={<AddIcon />} onClick={onClick}>
+                    Button
+                </ListButton>`.trim()
             }
         }
-    },
-    args: {
-        loading: false,
-        mobile: false
     }
 }
 
@@ -84,29 +76,18 @@ export const Mobile: Story = {
             },
             source: {
                 code: `
-                <ListButton
-                    text='Button',
-                    icon={<AddIcon />}
-                    loading={false}
-                    mobile={true}
-                    onClick={() => console.log('Button clicked')}
-                    />`.trim()
+                <ListButton mobile icon={<AddIcon />} onClick={onClick}>
+                    Button
+                </ListButton>`.trim()
             }
         }
     },
     args: {
-        loading: false,
         mobile: true
     }
 }
 
 export const Loading: Story = {
-    render: (args) => (
-        <Stack direction='row' spacing={2}>
-            <ListButton {...args} />
-            <ListButton {...args} mobile={true} />
-        </Stack>
-    ),
     parameters: {
         docs: {
             description: {
@@ -114,17 +95,23 @@ export const Loading: Story = {
             },
             source: {
                 code: `
-                <ListButton
-                    text='Button',
-                    icon={<AddIcon />}
-                    loading={true}
-                    mobile={false}
-                    onClick={() => console.log('Button clicked')}
-                    />`.trim()
+                <ListButton loading icon={<AddIcon />} onClick={onClick}>
+                    Button
+                </ListButton>
+                
+                <ListButton mobile loading icon={<AddIcon />} onClick={onClick}>
+                    Button
+                </ListButton>`.trim()
             }
         }
     },
     args: {
-        loading: true,
-    }
+        loading: true
+    },
+    render: (args) => (
+        <Stack direction='row' spacing={2}>
+            <ListButton {...args} />
+            <ListButton {...args} mobile />
+        </Stack>
+    )
 }

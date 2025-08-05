@@ -2,7 +2,7 @@
 import Snackbar from '@/components/ui/feedback/Snackbar';
 import { Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { ListCategory, ListItem } from '@prisma/client';
-import { useItemList } from '../hooks/useItemList';
+import { useItemList as defaultUseItemList } from '../hooks/useItemList';
 import DesktopListButtons from './buttons/DesktopListButtons';
 import MobileListButtons from './buttons/MobileListButtons';
 import ShoppingList from './list/ShoppingList';
@@ -13,11 +13,11 @@ import ShoppingList from './list/ShoppingList';
 export default function ShoppingListCard({
     listCategories,
     initialListItems,
-    useItemListHook = useItemList
+    useItemList = defaultUseItemList
 }: {
     listCategories: ListCategory[]
     initialListItems: ListItem[]
-    useItemListHook?: typeof useItemList
+    useItemList?: typeof defaultUseItemList
 }) {
 
     // スマホ判定
@@ -32,7 +32,7 @@ export default function ShoppingListCard({
         updateAll,
         deleteAll,
         setError
-    } = useItemListHook(listCategories, initialListItems);
+    } = useItemList(listCategories, initialListItems);
 
     const buttonsProps = { listCategories, create, updateAll, deleteAll };
 

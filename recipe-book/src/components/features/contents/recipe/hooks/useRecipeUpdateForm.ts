@@ -1,17 +1,34 @@
+import { RecipeDetail } from '@/types/entity';
 import { FormReturn } from '@/types/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RecipeUpdateFormInput, schema } from '../type';
 
-export const useRecipeUpdateForm = (): FormReturn<RecipeUpdateFormInput> => {
+export const useRecipeUpdateForm = (
+    recipe: RecipeDetail
+): FormReturn<RecipeUpdateFormInput> => {
+
+    const defaultValues: RecipeUpdateFormInput = {
+        ...recipe,
+        categoryId: recipe.category.id.toString(),
+        shelfLife: recipe.shelfLife || '',
+        calories: recipe.calories || 0,
+        ingredients: recipe.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
+        steps: recipe.steps.map(s => ({
+            text: s.text,
+            seasonings: s.seasonings?.map(s => `${s.name} ${s.volume}`).join('\n') ?? ''
+        }))
+    }
+
     const {
         register,
         control,
         handleSubmit,
         formState: { errors, isSubmitting }
     } = useForm<RecipeUpdateFormInput>({
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schema),
+        defaultValues: defaultValues
     });
 
     // エラー管理

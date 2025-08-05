@@ -1,18 +1,28 @@
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { expect, fn, userEvent, within } from 'storybook/test';
-import MenuLinks from '../../../../menu/drawer/items/MenuLinks';
+import { userEvent, within } from '@storybook/testing-library';
+import { fn } from 'storybook/test';
+import MenuLinks from '../../../menu/items/MenuLinks';
+
+const mockNavigateTo = fn((path: string) => { });
+const mockUseNavigation = () => ({
+    navigateTo: mockNavigateTo,
+    navigateAppend: fn()
+});
 
 const meta: Meta<typeof MenuLinks> = {
-    title: 'Features/Common/Header/Menu/Drawer/Items/MenuLinks',
+    title: 'Features/Common/Header/Menu/Items/MenuLinks',
     component: MenuLinks,
     globals: {
         backgrounds: { value: 'dark' }
     },
     argTypes: {
-        onNavigation: {
-            description: 'Storybook テスト用コールバック',
+        useNavigation: {
+            control: false,
+            description: 'Storybookテスト用',
             table: {
-                category: '_'
+                category: '_',
+                defaultValue: { summary: 'useNavigation' }
             }
         }
     }
@@ -30,9 +40,9 @@ export const Default: Story = {
         }
     },
     args: {
-        onNavigation: fn()
+        useNavigation: mockUseNavigation
     },
-    play: async ({ canvasElement, args }) => {
+    play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
         const recipeButton = await canvas.findByRole('button', { name: 'レシピ' });
         const calendarButton = await canvas.findByRole('button', { name: 'カレンダー' });
@@ -42,8 +52,8 @@ export const Default: Story = {
         await userEvent.click(calendarButton);
         await userEvent.click(listButton);
 
-        expect(args.onNavigation).toHaveBeenCalledWith('/recipe');
-        expect(args.onNavigation).toHaveBeenCalledWith('/calendar');
-        expect(args.onNavigation).toHaveBeenCalledWith('/list');
+        expect(mockNavigateTo).toHaveBeenCalledWith('/recipe');
+        expect(mockNavigateTo).toHaveBeenCalledWith('/calendar');
+        expect(mockNavigateTo).toHaveBeenCalledWith('/list');
     }
 }

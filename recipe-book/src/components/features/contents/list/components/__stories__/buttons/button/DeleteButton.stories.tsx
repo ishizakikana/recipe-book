@@ -4,37 +4,31 @@ import { userEvent, within } from '@storybook/testing-library';
 import { fn, } from 'storybook/test';
 import DeleteButton from '../../../buttons/button/DeleteButton';
 
+const mockDeleteAll = fn((onFinally) => {
+    setTimeout(() => onFinally(), 1000);
+});
+
 const meta: Meta<typeof DeleteButton> = {
     title: 'Features/List/Buttons/Button/DeleteButton',
     component: DeleteButton,
-    args: {
-        deleteAll: fn((onFinally) => {
-            setTimeout(() => onFinally(), 1000);
-        }),
-        mobile: false
-    },
     argTypes: {
+        mobile: {
+            control: 'boolean',
+            description: 'モバイル表示',
+            table: {
+                category: 'props'
+            }
+        },
         deleteAll: {
             action: 'deleteAll',
             description: '全リストアイテム削除関数',
             table: {
                 category: 'function'
             }
-        },
-        mobile: {
-            control: 'boolean',
-            description: 'モバイル表示かどうか',
-            table: {
-                category: 'props'
-            }
         }
     },
-    parameters: {
-        docs: {
-            source: {
-                code: '<DeleteButton deleteAll={deleteAll} />'
-            }
-        }
+    args: {
+        deleteAll: mockDeleteAll
     }
 }
 
@@ -46,8 +40,21 @@ export const Desktop: Story = {
         docs: {
             description: {
                 story: 'デスクトップ'
+            },
+            source: {
+                code: '<DeleteButton deleteAll={deleteAll} />'
             }
         }
+    },
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const button = await canvas.findByRole('button', { name: 'すべての完了済みを削除' });
+
+        await userEvent.click(button);
+
+        expect(mockDeleteAll).toHaveBeenCalledTimes(1);
+
+        await new Promise(resolve => setTimeout(resolve, 1100));
     }
 }
 
@@ -65,23 +72,13 @@ export const Mobile: Story = {
     args: {
         mobile: true
     },
-}
-
-export const ClickInteraction: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'クリックテスト'
-            }
-        }
-    },
     play: async ({ canvasElement, args }) => {
         const canvas = within(canvasElement);
-        const button = await canvas.findByRole('button', { name: 'すべての完了済みを削除' });
+        const button = await canvas.findByText('すべての完了済みを削除');
 
         await userEvent.click(button);
 
-        expect(args.deleteAll).toHaveBeenCalledTimes(1);
+        expect(mockDeleteAll).toHaveBeenCalledTimes(1);
 
         await new Promise(resolve => setTimeout(resolve, 1100));
     }

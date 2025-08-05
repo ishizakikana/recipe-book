@@ -1,6 +1,6 @@
-import { Box, Theme, Tooltip } from '@mui/material'
+import { Theme, Tooltip } from '@mui/material'
 import MuiIconButton, { IconButtonPropsColorOverrides, IconButtonPropsSizeOverrides } from '@mui/material/IconButton'
-import { SxProps } from '@mui/system'
+import { Box, SxProps } from '@mui/system'
 import { OverridableStringUnion } from '@mui/types'
 import { MouseEventHandler, ReactNode } from 'react'
 
@@ -43,19 +43,17 @@ export default function IconButton({
             size={size}
             edge={edge}
             sx={sx}
-            aria-label={tipTitle ? tipTitle : ariaLabel}
+            aria-label={tipTitle ?? ariaLabel}
             onClick={onClick}
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}>
-            <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {icon}
-            </span>
+            {icon}
         </MuiIconButton>
     );
 
     if (tooltip) {
         return (
-            <Box>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Tooltip
                     title={tipTitle}
                     placement={tipPlacement}
@@ -72,11 +70,15 @@ export default function IconButton({
                             ]
                         }
                     }}>
-                    <span style={{ display: 'flex' }}>{iconButton}</span>
+                    {iconButton}
                 </Tooltip>
-            </Box >
+            </Box>
         )
     } else {
-        return iconButton
+        return (
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                {iconButton}
+            </Box>
+        )
     }
 }

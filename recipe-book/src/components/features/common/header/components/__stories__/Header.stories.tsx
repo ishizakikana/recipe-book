@@ -12,7 +12,12 @@ const meta: Meta<typeof Header> = {
     title: 'Features/Common/Header',
     component: Header,
     parameters: {
-        layout: 'fullscreen'
+        layout: 'fullscreen',
+        docs: {
+            source: {
+                code: '<Header user={user} />'
+            }
+        }
     },
     argTypes: {
         user: {
@@ -30,12 +35,4 @@ const meta: Meta<typeof Header> = {
 export default meta;
 type Story = StoryObj<typeof Header>
 
-export const Default: Story = {
-    parameters: {
-        docs: {
-            source: {
-                code: '<Header user={user} />'
-            }
-        }
-    },
-}
+export const Default: Story = {}

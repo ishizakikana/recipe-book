@@ -1,11 +1,11 @@
 import IconButton from '@/components/ui/button/IconButton';
+import useMenu from '@/hooks/useMenu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Menu } from '@mui/material';
 import { ListCategory } from '@prisma/client';
-import { useState } from 'react';
 import { CreateItemFormInput } from '../../types';
 import BulkToggleStatusButton from './button/BulkToggleStatusButton';
-import CreateButton from './button/create/CreateButton';
+import CreateButton from './button/CreateButton';
 import DeleteButton from './button/DeleteButton';
 
 /**
@@ -23,12 +23,7 @@ export default function MobileListButtons({
     deleteAll: (onFinally: () => void) => void
 }) {
 
-    // メニュー開閉状態管理
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    const open = Boolean(anchorEl);
-    const onOpen = (e: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(e.currentTarget);
-    const onClose = () => setAnchorEl(null);
+    const { open, anchorEl, onOpen, onClose } = useMenu();
 
     return (
         <>
@@ -36,13 +31,8 @@ export default function MobileListButtons({
                 icon={<MoreVertIcon />}
                 ariaLabel='メニューを開く'
                 color='ui'
-                sx={{
-                    position: 'absolute',
-                    top: 10,
-                    right: 2
-                }}
-                onClick={onOpen}
-            />
+                sx={{ position: 'absolute', top: 10, right: 2 }}
+                onClick={onOpen} />
 
             <Menu
                 anchorEl={anchorEl}

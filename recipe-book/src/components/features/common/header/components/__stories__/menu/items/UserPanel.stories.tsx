@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { expect, within } from 'storybook/test';
-import UserPanel from '../../../../menu/drawer/items/UserPanel';
+import UserPanel from '../../../menu/items/UserPanel';
 
 const mockUser: User = {
     id: '1',
@@ -10,7 +10,7 @@ const mockUser: User = {
 }
 
 const meta: Meta<typeof UserPanel> = {
-    title: 'Features/Common/Header/Menu/Drawer/Items/UserPanel',
+    title: 'Features/Common/Header/Menu/Items/UserPanel',
     component: UserPanel,
     globals: {
         backgrounds: { value: 'dark' }
@@ -41,7 +41,7 @@ export const Default: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const userName = await canvas.findByText('test user');
+        const userName = await canvas.findByText(mockUser.name);
 
         expect(userName).toBeInTheDocument();
     }

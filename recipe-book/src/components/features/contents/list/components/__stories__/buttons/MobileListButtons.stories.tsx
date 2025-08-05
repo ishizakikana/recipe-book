@@ -69,26 +69,6 @@ type Story = StoryObj<typeof MobileListButtons>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const addButton = canvas.getByRole('button', { name: 'メニューを開く' });
-        userEvent.click(addButton);
-
-        const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
-        if (backdrop) {
-            await userEvent.click(backdrop);
-        }
-    }
-}
-
-export const ClickInteraction: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'ボタンクリックテスト'
-            }
-        }
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
         const menuButton = await canvas.findByRole('button', { name: 'メニューを開く' });
 
         await userEvent.click(menuButton);
@@ -107,4 +87,4 @@ export const ClickInteraction: Story = {
             expect(screen.queryByRole('menuitem')).not.toBeInTheDocument()
         })
     }
-};
+}
