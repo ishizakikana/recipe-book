@@ -5,20 +5,17 @@ import { userEvent, within } from '@storybook/testing-library';
 import { fn } from 'storybook/test';
 import BulkToggleStatusButton from '../../../buttons/button/BulkToggleStatusButton';
 
+const mockUpdateAll = fn((isDone, onFinally) => {
+    setTimeout(() => onFinally(), 1000);
+});
+
 const meta: Meta<typeof BulkToggleStatusButton> = {
     title: 'Features/List/Buttons/Button/BulkToggleStatusButton',
     component: BulkToggleStatusButton,
-    args: {
-        markAsDone: false,
-        mobile: false,
-        updateAll: fn((isDone, onFinally) => {
-            setTimeout(() => onFinally(), 1000);
-        })
-    },
     argTypes: {
         markAsDone: {
             control: 'boolean',
-            description: '完了状態に切り替えるかどうか',
+            description: '完了状態に切り替え',
             table: {
                 category: 'props'
             }
@@ -38,14 +35,8 @@ const meta: Meta<typeof BulkToggleStatusButton> = {
             }
         }
     },
-    parameters: {
-        docs: {
-            source: {
-                code: `<BulkToggleStatusButton
-                            markAsDone={false}
-                            updateAll={updateAll} />`.trim()
-            }
-        }
+    args: {
+        updateAll: mockUpdateAll
     }
 }
 
@@ -57,15 +48,22 @@ export const Desktop: Story = {
         docs: {
             description: {
                 story: 'デスクトップ'
+            },
+            source: {
+                code: '<BulkToggleStatusButton updateAll={updateAll} />'
             }
         }
     },
-    render: (args) => (
-        <Stack direction='row' gap={2}>
-            <BulkToggleStatusButton {...args} />
-            <BulkToggleStatusButton {...args} markAsDone />
-        </Stack>
-    )
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const button = await canvas.findByRole('button', { name: 'すべて未完了' });
+
+        await userEvent.click(button);
+
+        expect(mockUpdateAll).toHaveBeenCalledTimes(1);
+
+        await new Promise(resolve => setTimeout(resolve, 1100));
+    }
 }
 
 export const Mobile: Story = {
@@ -75,40 +73,62 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
-                code: `<BulkToggleStatusButton
-                            markAsDone={false}
-                            mobile
-                            updateAll={updateAll} />`.trim()
+                code: '<BulkToggleStatusButton mobile updateAll={updateAll} />'
             }
         }
     },
     args: {
         mobile: true
     },
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const button = await canvas.findByText('すべて未完了');
+
+        await userEvent.click(button);
+
+        expect(mockUpdateAll).toHaveBeenCalledTimes(1);
+
+        await new Promise(resolve => setTimeout(resolve, 1100));
+    }
+}
+
+export const MarkAsDone: Story = {
+    parameters: {
+        docs: {
+            description: {
+                story: '完了状態に切り替え'
+            },
+            source: {
+                code: '<BulkToggleStatusButton markAsDone updateAll={updateAll} />'
+            }
+        }
+    },
+    args: {
+        markAsDone: true
+    },
     render: (args) => (
-        <Stack direction='row' gap={2}>
+        <Stack direction='row' spacing={2}>
+            <BulkToggleStatusButton {...args} />
             <BulkToggleStatusButton {...args} mobile />
-            <BulkToggleStatusButton {...args} markAsDone mobile />
         </Stack>
     )
 }
 
-export const ClickInteraction: Story = {
+export const MarkAsUnDone: Story = {
     parameters: {
         docs: {
             description: {
-                story: 'クリックテスト'
+                story: '未完了状態に切り替え'
+            },
+            source: {
+                code: '<BulkToggleStatusButton updateAll={updateAll} />'
             }
         }
     },
-    play: async ({ canvasElement, args }) => {
-        const canvas = within(canvasElement);
-        const button = await canvas.findByRole('button', { name: 'すべて未完了' });
-
-        await userEvent.click(button);
-
-        expect(args.updateAll).toHaveBeenCalledTimes(1);
-
-        await new Promise(resolve => setTimeout(resolve, 1100));
-    }
+    render: (args) => (
+        <Stack direction='row' spacing={2}>
+            <BulkToggleStatusButton {...args} />
+            <BulkToggleStatusButton {...args} mobile />
+        </Stack>
+    )
 }

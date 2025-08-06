@@ -1,7 +1,8 @@
+import { Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import ShoppingList from '../../list/ShoppingList';
 
-const categorizedItems = [
+const mockCategorizedItems = [
     {
         category: { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
         items: [
@@ -39,14 +40,24 @@ const meta: Meta<typeof ShoppingList> = {
     title: 'Features/List/List/ShoppingList',
     component: ShoppingList,
     parameters: {
+        layout: 'fullscreen',
         docs: {
             source: {
-                code: `<ShoppingList
-                            categorizedItems={categorizedItems}
-                            update={update} />`.trim()
+                code: `
+                <ShoppingList
+                    categorizedItems={categorizedItems}
+                    update={update} />`.trim()
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+                <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
+                    <Story />
+                </Stack>
+            </Stack>
+        )],
     argTypes: {
         categorizedItems: {
             control: false,
@@ -64,7 +75,7 @@ const meta: Meta<typeof ShoppingList> = {
         }
     },
     args: {
-        categorizedItems: categorizedItems
+        categorizedItems: mockCategorizedItems
     }
 }
 

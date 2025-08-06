@@ -19,5 +19,10 @@ export const schema = z.object({
     categoryId: z.string(),
     imageUrl: z.string(),
     shelfLife: z.string(),
-    calories: z.string(),
+    calories: z.number(),
+    ingredients: z.string(),
+    steps: z.object({
+        text: z.string(),
+        seasonings: z.string()
+    }).array()
 })

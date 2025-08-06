@@ -1,4 +1,4 @@
-import Chip, { ChipColors } from '@/components/ui/display/chip/Chip';
+import Chip, { ChipColors } from '@/components/ui/display/Chip';
 import { RecipeCategorySummary, RecipeDetail } from '@/types/entity';
 import { Stack, Typography } from '@mui/material';
 import RecipeEditButton from './edit/RecipeEditButton';

@@ -1,4 +1,4 @@
-import Button from "@/components/ui/button/button/Button"
+import Button from "@/components/ui/button/Button"
 import { CircularProgress, ListItemIcon, ListItemText, MenuItem } from "@mui/material"
 import { MouseEventHandler, ReactNode } from "react"
 
@@ -6,13 +6,13 @@ import { MouseEventHandler, ReactNode } from "react"
  * リストボタン
  */
 export default function ListButton({
-    text,
+    children,
     icon,
     loading = false,
     mobile = false,
     onClick
 }: {
-    text: string
+    children: string
     icon: ReactNode
     loading?: boolean
     mobile?: boolean
@@ -24,7 +24,7 @@ export default function ListButton({
             <ListItemIcon>
                 {loading ? <CircularProgress size={16} color="ui" /> : icon}
             </ListItemIcon>
-            <ListItemText>{text}</ListItemText>
+            <ListItemText>{children}</ListItemText>
         </MenuItem>
     )
 
@@ -34,7 +34,7 @@ export default function ListButton({
             startIcon={icon}
             loading={loading}
             onClick={onClick}>
-            {text}
+            {children}
         </Button>
     )
 }

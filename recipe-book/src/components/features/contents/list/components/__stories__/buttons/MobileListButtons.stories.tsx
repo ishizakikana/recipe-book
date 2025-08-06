@@ -66,16 +66,7 @@ const meta: Meta<typeof MobileListButtons> = {
 export default meta;
 type Story = StoryObj<typeof MobileListButtons>;
 
-export const Default: Story = {}
-
-export const ClickInteraction: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'ボタンクリックテスト'
-            }
-        }
-    },
+export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
         const menuButton = await canvas.findByRole('button', { name: 'メニューを開く' });
@@ -96,4 +87,4 @@ export const ClickInteraction: Story = {
             expect(screen.queryByRole('menuitem')).not.toBeInTheDocument()
         })
     }
-};
+}

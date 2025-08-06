@@ -1,8 +1,8 @@
 'use client'
-import Button from '@/components/ui/button/button/Button';
-import Alert from '@/components/ui/feedback/alert/Alert';
-import PasswordBox from '@/components/ui/form/input/password/PasswordBox';
-import TextBox from '@/components/ui/form/input/text/TextBox';
+import Button from '@/components/ui/button/Button';
+import Alert from '@/components/ui/feedback/Alert';
+import PasswordBox from '@/components/ui/form/input/PasswordBox';
+import TextBox from '@/components/ui/form/input/TextBox';
 import { FormReturn } from '@/types/form';
 import { Stack } from '@mui/material';
 import { useLoginForm as defaultUseLoginForm, LoginFormInput } from '../hooks/useLoginForm';
@@ -15,7 +15,7 @@ export default function LoginForm({
 }: {
     useLoginForm?: () => FormReturn<LoginFormInput>
 }) {
-    const { register, submitError, formErrors, loading, onSubmit } = useLoginForm();
+    const { register, onSubmit, submitError, formErrors, loading } = useLoginForm();
 
     return (
         <form onSubmit={onSubmit}>

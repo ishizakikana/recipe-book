@@ -1,5 +1,5 @@
 import ShoppingListCard from '@/components/features/contents/list/components/ShoppingListCard';
-import CenteredContainer from '@/components/layout/container/center/CenteredContainer';
+import CenteredContainer from '@/components/layout/CenteredContainer';
 import { apiGetServer } from '@/lib/fetchServer';
 import { ListCategory, ListItem } from '@prisma/client';
 

@@ -30,10 +30,11 @@ export default function BulkToggleStatusButton({
 
     return (
         <ListButton
-            text={markAsDone ? 'すべて完了済み' : 'すべて未完了'}
             icon={markAsDone ? <CheckIcon /> : <UndoIcon />}
             loading={loading}
             mobile={mobile}
-            onClick={onClick} />
+            onClick={onClick}>
+            {markAsDone ? 'すべて完了済み' : 'すべて未完了'}
+        </ListButton>
     )
 }

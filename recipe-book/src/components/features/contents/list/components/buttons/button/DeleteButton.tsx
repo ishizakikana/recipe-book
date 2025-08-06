@@ -1,3 +1,4 @@
+'use client'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import ListButton from './ListButton';
@@ -26,10 +27,11 @@ export default function DeleteButton({
 
     return (
         <ListButton
-            text={'すべての完了済みを削除'}
             icon={<DeleteIcon />}
             mobile={mobile}
             loading={loading}
-            onClick={onClick} />
+            onClick={onClick}>
+            すべての完了済みを削除
+        </ListButton>
     )
 }

@@ -1,46 +1,44 @@
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { CategorizedItem } from '../../../../types';
 import ShoppingCategoryList from '../../../list/categoryList/ShoppingCategoryList';
 
-const mockItems: CategorizedItem[] = [
-    {
-        category: { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
-        items: [
-            { id: 1, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
-            { id: 2, name: 'キャベツ', volume: '1玉', categoryId: 1, recipeName: null, isDone: false },
-            { id: 3, name: '鮭', volume: '３切れ', categoryId: 1, recipeName: null, isDone: false },
-        ]
-    },
-    {
-        category: { id: 2, name: '肉', icon: 'bacon', color: 'red' },
-        items: [
-            { id: 4, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false },
-            { id: 5, name: '牛肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false },
-        ]
-    }
+const mockCategories = [
+    { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
+    { id: 2, name: '肉', icon: 'bacon', color: 'red' },
+    { id: 3, name: '魚', icon: 'fish', color: 'blue' },
+    { id: 4, name: '乳製品', icon: 'cheese', color: 'orange' },
+    { id: 5, name: '調味料', icon: 'seedling', color: 'brown' },
+]
+const mockItems = [
+    { id: 1, name: 'アイテム1', volume: '100g', categoryId: 1, recipeName: null, isDone: false },
+    { id: 2, name: 'アイテム2', volume: '200g', categoryId: 1, recipeName: null, isDone: false }
 ]
 
 const meta: Meta<typeof ShoppingCategoryList> = {
     title: 'Features/List/List/Category/CategoryList',
     component: ShoppingCategoryList,
     parameters: {
+        layout: 'fullscreen',
         docs: {
             source: {
-                code: `<ShoppingCategoryList
-                                    category={category}
-                                    items={items}
-                                    update={update} />`.trim()
+                code: `
+                <ShoppingCategoryList
+                    category={category}
+                    items={items}
+                    update={update} />`.trim()
             }
         }
     },
     decorators: [
         (Story) => (
-            <div style={{ listStyle: 'none' }}>
-                <Story />
-            </div>
-        )
-    ],
+            <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+                <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
+                    <Box sx={{ listStyle: 'none', width: '100%' }}>
+                        <Story />
+                    </Box>
+                </Stack>
+            </Stack>
+        )],
     argTypes: {
         category: {
             control: false,
@@ -65,8 +63,8 @@ const meta: Meta<typeof ShoppingCategoryList> = {
         }
     },
     args: {
-        category: mockItems[0].category,
-        items: mockItems[0].items,
+        category: mockCategories[0],
+        items: mockItems,
     }
 }
 
@@ -85,11 +83,11 @@ export const Variant: Story = {
     },
     render: () => (
         <Stack>
-            {mockItems.map((categoryItem, index) => (
+            {mockCategories.map((category, index) => (
                 <ShoppingCategoryList
                     key={index}
-                    category={categoryItem.category}
-                    items={categoryItem.items}
+                    category={category}
+                    items={mockItems}
                     update={(id, isDone, onFinally) => {
                         setTimeout(onFinally, 500);
                     }}
