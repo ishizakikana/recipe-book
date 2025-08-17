@@ -1,4 +1,4 @@
-import { RecipeSearchInput } from '../type';
+import { RecipeSearchInput } from '@/components/features/contents/recipe/type';
 
 /**
  * 検索パラメータをもとにクエリ文字列を作成

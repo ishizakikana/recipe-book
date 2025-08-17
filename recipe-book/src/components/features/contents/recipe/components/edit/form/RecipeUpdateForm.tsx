@@ -5,12 +5,12 @@ import ImageBox from '@/components/ui/form/input/ImageBox'
 import TextBox from '@/components/ui/form/input/TextBox'
 import SelectBox, { SelectOption } from '@/components/ui/form/SelectBox'
 import { RecipeDetail } from '@/types/entity'
-import { FormReturn } from '@/types/form'
 import { Stack } from '@mui/material'
 import { RecipeCategory } from '@prisma/client'
+import { useRouter } from 'next/navigation'
 import { Controller } from 'react-hook-form'
-import { useRecipeUpdateForm as defaultRecipeUpdateForm } from '../../../hooks/useRecipeUpdateForm'
-import { RecipeUpdateFormInput } from '../../../type'
+import { useRecipeEditForm as defaultRecipeEditForm } from '../../../hooks/useRecipeEditForm'
+import { RecipeFormInput } from '../../../type'
 import StepsTextBoxList from './steps/StepsTextBoxList'
 
 /**
@@ -19,21 +19,30 @@ import StepsTextBoxList from './steps/StepsTextBoxList'
 export default function RecipeUpdateForm({
     recipe,
     recipeCategories,
-    useRecipeUpdateForm = defaultRecipeUpdateForm
+    useRecipeEditForm = defaultRecipeEditForm
 }: {
     recipe: RecipeDetail
     recipeCategories: RecipeCategory[]
-    useRecipeUpdateForm?: (recipe: RecipeDetail) => FormReturn<RecipeUpdateFormInput>
+    useRecipeEditForm?: typeof defaultRecipeEditForm
 }) {
-    const { register, control, submitError, formErrors, loading, onSubmit } = useRecipeUpdateForm(recipe);
+    const router = useRouter();
+
+    const { control, register, handleSubmit, submitError, formErrors, loading, onUpdate } = useRecipeEditForm(recipe);
 
     const categoryOptions: SelectOption[] = recipeCategories.map(c =>
         ({ label: c.name, value: c.id.toString() })
     )
 
+    const onSubmit = async (data: RecipeFormInput) => {
+        const success = await onUpdate(data);
+        if (success) {
+            router.back();
+            router.replace(`/recipe/${recipe.id}`);
+        }
+    }
 
     return (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
 
             {/* エラーメッセージ */}
             <Alert severity='error' visible={!!submitError}>{submitError}</Alert>

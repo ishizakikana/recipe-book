@@ -1,5 +1,5 @@
-import { handleApi } from '@/lib/api';
-import { COOKIE_KEYS, deleteCookie } from '@/lib/cookie';
+import { handleApi } from '@/lib/server/api';
+import { COOKIE_KEYS, deleteCookie } from '@/lib/server/cookie';
 import { NextResponse } from 'next/server';
 
 /**

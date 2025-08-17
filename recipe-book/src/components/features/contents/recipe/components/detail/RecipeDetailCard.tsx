@@ -1,7 +1,7 @@
 import { RecipeDetail } from '@/types/entity';
 import { Box, Divider, Paper, Stack } from '@mui/material';
-import RecipeContent from './content/RecipeContent';
 import RecipeTitle from './content/item/title/RecipeTitle';
+import RecipeContent from './content/RecipeContent';
 
 /**
  * レシピ詳細カード

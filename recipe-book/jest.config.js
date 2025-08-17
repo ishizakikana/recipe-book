@@ -1,6 +1,6 @@
 module.exports = {
   testEnvironment: 'jest-environment-jsdom',
-  testMatch: ['**/__tests__/**/*.test.ts'],
+  testMatch: ['**/tests/**/*.test.ts'],
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
@@ -10,5 +10,5 @@ module.exports = {
   },
   collectCoverage: true,
   coverageReporters: ['text', 'html', 'lcov', 'json'],
-  coverageDirectory: 'coverage/jest'
+  coverageDirectory: 'coverage/jest',
 };

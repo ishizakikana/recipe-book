@@ -9,7 +9,8 @@ export type RecipeSummary = {
         name: string;
         icon: string;
         color: string;
-    }
+    },
+    visible: boolean;
 }
 
 export type RecipeDetail = {

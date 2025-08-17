@@ -3,7 +3,7 @@ import type { StorybookConfig } from '@storybook/nextjs';
 const config: StorybookConfig = {
   stories: [
     '../**/*.mdx',
-    '../**/*.stories.@(js|jsx|mjs|ts|tsx)',     // .stories.* のファイルを読み込む
+    '../stories/**/*.stories.@(js|jsx|ts|tsx)',     // .stories.* のファイルを読み込む
   ],
   'addons': [
     // 基本セット

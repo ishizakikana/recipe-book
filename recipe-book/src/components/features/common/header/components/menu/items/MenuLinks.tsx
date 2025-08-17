@@ -1,6 +1,6 @@
 'use client'
-import { useNavigation as defaultUseNavigation } from '@/hooks/useNavigation';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const links = [
     { text: 'レシピ', path: '/recipe' },
@@ -12,17 +12,22 @@ const links = [
  * メニューリンクリスト
  */
 export default function MenuLinks({
-    useNavigation = defaultUseNavigation,
+    onClose
 }: {
-    useNavigation?: typeof defaultUseNavigation
+    onClose: () => void
 }) {
-    const { navigateTo } = useNavigation();
+    const router = useRouter();
+
+    // クリックイベント
+    const onClick = (path: string) => {
+        router.push(path);
+    }
 
     return (
         <List>
             {links.map(link => (
                 <ListItem key={link.text} disablePadding>
-                    <ListItemButton onClick={() => navigateTo(link.path)}>
+                    <ListItemButton onClick={() => onClick(link.path)}>
                         <ListItemText primary={link.text} sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>

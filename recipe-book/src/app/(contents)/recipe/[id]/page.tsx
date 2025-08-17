@@ -1,5 +1,5 @@
-import RecipeContainer from '@/components/features/contents/recipe/components/detail/RecipeDetailCard';
-import { apiGetServer } from '@/lib/fetchServer';
+import RecipeDetailCard from '@/components/features/contents/recipe/components/detail/RecipeDetailCard';
+import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeDetail } from '@/types/entity';
 
 export default async function RecipePage({
@@ -15,6 +15,6 @@ export default async function RecipePage({
     }
 
     return (
-        <RecipeContainer recipe={recipe} />
+        <RecipeDetailCard recipe={recipe} />
     )
 }

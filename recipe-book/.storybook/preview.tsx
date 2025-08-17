@@ -2,8 +2,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { Preview } from '@storybook/nextjs';
 import { AppRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { RouterContext } from 'next/dist/shared/lib/router-context.shared-runtime';
-import { mockRouter } from '../src/stories/mocks/router';
 import theme from '../src/styles/theme';
+import { mockRouter } from '../stories/__mocks__/router';
 
 const preview: Preview = {
   decorators: [

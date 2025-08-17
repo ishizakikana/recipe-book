@@ -1,5 +1,5 @@
-import { getRequestParams, handleApi } from '@/lib/api';
-import { recipeCategoryRepository } from '@/lib/repositories/recipeCategoryRepository';
+import { getRequestParams, handleApi } from '@/lib/server/api';
+import { recipeCategoryRepository } from '@/lib/server/repositories/recipeCategoryRepository';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {

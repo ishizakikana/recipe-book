@@ -1,6 +1,6 @@
 import Header from '@/components/features/common/header/components/Header';
 import CenteredContainer from '@/components/layout/CenteredContainer';
-import { getUserFromAuthToken } from '@/lib/token';
+import { getUserFromAuthToken } from '@/lib/server/token';
 import '@/styles/globals.css';
 import { Box } from '@mui/material';
 import type { Metadata } from 'next';

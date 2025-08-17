@@ -1,6 +1,6 @@
 import LoginForm from '@/components/features/login/components/LoginForm';
 import CenteredContainer from '@/components/layout/CenteredContainer';
-import { getUserFromAuthToken } from '@/lib/token';
+import { getUserFromAuthToken } from '@/lib/server/token';
 import { redirect } from 'next/navigation';
 
 export default async function LoginPage() {

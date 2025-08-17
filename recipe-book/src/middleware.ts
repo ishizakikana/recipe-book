@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from './lib/auth';
-import { COOKIE_KEYS } from './lib/cookie';
+import { verifyToken } from './lib/server/auth';
+import { COOKIE_KEYS } from './lib/server/cookie';
 
 /**
  * ミドルウェア

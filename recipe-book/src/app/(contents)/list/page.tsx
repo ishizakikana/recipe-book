@@ -1,6 +1,6 @@
 import ShoppingListCard from '@/components/features/contents/list/components/ShoppingListCard';
 import CenteredContainer from '@/components/layout/CenteredContainer';
-import { apiGetServer } from '@/lib/fetchServer';
+import { apiGetServer } from '@/lib/server/fetchServer';
 import { ListCategory, ListItem } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';

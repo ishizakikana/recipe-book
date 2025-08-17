@@ -1,9 +1,10 @@
+import { RecipeUpdateFormInput } from '@/components/features/contents/recipe/type';
 import IconButton from '@/components/ui/button/IconButton';
 import TextBox from '@/components/ui/form/input/TextBox';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Divider, Grow, InputLabel, Paper, Stack, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Divider, Grow, InputLabel, Paper, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 
@@ -13,13 +14,12 @@ import { Control, Controller, useFieldArray } from 'react-hook-form';
 export default function StepsTextBoxList({
     control,
 }: {
-    control?: Control<any>
+    control?: Control<RecipeUpdateFormInput>
 }) {
 
-    const { fields, append, remove } = useFieldArray<{
-        steps: { text: string, seasonings: string }[]
-    }>({
-        control, name: 'steps'
+    const { fields, append, remove } = useFieldArray<RecipeUpdateFormInput>({
+        control,
+        name: 'steps'
     });
 
     // マウント状態管理
@@ -42,8 +42,8 @@ export default function StepsTextBoxList({
 
             <Stack alignItems='start' sx={{ width: '100%' }} gap={2}>
                 {fields.map((field, index) => (
-                    <>
-                        <Grow key={field.id} in={mounted} timeout={300}>
+                    <Box key={field.id} sx={{ width: '100%' }}>
+                        <Grow in={mounted} timeout={300}>
                             <Stack direction='row' gap={3} sx={{ width: '100%', my: 1 }}>
                                 <Avatar
                                     sx={{ bgcolor: 'primary.main', width: 30, height: 30, mt: 2 }}>
@@ -53,7 +53,7 @@ export default function StepsTextBoxList({
                                 <Stack flex={1}>
                                     <Controller
                                         control={control}
-                                        name={`${index}.text`}
+                                        name={`steps.${index}.text`}
                                         defaultValue={field.text}
                                         render={({ field }) =>
                                             <TextBox
@@ -74,7 +74,7 @@ export default function StepsTextBoxList({
                                         <AccordionDetails>
                                             <Controller
                                                 control={control}
-                                                name={`${name}.${index}.seasonings`}
+                                                name={`steps.${index}.seasonings`}
                                                 defaultValue={field.seasonings}
                                                 render={({ field }) =>
                                                     <TextBox
@@ -98,7 +98,7 @@ export default function StepsTextBoxList({
                             </Stack>
                         </Grow>
                         <Divider sx={{ width: '100%' }} />
-                    </>
+                    </Box>
                 ))}
 
                 <IconButton

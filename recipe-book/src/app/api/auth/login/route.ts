@@ -1,8 +1,8 @@
-import { handleApi } from '@/lib/api';
-import { signToken } from '@/lib/auth';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
-import { COOKIE_KEYS, setCookie } from '@/lib/cookie';
-import { userRepository } from '@/lib/repositories/userRepository';
+import { handleApi } from '@/lib/server/api';
+import { signToken } from '@/lib/server/auth';
+import { COOKIE_KEYS, setCookie } from '@/lib/server/cookie';
+import { userRepository } from '@/lib/server/repositories/userRepository';
 import { NextResponse } from 'next/server';
 
 /**

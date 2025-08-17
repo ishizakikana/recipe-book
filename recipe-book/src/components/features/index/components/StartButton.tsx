@@ -1,18 +1,16 @@
 'use client'
 import Button from '@/components/ui/button/Button';
-import { useNavigation } from '@/hooks/useNavigation';
+import { useRouter } from 'next/navigation';
 
-export default function StartButton({
-    onNavigation
-}: {
-    onNavigation?: (path: string) => void
-}) {
-    const { navigateTo } = useNavigation();
+/**
+ * 開始ボタン
+ */
+export default function StartButton() {
+    const router = useRouter();
 
     // クリックイベント
     const onClick = () => {
-        onNavigation?.('/login');
-        navigateTo('/login');
+        router.push('/login');
     }
 
     return (

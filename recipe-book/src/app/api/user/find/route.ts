@@ -1,6 +1,6 @@
-import { getRequestParams, handleApi } from '@/lib/api';
 import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
-import { userRepository } from '@/lib/repositories/userRepository';
+import { getRequestParams, handleApi } from '@/lib/server/api';
+import { userRepository } from '@/lib/server/repositories/userRepository';
 import { NextResponse } from 'next/server';
 
 /**

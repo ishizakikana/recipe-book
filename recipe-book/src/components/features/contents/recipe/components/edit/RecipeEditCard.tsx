@@ -8,7 +8,7 @@ import RecipeUpdateForm from './form/RecipeUpdateForm';
  */
 export default function RecipeEditCard({
     recipe,
-    recipeCategories
+    recipeCategories,
 }: {
     recipe: RecipeDetail
     recipeCategories: RecipeCategory[]

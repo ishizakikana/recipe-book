@@ -1,5 +1,5 @@
 import { StepSummary } from '@/types/entity';
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import { Avatar, Divider, List, ListItem, ListItemAvatar, Stack, Typography } from '@mui/material';
 
 /**
  * 作業手順リスト
@@ -18,10 +18,11 @@ export default function StepList({
                         <ListItemAvatar sx={{ mt: 0.4 }}>
                             <Avatar sx={{ width: 30, height: 30, bgcolor: 'primary.main' }}>{step.stepNumber}</Avatar>
                         </ListItemAvatar>
-                        <ListItemText
-                            primary={step.text}
-                            secondary={step.seasonings && step.seasonings.length > 0 && (
-                                <List>
+
+                        <Stack sx={{ width: '100%', py: 1 }} gap={1}>
+                            <Typography fontSize={16}>{step.text}</Typography>
+                            {step.seasonings && step.seasonings.length > 0 && (
+                                <List disablePadding>
                                     {step.seasonings.map(seasoning => (
                                         <ListItem key={seasoning.id} disablePadding component='div'>
                                             <Typography component='div' fontSize={14}>
@@ -30,7 +31,9 @@ export default function StepList({
                                         </ListItem>
                                     ))}
                                 </List>
-                            )} />
+                            )}
+                        </Stack>
+
                     </ListItem>
                     <Divider />
                 </div>

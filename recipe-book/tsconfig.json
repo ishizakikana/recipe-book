@@ -36,7 +36,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "stories/__utils__/utils.ts"
   ],
   "exclude": [
     "node_modules"

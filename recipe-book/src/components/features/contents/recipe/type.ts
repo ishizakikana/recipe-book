@@ -9,12 +9,13 @@ export type RecipeSearchInput = {
 }
 
 /**
- * レシピ更新フォーム入力型
+ * レシピフォーム入力型
  */
-export type RecipeUpdateFormInput = z.infer<typeof schema>;
+export type RecipeFormInput = z.infer<typeof schema>;
 
 // バリデーションスキーマ
 export const schema = z.object({
+    id: z.number(),
     name: z.string().min(1, '入力してください'),
     categoryId: z.string(),
     imageUrl: z.string(),

@@ -1,5 +1,5 @@
-import { handleApi } from '@/lib/api';
-import { listItemRepository } from '@/lib/repositories/listItemRepository';
+import { handleApi } from '@/lib/server/api';
+import { listItemRepository } from '@/lib/server/repositories/listItemRepository';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**

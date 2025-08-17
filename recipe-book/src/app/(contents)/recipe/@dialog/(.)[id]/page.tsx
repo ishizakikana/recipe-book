@@ -1,5 +1,5 @@
 import RecipeDetailDialog from '@/components/features/contents/recipe/components/detail/RecipeDetailDialog';
-import { apiGetServer } from '@/lib/fetchServer';
+import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeDetail } from '@/types/entity';
 
 export default async function RecipeDialogPage({

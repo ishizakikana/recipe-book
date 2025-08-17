@@ -1,8 +1,10 @@
 
 export const ERROR_MESSAGES = {
+    FORM_GUARD: '入力内容が保存されていません。ページを離れますか？',
     REQUIRED_FIELD: '入力してください',
-    REQUIRED_PARAM: '{0}パラメータが不足しています',
-    REQUIRED_ANY_PARAMS: '{0}パラメータのいずれかが必要です',
+    REQUIRED_PARAM: '{0}パラメータが不足しています。',
+    REQUIRED_ANY_PARAMS: '{0}パラメータのいずれかが必要です。',
+    INVALID_JSON: 'POSTボディが不正です。JSON形式に変換できません。',
     AUTH_FAILED: 'ログインに失敗しました。ユーザーIDまたはパスワードが違います。',
     CREATE_FAILED: '{0}の作成に失敗しました。',
     UPDATE_FAILED: '{0}の更新に失敗しました。',

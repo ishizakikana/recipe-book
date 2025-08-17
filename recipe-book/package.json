@@ -62,6 +62,7 @@
     "storybook": "^9.1.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5",
-    "v8-to-istanbul": "^9.3.0"
+    "v8-to-istanbul": "^9.3.0",
+    "whatwg-fetch": "^3.6.20"
   }
 }

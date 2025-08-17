@@ -1,9 +1,7 @@
-import RecipeCard from '@/components/features/contents/recipe/components/RecipeSummaryCard';
-import SearchAccordion from '@/components/features/contents/recipe/components/search/SearchAccordion';
+import RecipeListContainer from '@/components/features/contents/recipe/components/list/RecipeListContainer';
 import { RecipeSearchInput } from '@/components/features/contents/recipe/type';
-import { apiGetServer } from '@/lib/fetchServer';
+import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeSummary } from '@/types/entity';
-import { Box, Grid } from '@mui/material';
 import { Prisma, RecipeCategory } from '@prisma/client';
 
 export default async function RecipeBookPage({
@@ -37,30 +35,12 @@ export default async function RecipeBookPage({
   }
 
   const recipeCategories: RecipeCategory[] = await apiGetServer('/recipe-category/find?all=true');
-  console.log(recipeCategories)
-  const recipes: RecipeSummary[] = await apiGetServer(`/recipe/find?conditions=${encodeURIComponent(JSON.stringify(conditions))}`);
-  console.log(recipes)
+  const recipes: RecipeSummary[] = await apiGetServer(`/recipe/find?all=true`);
 
   return (
-    <Box sx={{ height: '100%', width: '100%' }}>
-
-      <SearchAccordion categories={recipeCategories} searchInput={searchInput} />
-
-      <Grid container rowSpacing={3} columnSpacing={5}
-        columns={{ xs: 1, sm: 3, md: 4, lg: 5 }}
-        px={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-        sx={{ py: 4 }}>
-
-        {recipes.map(recipe =>
-          <Grid key={recipe.id} size={1}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center'
-            }}>
-            <RecipeCard recipe={recipe} />
-          </Grid>
-        )}
-      </Grid>
-    </Box>
-  );
+    <RecipeListContainer
+      initialRecipes={recipes}
+      recipeCategories={recipeCategories}
+      searchInput={searchInput} />
+  )
 }

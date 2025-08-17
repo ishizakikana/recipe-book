@@ -36,7 +36,7 @@ export default function RecipeTitle({
                                 <Typography variant='body2'>{recipe.calories}kcal</Typography>}
                         </>
                     }
-                    <RecipeEditButton />
+                    <RecipeEditButton recipeId={recipe.id} />
                 </Stack>
             </Stack>
         </>

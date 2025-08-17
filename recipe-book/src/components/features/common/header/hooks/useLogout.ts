@@ -1,4 +1,4 @@
-import { apiGet } from '@/lib/fetch';
+import { apiGet } from '@/lib/client/fetch';
 import { useRouter } from 'next/navigation';
 
 export function useLogout() {

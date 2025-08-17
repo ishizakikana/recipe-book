@@ -1,5 +1,5 @@
 import RecipeEditCard from '@/components/features/contents/recipe/components/edit/RecipeEditCard';
-import { apiGetServer } from '@/lib/fetchServer';
+import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeDetail } from '@/types/entity';
 import { RecipeCategory } from '@prisma/client';
 

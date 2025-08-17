@@ -1,5 +1,5 @@
+import { apiPost } from '@/lib/client/fetch';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
-import { apiPost } from '@/lib/fetch';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
