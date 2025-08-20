@@ -9,7 +9,7 @@ import { Box, Stack } from '@mui/material';
 import { ListCategory } from '@prisma/client';
 import { Controller } from 'react-hook-form';
 import { useCreateItemForm as defaultUseCreateItemForm } from '../../../hooks/useCreateItemForm';
-import { CreateItemFormInput } from '../../../types';
+import { ItemFormInput } from '../../../types/itemFormInput';
 import ListButton from './ListButton';
 
 // TODO カテゴリの選択をアイテム名から推測して自動でできるといい
@@ -25,7 +25,7 @@ export default function CreateButton({
 }: {
     listCategories: ListCategory[]
     mobile?: boolean
-    create: (item: CreateItemFormInput) => void
+    create: (item: ItemFormInput) => void
     useCreateItemForm?: typeof defaultUseCreateItemForm
 }) {
     const { open, onOpen, onClose } = useDialog();
@@ -42,7 +42,7 @@ export default function CreateButton({
     } = useCreateItemForm(listCategories, create);
 
     // フォーム送信イベント
-    const onSubmit = (data: CreateItemFormInput) => {
+    const onSubmit = (data: ItemFormInput) => {
         const success = onCreate(data);
         if (success) {
             onClose(); // 作成成功時はモーダルを閉じる

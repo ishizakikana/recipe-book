@@ -60,7 +60,7 @@ const meta: Meta<typeof RecipeUpdateForm> = {
                 type: { summary: 'RecipeCategory[]' }
             }
         },
-        useRecipeUpdateForm: {
+        useRecipeEditForm: {
             control: false,
             description: 'storybookテスト用',
             table: {
@@ -72,7 +72,7 @@ const meta: Meta<typeof RecipeUpdateForm> = {
     args: {
         recipe: mockRecipe,
         recipeCategories: mockCategories,
-        useRecipeUpdateForm: undefined
+        useRecipeEditForm: undefined
     }
 }
 

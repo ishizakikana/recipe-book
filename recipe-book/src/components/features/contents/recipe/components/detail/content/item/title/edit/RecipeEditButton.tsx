@@ -1,7 +1,7 @@
 'use client'
-import IconButton from "@/components/ui/button/IconButton";
+import IconButton from '@/components/ui/button/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 /**
  * レシピ編集ボタン

@@ -10,6 +10,7 @@ export type RecipeSummary = {
         icon: string;
         color: string;
     },
+    keywords: string[];
     visible: boolean;
 }
 

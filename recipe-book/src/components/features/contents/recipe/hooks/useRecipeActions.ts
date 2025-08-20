@@ -1,6 +1,6 @@
-import { apiPost } from "@/lib/client/fetch";
-import { RecipeSummary } from "@/types/entity";
-import { RecipeFormInput } from "../type";
+import { apiPost } from '@/lib/client/fetch';
+import { RecipeSummary } from '@/types/entity';
+import { RecipeFormInput } from '../types/edit';
 
 export function useRecipeActions(
 ) {

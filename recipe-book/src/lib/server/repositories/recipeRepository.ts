@@ -36,6 +36,11 @@ export const recipeRepository = {
                         icon: true,
                         color: true
                     }
+                },
+                ingredients: {
+                    select: {
+                        name: true
+                    }
                 }
             }
         });
@@ -43,6 +48,7 @@ export const recipeRepository = {
         return result.map(r => ({
             ...r,
             imageUrl: getFullImageUrl(r.imageUrl),
+            keywords: [r.name, ...r.ingredients.map(i => i.name)],
             visible: true
         }));
     },

@@ -1,5 +1,5 @@
 import { useItemListActions } from '@/components/features/contents/list/hooks/useItemListActions';
-import { CategorizedItem } from '@/components/features/contents/list/types';
+import { CategorizedItem } from '@/components/features/contents/list/types/itemFormInput';
 import { getDoneIds, getUndoneIds } from '@/components/features/contents/list/utils/itemStatus';
 import { apiPost } from '@/lib/client/fetch';
 import { act, renderHook } from '@testing-library/react';

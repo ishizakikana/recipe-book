@@ -1,6 +1,6 @@
 import { List, Typography } from '@mui/material'
-import { CategorizedItem } from '../../types'
-import ShoppingCategoryList from './categoryList/ShoppingCategoryList'
+import { CategorizedItem } from '../../types/categorizedItem'
+import CategoryList from './categoryList/CategoryList'
 
 /**
  * 買い物リスト
@@ -23,7 +23,7 @@ export default function ShoppingList({
 
             {/* カテゴリごとの買い物リスト */}
             {categorizedItems.map(({ category, items }) => (
-                <ShoppingCategoryList
+                <CategoryList
                     key={category.id}
                     category={category}
                     items={items}

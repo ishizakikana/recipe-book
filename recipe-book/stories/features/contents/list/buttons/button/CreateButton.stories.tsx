@@ -1,5 +1,5 @@
 import CreateButton from '@/components/features/contents/list/components/buttons/button/CreateButton';
-import { CreateItemFormInput } from '@/components/features/contents/list/types';
+import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
@@ -12,7 +12,7 @@ const mockCategories = [
 ];
 
 const mockUseCreateItemForm = () => {
-    const { control, register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CreateItemFormInput>();
+    const { control, register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ItemFormInput>();
 
     return {
         control,

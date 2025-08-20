@@ -1,14 +1,6 @@
 import { z } from 'zod';
 
 /**
- * レシピ検索フォーム入力型
- */
-export type RecipeSearchInput = {
-    categoryIds: number[],
-    keyword: string
-}
-
-/**
  * レシピフォーム入力型
  */
 export type RecipeFormInput = z.infer<typeof schema>;

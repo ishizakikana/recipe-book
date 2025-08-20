@@ -10,7 +10,7 @@ import { RecipeCategory } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { Controller } from 'react-hook-form'
 import { useRecipeEditForm as defaultRecipeEditForm } from '../../../hooks/useRecipeEditForm'
-import { RecipeFormInput } from '../../../type'
+import { RecipeFormInput } from '../../../types/edit'
 import StepsTextBoxList from './steps/StepsTextBoxList'
 
 /**

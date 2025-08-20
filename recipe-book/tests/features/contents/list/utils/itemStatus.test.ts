@@ -1,4 +1,4 @@
-import { CategorizedItem } from "@/components/features/contents/list/types";
+import { CategorizedItem } from "@/components/features/contents/list/types/itemFormInput";
 import { getDoneIds, getUndoneIds } from "@/components/features/contents/list/utils/itemStatus";
 
 describe('itemStatus utils', () => {

@@ -1,19 +1,19 @@
 import { getIcon } from "@/lib/constants/icon"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { ListSubheader, Stack, Typography } from "@mui/material"
-import { ListCategory, ListItem } from "@prisma/client"
-import ShoppingListItem from "./item/ShoppingListItem"
+import { ListCategory, ListItem as ListItemType } from "@prisma/client"
+import ListItem from './item/ListItem'
 
 /**
  * カテゴリごとの買い物リスト
  */
-export default function ShoppingCategoryList({
+export default function CategoryList({
     category,
     items,
     update
 }: {
     category: ListCategory,
-    items: ListItem[],
+    items: ListItemType[],
     update: (id: number, isDone: boolean, onFinally: () => void) => void
 
 }) {
@@ -33,7 +33,7 @@ export default function ShoppingCategoryList({
                 </ListSubheader>
 
                 {items.map((item) => (
-                    <ShoppingListItem
+                    <ListItem
                         key={item.id}
                         item={item}
                         update={update} />

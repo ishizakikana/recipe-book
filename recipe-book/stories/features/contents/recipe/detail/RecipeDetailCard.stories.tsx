@@ -1,4 +1,5 @@
-import RecipeDetailCard from '@/components/features/contents/recipe/detail/components/RecipeDetailCard';
+
+import RecipeDetailCard from '@/components/features/contents/recipe/components/detail/RecipeDetailCard';
 import { RecipeDetail } from '@/types/entity';
 import { Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';

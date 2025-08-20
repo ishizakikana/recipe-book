@@ -1,4 +1,4 @@
-import RecipeEditCard from '@/components/features/contents/recipe/edit/components/RecipeEditCard';
+import RecipeEditCard from '@/components/features/contents/recipe/components/edit/RecipeEditCard';
 import { RecipeDetail } from '@/types/entity';
 import { RecipeCategory } from '@prisma/client';
 import { Meta, StoryObj } from '@storybook/nextjs';

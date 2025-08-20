@@ -1,8 +1,10 @@
-import RecipeSummaryCard from '@/components/features/contents/recipe/components/list/RecipeSummaryCard';
+import RecipeSummaryCard from '@/components/features/contents/recipe/components/recipes/RecipeSummaryCard';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { within } from '@storybook/testing-library';
 import { mockPush } from '../../../../__mocks__/router';
+
+// todo visible
 
 const mockRecipe = {
     id: 1,
@@ -10,7 +12,8 @@ const mockRecipe = {
     imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/huftga6tcppne7md6q70.jpg',
     shelfLife: '冷蔵保存3日',
     calories: 100,
-    category: { id: 1, name: '主食', icon: 'rice', color: 'orange' }
+    category: { id: 1, name: '主食', icon: 'rice', color: 'orange' },
+    visible: true
 }
 
 const meta: Meta<typeof RecipeSummaryCard> = {

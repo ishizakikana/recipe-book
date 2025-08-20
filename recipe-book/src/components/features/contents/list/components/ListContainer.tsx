@@ -10,7 +10,7 @@ import ShoppingList from './list/ShoppingList';
 /**
  * 買い物リストカード
  */
-export default function ShoppingListCard({
+export default function ListContainer({
     listCategories,
     initialListItems,
     useItemList = defaultUseItemList

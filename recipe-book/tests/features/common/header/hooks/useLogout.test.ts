@@ -9,7 +9,7 @@ jest.mock('@/lib/client/fetch', () => ({
     apiGet: jest.fn(() => Promise.resolve())
 }));
 
-describe('useDrawer', () => {
+describe('useLogout', () => {
     test('ログアウト処理を実行する', async () => {
         (useRouter as jest.Mock).mockReturnValue({
             push: jest.fn()

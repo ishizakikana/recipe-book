@@ -1,5 +1,5 @@
 import { useCreateItemForm } from '@/components/features/contents/list/hooks/useCreateItemForm'
-import { CreateItemFormInput } from '@/components/features/contents/list/types'
+import { CreateItemFormInput } from '@/components/features/contents/list/types/itemFormInput'
 import { ERROR_MESSAGES } from '@/lib/constants/messages'
 import { ListCategory } from '@prisma/client'
 import { act, renderHook } from '@testing-library/react'

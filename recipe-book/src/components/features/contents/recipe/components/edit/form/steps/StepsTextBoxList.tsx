@@ -1,4 +1,4 @@
-import { RecipeUpdateFormInput } from '@/components/features/contents/recipe/type';
+import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
 import IconButton from '@/components/ui/button/IconButton';
 import TextBox from '@/components/ui/form/input/TextBox';
 import AddIcon from '@mui/icons-material/Add';
@@ -14,10 +14,10 @@ import { Control, Controller, useFieldArray } from 'react-hook-form';
 export default function StepsTextBoxList({
     control,
 }: {
-    control?: Control<RecipeUpdateFormInput>
+    control?: Control<RecipeFormInput>
 }) {
 
-    const { fields, append, remove } = useFieldArray<RecipeUpdateFormInput>({
+    const { fields, append, remove } = useFieldArray<RecipeFormInput>({
         control,
         name: 'steps'
     });
