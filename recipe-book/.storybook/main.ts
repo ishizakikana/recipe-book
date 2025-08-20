@@ -2,7 +2,6 @@ import type { StorybookConfig } from '@storybook/nextjs';
 
 const config: StorybookConfig = {
   stories: [
-    '../**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|ts|tsx)',     // .stories.* のファイルを読み込む
   ],
   'addons': [

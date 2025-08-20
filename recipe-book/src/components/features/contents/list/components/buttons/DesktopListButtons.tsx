@@ -2,7 +2,7 @@
 
 import { ButtonGroup, Stack } from '@mui/material';
 import { ListCategory } from '@prisma/client';
-import { CreateItemFormInput } from '../../types';
+import { ItemFormInput } from '../../types/itemFormInput';
 import BulkToggleStatusButton from './button/BulkToggleStatusButton';
 import CreateButton from './button/CreateButton';
 import DeleteButton from './button/DeleteButton';
@@ -17,7 +17,7 @@ export default function DesktopListButtons({
     deleteAll
 }: {
     listCategories: ListCategory[],
-    create: (item: CreateItemFormInput) => void,
+    create: (item: ItemFormInput) => void,
     updateAll: (isDone: boolean, onFinally: () => void) => void
     deleteAll: (onFinally: () => void) => void
 }) {

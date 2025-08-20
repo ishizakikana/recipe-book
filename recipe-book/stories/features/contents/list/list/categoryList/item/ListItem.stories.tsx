@@ -1,4 +1,4 @@
-import ShoppingListItem from '@/components/features/contents/list/components/list/categoryList/item/ShoppingListItem';
+import ListItem from '@/components/features/contents/list/components/list/categoryList/item/ListItem';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
@@ -9,14 +9,14 @@ const mockUpdate = fn((id: number, isDone: boolean, onFinally: () => void) => {
     setTimeout(() => { onFinally(); }, 1000);
 });
 
-const meta: Meta<typeof ShoppingListItem> = {
-    title: 'Features/List/List/Category/Item/ShoppingListItem',
-    component: ShoppingListItem,
+const meta: Meta<typeof ListItem> = {
+    title: 'Features/List/List/Category/Item/ListItem',
+    component: ListItem,
     parameters: {
         docs: {
             source: {
                 code: `
-                <ShoppingListItem
+                <ListItem
                     item={item}
                     update={update} />`.trim()
             }
@@ -41,7 +41,7 @@ const meta: Meta<typeof ShoppingListItem> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ShoppingListItem>;
+type Story = StoryObj<typeof ListItem>;
 
 export const Default: Story = {
     play: async ({ canvasElement }) => {

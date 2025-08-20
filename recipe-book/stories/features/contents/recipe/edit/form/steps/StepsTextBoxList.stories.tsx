@@ -52,7 +52,7 @@ export const Default: Story = {
     render: () => (
         <Wrapper>
             <StepsTextBoxList
-                control={useForm().control}
+            //control={useForm().control}
             />
         </Wrapper>
     ),

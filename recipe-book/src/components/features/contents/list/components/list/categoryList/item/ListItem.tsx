@@ -2,17 +2,17 @@
 import Checkbox from '@/components/ui/form/Checkbox';
 import { ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 import MuiListItem from '@mui/material/ListItem';
-import { ListItem } from '@prisma/client';
+import { ListItem as ListItemType } from '@prisma/client';
 import { useState } from 'react';
 
 /**
  * 買い物リストアイテム
  */
-export default function ShoppingListItem({
+export default function ListItem({
     item,
     update
 }: {
-    item: ListItem
+    item: ListItemType
     update: (id: number, isDone: boolean, onFinally: () => void) => void
 }) {
 

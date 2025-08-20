@@ -4,21 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ListCategory } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { CreateItemFormInput } from '../types';
-
-/**
- * リストアイテム新規作成フォーム入力スキーマ
- * 
- * name: 入力必須
- * volume: 任意
- * categoryId: 任意 未選択の場合は自動的にその他（6）を設定
- */
-export const createItemSchema = z.object({
-    name: z.string().min(1, '入力してください'),
-    volume: z.string(),
-    categoryId: z.number().optional(),
-});
+import { ItemFormInput, itemSchema } from '../types/itemFormInput';
 
 /**
  * リストアイテム新規作成フォームカスタムフック
@@ -37,7 +23,7 @@ export const createItemSchema = z.object({
  */
 export function useCreateItemForm(
     listCategories: ListCategory[],
-    create: (item: CreateItemFormInput) => void
+    create: (item: ItemFormInput) => void
 ) {
 
     const {
@@ -46,8 +32,8 @@ export function useCreateItemForm(
         reset,
         handleSubmit,
         formState: { errors, isSubmitting }
-    } = useForm<CreateItemFormInput>({
-        resolver: zodResolver(createItemSchema)
+    } = useForm<ItemFormInput>({
+        resolver: zodResolver(itemSchema)
     })
 
     // エラー管理
@@ -69,7 +55,7 @@ export function useCreateItemForm(
      * @param data フォーム入力値
      * @returns 処理結果
      */
-    const onCreate = (data: CreateItemFormInput) => {
+    const onCreate = (data: ItemFormInput) => {
         try {
             create(data);
             reset();        // 入力値リセット

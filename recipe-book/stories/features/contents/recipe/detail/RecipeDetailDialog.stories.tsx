@@ -1,4 +1,4 @@
-import RecipeDetailDialog from '@/components/features/contents/recipe/detail/components/RecipeDetailDialog';
+import RecipeDetailDialog from '@/components/features/contents/recipe/components/detail/RecipeDetailDialog';
 import { RecipeDetail } from '@/types/entity';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';

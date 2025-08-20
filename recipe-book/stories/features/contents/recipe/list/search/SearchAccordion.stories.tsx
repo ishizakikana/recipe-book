@@ -1,14 +1,18 @@
-import SearchAccordion from '@/components/features/contents/recipe/components/list/search/SearchAccordion';
+import SearchAccordion from '@/components/features/contents/recipe/components/recipes/search/SearchAccordion';
+import { RecipeContext } from '@/components/features/contents/recipe/providers/RecipeContextProvider';
+import { RecipeCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
+import { fn } from 'storybook/test';
 
-const mockCategories = [
-    { id: 4, name: '主菜', icon: 'meat', color: 'red' },
-    { id: 3, name: '副菜', icon: 'seedling', color: 'teal' },
-    { id: 1, name: '主食', icon: 'rice', color: 'orange' },
-    { id: 2, name: '汁物', icon: 'soup', color: 'blue' }
+const mockCategories: RecipeCategory[] = [
+    { id: 1, name: '主食', icon: '', color: '' },
+    { id: 2, name: '副菜', icon: '', color: '' },
+    { id: 3, name: '主菜', icon: '', color: '' },
 ]
+
+const mockSetFormValue = fn();
 
 const meta: Meta<typeof SearchAccordion> = {
     title: 'Features/Recipe/List/Search/SearchAccordion',
@@ -16,29 +20,27 @@ const meta: Meta<typeof SearchAccordion> = {
     parameters: {
         docs: {
             source: {
-                code: `<SearchAccordion categories={categories} searchInput={searchInput} />`
+                code: `<SearchAccordion  />`
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <RecipeContext.Provider value={{ recipes: [], recipeCategories: mockCategories, setRecipes: () => { } }} >
+                {Story()}
+            </RecipeContext.Provider >
+        )
+    ],
     argTypes: {
-        categories: {
+        useRecipeSearchForm: {
             control: false,
-            description: 'カテゴリ一覧',
+            description: 'storybookテスト用',
             table: {
-                category: 'data'
+                category: '_',
+                defaultValue: { summary: 'useRecipeSearchForm' }
             }
-        },
-        searchInput: {
-            control: false,
-            description: '検索条件',
-            table: {
-                category: 'data'
-            }
-        },
-    },
-    args: {
-        categories: mockCategories
-    },
+        }
+    }
 }
 
 export default meta;
@@ -57,7 +59,11 @@ export const Default: Story = {
         await userEvent.click(button);
     },
     args: {
-        searchInput: { keyword: '', categoryIds: [] }
+        useRecipeSearchForm: () => ({
+            form: { keyword: '', categoryIds: [] },
+            isSearch: false,
+            setFormValue: mockSetFormValue
+        })
     }
 }
 
@@ -70,6 +76,10 @@ export const Expanded: Story = {
         }
     },
     args: {
-        searchInput: { keyword: 'キーワード', categoryIds: [1, 2] }
+        useRecipeSearchForm: () => ({
+            form: { keyword: 'test', categoryIds: [1] },
+            isSearch: true,
+            setFormValue: mockSetFormValue
+        })
     }
 }

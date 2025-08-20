@@ -1,5 +1,9 @@
+import RecipeContextProvider from '@/components/features/contents/recipe/providers/RecipeContextProvider';
+import { apiGetServer } from '@/lib/server/fetchServer';
+import { RecipeSummary } from '@/types/entity';
+import { RecipeCategory } from '@prisma/client';
 
-export default function RecipeLayout({
+export default async function RecipeLayout({
     children,
     dialog
 }: {
@@ -7,10 +11,13 @@ export default function RecipeLayout({
     dialog: React.ReactNode;
 }) {
 
+    const recipeCategories: RecipeCategory[] = await apiGetServer('/recipe-category/find?all=true');
+    const recipes: RecipeSummary[] = await apiGetServer(`/recipe/find?all=true`);
+
     return (
-        <>
+        <RecipeContextProvider recipeCategories={recipeCategories} initialRecipes={recipes}>
             {children}
             {dialog}
-        </>
+        </RecipeContextProvider>
     );
 }

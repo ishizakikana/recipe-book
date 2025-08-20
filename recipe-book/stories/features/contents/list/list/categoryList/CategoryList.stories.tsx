@@ -1,4 +1,4 @@
-import ShoppingCategoryList from '@/components/features/contents/list/components/list/categoryList/ShoppingCategoryList';
+import CategoryList from '@/components/features/contents/list/components/list/categoryList/CategoryList';
 import { Box, Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
@@ -14,15 +14,15 @@ const mockItems = [
     { id: 2, name: 'アイテム2', volume: '200g', categoryId: 1, recipeName: null, isDone: false }
 ]
 
-const meta: Meta<typeof ShoppingCategoryList> = {
+const meta: Meta<typeof CategoryList> = {
     title: 'Features/List/List/Category/CategoryList',
-    component: ShoppingCategoryList,
+    component: CategoryList,
     parameters: {
         layout: 'fullscreen',
         docs: {
             source: {
                 code: `
-                <ShoppingCategoryList
+                <CategoryList
                     category={category}
                     items={items}
                     update={update} />`.trim()
@@ -69,7 +69,7 @@ const meta: Meta<typeof ShoppingCategoryList> = {
 }
 
 export default meta;
-type Story = StoryObj<typeof ShoppingCategoryList>;
+type Story = StoryObj<typeof CategoryList>;
 
 export const Default: Story = {}
 
@@ -84,7 +84,7 @@ export const Variant: Story = {
     render: () => (
         <Stack>
             {mockCategories.map((category, index) => (
-                <ShoppingCategoryList
+                <CategoryList
                     key={index}
                     category={category}
                     items={mockItems}

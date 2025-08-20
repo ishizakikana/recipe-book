@@ -1,4 +1,4 @@
-import { RecipeFormInput, schema } from '@/components/features/contents/recipe/type';
+import { RecipeFormInput, schema } from '@/components/features/contents/recipe/types/edit';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { RecipeDetail } from '@/types/entity';
 import { zodResolver } from '@hookform/resolvers/zod';

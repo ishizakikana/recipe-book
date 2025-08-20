@@ -4,7 +4,7 @@ import { useDialog } from '@/hooks/useDialog';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Drawer, Stack } from '@mui/material';
 import { User } from '@prisma/client';
-import { useCloseOnNavigation } from '../../hooks/useNavigate';
+import { useCloseOnNavigation } from '../../hooks/useCloseOnNavigation';
 import MenuLinks from './items/MenuLinks';
 import UserPanel from './items/UserPanel';
 

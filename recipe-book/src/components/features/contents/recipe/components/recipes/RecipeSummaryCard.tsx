@@ -1,9 +1,9 @@
 'use client'
-import Chip, { ChipColors } from "@/components/ui/display/Chip";
-import { RecipeSummary } from "@/types/entity";
-import { Card, CardActionArea, CardContent, CardHeader, CardMedia, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Chip, { ChipColors } from '@/components/ui/display/Chip';
+import { RecipeSummary } from '@/types/entity';
+import { Card, CardActionArea, CardContent, CardHeader, CardMedia, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 /**
  * レシピ概要カード
@@ -39,7 +39,7 @@ export default function RecipeSummaryCard({
                     slotProps={{ title: { variant: 'body1' } }} />
 
                 <CardMedia
-                    component="img"
+                    component='img'
                     width={'100%'}
                     height={165}
                     alt={`${recipe.name}の画像`}
@@ -50,18 +50,18 @@ export default function RecipeSummaryCard({
                 <CardContent component={Stack} sx={{ gap: 1 }}>
 
                     <Chip label={recipe.category.name} color={recipe.category.color as ChipColors} />
-                    <Stack direction="row" justifyContent="flex-start" gap={1}>
+                    <Stack direction='row' justifyContent='flex-start' gap={1}>
 
                         {recipe.shelfLife &&
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant='body2' color='text.secondary'>
                                 {recipe.shelfLife}
                             </Typography>
                         }
                         {recipe.shelfLife && recipe.calories &&
-                            <Typography variant="body2" color="text.secondary">/</Typography>
+                            <Typography variant='body2' color='text.secondary'>/</Typography>
                         }
                         {recipe.calories &&
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant='body2' color='text.secondary'>
                                 {recipe.calories}kcal
                             </Typography>
                         }

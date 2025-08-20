@@ -1,4 +1,4 @@
-import ShoppingListCard from '@/components/features/contents/list/components/ShoppingListCard';
+import ListContainer from '@/components/features/contents/list/components/ListContainer';
 import CenteredContainer from '@/components/layout/CenteredContainer';
 import { apiGetServer } from '@/lib/server/fetchServer';
 import { ListCategory, ListItem } from '@prisma/client';
@@ -11,7 +11,7 @@ export default async function ListPage() {
 
     return (
         <CenteredContainer sx={{ py: 2 }}>
-            <ShoppingListCard initialListItems={listItems} listCategories={listCategories} />
+            <ListContainer initialListItems={listItems} listCategories={listCategories} />
         </CenteredContainer>
     )
 }

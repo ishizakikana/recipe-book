@@ -1,4 +1,4 @@
-import ShoppingListCard from '@/components/features/contents/list/components/ShoppingListCard';
+import ListContainer from '@/components/features/contents/list/components/ListContainer';
 import { Stack } from '@mui/material';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
@@ -37,14 +37,14 @@ const mockCategorizedItems = [
 
 const mockSetError = fn();
 
-const meta: Meta<typeof ShoppingListCard> = {
-    title: 'Features/List/ShoppingListCard',
-    component: ShoppingListCard,
+const meta: Meta<typeof ListContainer> = {
+    title: 'Features/List/ListContainer',
+    component: ListContainer,
     parameters: {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: '<ShoppingListCard initialListItems={listItems} listCategories={listCategories} />'
+                code: '<ListContainer initialListItems={listItems} listCategories={listCategories} />'
             }
         }
     },
@@ -89,7 +89,7 @@ const meta: Meta<typeof ShoppingListCard> = {
 }
 
 export default meta;
-type Story = StoryObj<typeof ShoppingListCard>
+type Story = StoryObj<typeof ListContainer>
 
 export const Desktop: Story = {
     parameters: {
@@ -166,7 +166,7 @@ export const Empty: Story = {
     }
 }
 
-export const Error: StoryObj<typeof ShoppingListCard> = {
+export const Error: StoryObj<typeof ListContainer> = {
     parameters: {
         docs: {
             description: {
