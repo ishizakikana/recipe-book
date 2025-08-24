@@ -1,18 +1,19 @@
 import { RecipeFormInput, schema } from '@/components/features/contents/recipe/types/edit';
+import { SelectOption } from '@/components/ui/form/SelectBox';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { RecipeDetail } from '@/types/entity';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecipeActions } from './useRecipeActions';
+import { RecipeContext } from '../providers/RecipeContextProvider';
+import { useRecipes } from './recipes/useRecipes';
 
 export const useRecipeEditForm = (
-    recipe: RecipeDetail
+    recipe: RecipeDetail | null
 ) => {
 
-    const router = useRouter();
-    const { update } = useRecipeActions();
+    const { recipeCategories } = useContext(RecipeContext);
+    const { update } = useRecipes();
 
     const {
         register,
@@ -24,11 +25,12 @@ export const useRecipeEditForm = (
         resolver: zodResolver(schema),
         defaultValues: {
             ...recipe,
-            categoryId: recipe.category.id.toString(),
-            shelfLife: recipe.shelfLife || '',
-            calories: recipe.calories || 0,
-            ingredients: recipe.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
-            steps: recipe.steps.map(s => ({
+            categoryId: recipe?.category.id.toString(),
+            shelfLife: recipe?.shelfLife || '',
+            calories: recipe?.calories || undefined,
+            ingredients: recipe?.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
+            steps: recipe?.steps.map(s => ({
+                id: s.id,
                 text: s.text,
                 seasonings: s.seasonings?.map(s => `${s.name} ${s.volume}`).join('\n') ?? ''
             }))
@@ -37,6 +39,11 @@ export const useRecipeEditForm = (
 
     // エラー管理
     const [submitError, setSubmitError] = useState<string | null>(null);
+
+    // カテゴリセレクトボックスオプション
+    const categoryOptions: SelectOption[] = recipeCategories.map(c =>
+        ({ label: c.name, value: c.id.toString() })
+    )
 
     // レシピ更新
     const onUpdate = async (data: RecipeFormInput) => {
@@ -54,6 +61,7 @@ export const useRecipeEditForm = (
 
     return {
         control,
+        categoryOptions,
         register,
         handleSubmit,
         submitError,

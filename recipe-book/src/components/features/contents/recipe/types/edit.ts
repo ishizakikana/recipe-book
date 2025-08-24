@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * レシピフォーム入力型
+ * レシピフォーム入力型　(zod変換後)
  */
 export type RecipeFormInput = z.infer<typeof schema>;
 
@@ -11,10 +11,11 @@ export const schema = z.object({
     name: z.string().min(1, '入力してください'),
     categoryId: z.string(),
     imageUrl: z.string(),
-    shelfLife: z.string(),
-    calories: z.number(),
+    shelfLife: z.string().optional(),
+    calories: z.coerce.number().optional(),
     ingredients: z.string(),
     steps: z.object({
+        id: z.number().optional(),
         text: z.string(),
         seasonings: z.string()
     }).array()

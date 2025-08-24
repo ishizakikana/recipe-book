@@ -1,5 +1,6 @@
 import { RecipeDetail, RecipeSummary } from "@/types/entity";
-import { Recipe } from "@prisma/client";
+import { Recipe, RecipeIngredient } from "@prisma/client";
+import { toRecipeDetail, toRecipeSummary } from "../converter/recipeConverter";
 import { prisma } from "../db/prisma";
 import { createRepository } from "./baseRepository";
 
@@ -29,9 +30,9 @@ export const recipeRepository = {
                 imageUrl: true,
                 shelfLife: true,
                 calories: true,
+                categoryId: true,
                 category: {
                     select: {
-                        id: true,
                         name: true,
                         icon: true,
                         color: true
@@ -45,12 +46,7 @@ export const recipeRepository = {
             }
         });
 
-        return result.map(r => ({
-            ...r,
-            imageUrl: getFullImageUrl(r.imageUrl),
-            keywords: [r.name, ...r.ingredients.map(i => i.name)],
-            visible: true
-        }));
+        return result.map(r => toRecipeSummary(r, r.category, r.ingredients, true));
     },
     /**
      * レシピの詳細取得
@@ -58,7 +54,7 @@ export const recipeRepository = {
      * @returns レシピ詳細 | null
      */
     findRecipeDetailById: async (id: number): Promise<RecipeDetail | null> => {
-        const recipe = await prisma.recipe.findUnique({
+        const result = await prisma.recipe.findUnique({
             where: {
                 id
             },
@@ -73,81 +69,31 @@ export const recipeRepository = {
             }
         });
 
-        if (!recipe) {
+        if (!result) {
             return null;
         }
 
-        // レシピ材料を order の順に並び替え
-        const ingredients = recipe.ingredients.sort((a, b) => {
-            const orderA = a.order ?? 99;
-            const orderB = b.order ?? 99;
-            return orderA - orderB;
-        });
-
-        // レシピ工程と調味料を order の順に並び替え
-        const steps = recipe.steps
-            .sort((a, b) => a.stepNumber - b.stepNumber)
-            .map(step => ({
-                ...step,
-                seasonings: step.seasonings?.sort((a, b) => (a.order ?? 99) - (b.order ?? 99))
-            }));
-
-        return {
-            id: recipe.id,
-            name: recipe.name,
-            imageUrl: getFullImageUrl(recipe.imageUrl),     // 画像URLをフルパスに変換
-            shelfLife: recipe.shelfLife,
-            calories: recipe.calories,
-            category: {
-                id: recipe.category.id,
-                name: recipe.category.name,
-                icon: recipe.category.icon,
-                color: recipe.category.color
-            },
-            ingredients,
-            steps
-        }
+        return toRecipeDetail(result, result.category, result.ingredients, result.steps);
     },
-    update: async (id: number, data: Recipe): Promise<Recipe> => {
-        const result = await prisma.recipe.update({
+    update: async (id: number, data: Recipe): Promise<Recipe> => ({
+        ...await prisma.recipe.update({
             where: { id },
-            data: {
-                ...data,
-                imageUrl: stripFullImageUrl(data.imageUrl)
+            data: data,
+            include: {
+                category: true
             }
-        });
-        return result;
+        })
+    }),
+    updateIngredients: async (id: number, data: RecipeIngredient[]): Promise<RecipeIngredient[]> => {
+
+        // 既存のレシピ材料を削除
+        await prisma.recipeIngredient.deleteMany({ where: { recipeId: id } });
+
+        // 再度追加
+        return await Promise.all(
+            data.map(i => prisma.recipeIngredient.create({
+                data: i
+            }))
+        )
     }
-}
-
-//
-// private
-//
-/**
- * 画像のフルURL取得
- * 
- * 引数が NULL のとき、no_image.png の URL を返します。
- * 
- * @param imgUrl 画像のURL
- * @returns 画像のフルURL
- */
-function getFullImageUrl(imgUrl: string | null): string {
-    const BASE_URL = "https://res.cloudinary.com/drf6p5cyv/image/upload/";
-    const NO_IMG_URL = "no_image.png";
-
-    if (imgUrl) {
-        return `${BASE_URL}${imgUrl}`
-    } else {
-        return `${BASE_URL}${NO_IMG_URL}`
-    }
-}
-
-function stripFullImageUrl(imgUrl: string | null): string | null {
-    const BASE_URL = "https://res.cloudinary.com/drf6p5cyv/image/upload/";
-
-    if (!imgUrl) {
-        return null;
-    }
-
-    return imgUrl.startsWith(BASE_URL) ? imgUrl.slice(BASE_URL.length) : imgUrl;
 }

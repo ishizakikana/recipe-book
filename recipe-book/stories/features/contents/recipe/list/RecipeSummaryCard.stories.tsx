@@ -13,6 +13,7 @@ const mockRecipe = {
     shelfLife: '冷蔵保存3日',
     calories: 100,
     category: { id: 1, name: '主食', icon: 'rice', color: 'orange' },
+    keywords: [],
     visible: true
 }
 

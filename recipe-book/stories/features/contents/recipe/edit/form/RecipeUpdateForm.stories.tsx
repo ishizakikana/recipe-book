@@ -1,4 +1,5 @@
-import RecipeUpdateForm from '@/components/features/contents/recipe/components/edit/form/RecipeUpdateForm'
+import RecipeEditForm from '@/components/features/contents/recipe/components/edit/form/RecipeEditForm'
+import { RecipeContext } from '@/components/features/contents/recipe/providers/RecipeContextProvider'
 import { RecipeDetail } from '@/types/entity'
 import { RecipeCategory } from '@prisma/client'
 import { Meta, StoryObj } from '@storybook/nextjs'
@@ -33,16 +34,23 @@ const mockCategories: RecipeCategory[] = [
     { id: 3, name: '主菜', icon: '', color: '' },
 ]
 
-const meta: Meta<typeof RecipeUpdateForm> = {
-    title: 'Features/Recipe/Edit/Form/RecipeUpdateForm',
-    component: RecipeUpdateForm,
+const meta: Meta<typeof RecipeEditForm> = {
+    title: 'Features/Recipe/Edit/Form/RecipeEditForm',
+    component: RecipeEditForm,
     parameters: {
         docs: {
             source: {
-                code: '<RecipeUpdateForm recipe={recipe} recipeCategories={recipeCategories} />'
+                code: '<RecipeUpdateForm recipe={recipe} />'
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <RecipeContext.Provider value={{ recipes: [], recipeCategories: mockCategories, setRecipes: () => { } }}>
+                {Story()}
+            </RecipeContext.Provider>
+        )
+    ],
     argTypes: {
         recipe: {
             control: false,
@@ -51,14 +59,6 @@ const meta: Meta<typeof RecipeUpdateForm> = {
                 category: 'data',
                 type: { summary: 'RecipeDetail' }
             },
-        },
-        recipeCategories: {
-            control: false,
-            description: 'レシピカテゴリー情報',
-            table: {
-                category: 'data',
-                type: { summary: 'RecipeCategory[]' }
-            }
         },
         useRecipeEditForm: {
             control: false,
@@ -71,12 +71,11 @@ const meta: Meta<typeof RecipeUpdateForm> = {
     },
     args: {
         recipe: mockRecipe,
-        recipeCategories: mockCategories,
         useRecipeEditForm: undefined
     }
 }
 
 export default meta;
-type Story = StoryObj<typeof RecipeUpdateForm>;
+type Story = StoryObj<typeof RecipeEditForm>;
 
 export const Default: Story = {}
