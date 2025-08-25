@@ -3,41 +3,47 @@ import Button from '@/components/ui/button/Button'
 import Alert from '@/components/ui/feedback/Alert'
 import ImageBox from '@/components/ui/form/input/ImageBox'
 import TextBox from '@/components/ui/form/input/TextBox'
-import SelectBox, { SelectOption } from '@/components/ui/form/SelectBox'
-import { RecipeDetail } from '@/types/entity'
+import SelectBox from '@/components/ui/form/SelectBox'
 import { Stack } from '@mui/material'
-import { RecipeCategory } from '@prisma/client'
 import { useRouter } from 'next/navigation'
+import { useContext } from 'react'
 import { Controller } from 'react-hook-form'
 import { useRecipeEditForm as defaultRecipeEditForm } from '../../../hooks/useRecipeEditForm'
+import { RecipeContext } from '../../../providers/RecipeContextProvider'
 import { RecipeFormInput } from '../../../types/edit'
 import StepsTextBoxList from './steps/StepsTextBoxList'
 
 /**
  * レシピ更新フォーム
  */
-export default function RecipeUpdateForm({
-    recipe,
-    recipeCategories,
+export default function RecipeEditForm({
     useRecipeEditForm = defaultRecipeEditForm
 }: {
-    recipe: RecipeDetail
-    recipeCategories: RecipeCategory[]
     useRecipeEditForm?: typeof defaultRecipeEditForm
 }) {
     const router = useRouter();
 
-    const { control, register, handleSubmit, submitError, formErrors, loading, onUpdate } = useRecipeEditForm(recipe);
+    const { recipe } = useContext(RecipeContext);
 
-    const categoryOptions: SelectOption[] = recipeCategories.map(c =>
-        ({ label: c.name, value: c.id.toString() })
-    )
+    const {
+        control,
+        categoryOptions,
+        register,
+        handleSubmit,
+        onUpdate,
+        submitError,
+        formErrors,
+        loading
+    } = useRecipeEditForm(recipe);
 
+    // 送信イベント
     const onSubmit = async (data: RecipeFormInput) => {
         const success = await onUpdate(data);
         if (success) {
-            router.back();
-            router.replace(`/recipe/${recipe.id}`);
+            router.replace('/recipe');
+            setTimeout(() => {
+                router.replace(`/recipe/${recipe?.id}`);
+            }, 0);
         }
     }
 
@@ -62,12 +68,12 @@ export default function RecipeUpdateForm({
                         control={control}
                         render={({ field }) => (
                             <ImageBox
-                                value={recipe.imageUrl} onChange={field.onChange} />
+                                value={recipe?.imageUrl} onChange={field.onChange} />
                         )} />
 
                     <SelectBox
                         label='カテゴリー'
-                        defaultValue={recipe.category.id.toString()}
+                        defaultValue={recipe?.category.id.toString()}
                         options={categoryOptions}
                         {...register('categoryId')} />
 

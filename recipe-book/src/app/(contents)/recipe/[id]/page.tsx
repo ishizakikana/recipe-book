@@ -2,6 +2,11 @@ import RecipeDetailCard from '@/components/features/contents/recipe/components/d
 import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeDetail } from '@/types/entity';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * レシピ詳細画面
+ */
 export default async function RecipePage({
     params
 }: {

@@ -44,5 +44,6 @@ export type StepSummary = {
         id: number;
         name: string;
         volume: string | null;
-    }[] | null;
+        order: number | null;
+    }[];
 }

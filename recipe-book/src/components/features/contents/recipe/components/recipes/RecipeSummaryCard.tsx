@@ -57,10 +57,10 @@ export default function RecipeSummaryCard({
                                 {recipe.shelfLife}
                             </Typography>
                         }
-                        {recipe.shelfLife && recipe.calories &&
+                        {recipe.shelfLife && recipe.calories !== 0 &&
                             <Typography variant='body2' color='text.secondary'>/</Typography>
                         }
-                        {recipe.calories &&
+                        {recipe.calories !== 0 &&
                             <Typography variant='body2' color='text.secondary'>
                                 {recipe.calories}kcal
                             </Typography>

@@ -94,10 +94,13 @@ export default function TextBox({
             helperText: helperText,
             multiline: multiline,
             rows: rows,
-            startAdornment: <InputAdornment position='start'>{startAdornment}</InputAdornment>,
-            endAdornment: <InputAdornment position='end'>{endAdornment}</InputAdornment>,
             inputRef: ref,
             onChange: onChange
+        }
+
+        const adornments = {
+            start: <InputAdornment position='start'>{startAdornment}</InputAdornment>,
+            end: <InputAdornment position='end'>{endAdornment}</InputAdornment>,
         }
 
         if (variant === 'outlined') {
@@ -112,8 +115,8 @@ export default function TextBox({
                     slotProps={{
                         input: {
                             readOnly: readOnly,
-                            startAdornment: inputProps.startAdornment,
-                            endAdornment: inputProps.endAdornment,
+                            startAdornment: adornments.start,
+                            endAdornment: adornments.end,
                         }
                     }}
                     {...inputProps} />
@@ -125,8 +128,7 @@ export default function TextBox({
                     disabled={disabled}
                     error={error}
                     size={size}
-                    fullWidth
-                >
+                    fullWidth>
                     {label && (
                         <InputLabel htmlFor={id} required={required}>
                             {label}
@@ -136,11 +138,15 @@ export default function TextBox({
                     {variant == 'filled' && (
                         <FilledInput
                             {...inputProps}
-                            sx={{ pt: startAdornment ? 1 : 0.5 }} />
+                            sx={{ pt: startAdornment ? 1 : 0.5 }}
+                            startAdornment={adornments.start}
+                            endAdornment={adornments.end} />
                     )}
 
                     {variant == 'standard' && (
-                        <Input {...inputProps} />
+                        <Input {...inputProps}
+                            startAdornment={adornments.start}
+                            endAdornment={adornments.end} />
                     )}
 
                     {helperText && (

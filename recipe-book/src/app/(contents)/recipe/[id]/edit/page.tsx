@@ -1,7 +1,8 @@
 import RecipeEditCard from '@/components/features/contents/recipe/components/edit/RecipeEditCard';
 import { apiGetServer } from '@/lib/server/fetchServer';
 import { RecipeDetail } from '@/types/entity';
-import { RecipeCategory } from '@prisma/client';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * レシピ編集画面
@@ -13,13 +14,12 @@ export default async function RecipeEditPage({
 }) {
     const { id } = await params;
     const recipe: RecipeDetail = await apiGetServer(`/recipe/find?id=${id}`);
-    const recipeCategories: RecipeCategory[] = await apiGetServer('/recipe-category/find?all=true');
 
     if (!recipe) {
         return null;
     }
 
     return (
-        <RecipeEditCard recipe={recipe} recipeCategories={recipeCategories} />
+        <RecipeEditCard initialValue={recipe} />
     )
 }

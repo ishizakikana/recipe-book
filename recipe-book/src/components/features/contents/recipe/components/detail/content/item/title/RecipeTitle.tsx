@@ -25,15 +25,17 @@ export default function RecipeTitle({
                 </Stack>
 
                 <Stack sx={{ flexDirection: 'row', gap: 1, alignItems: 'center' }}>
-                    {recipe.calories && recipe.shelfLife &&
+                    {(recipe.calories !== 0 && recipe.shelfLife) &&
                         <>
                             {recipe.shelfLife &&
                                 <Typography variant='body2'>{recipe.shelfLife}</Typography>
                             }
-                            {recipe.calories && recipe.shelfLife &&
-                                <Typography variant='body2'>/</Typography>}
-                            {recipe.calories &&
-                                <Typography variant='body2'>{recipe.calories}kcal</Typography>}
+                            {recipe.calories != 0 && recipe.shelfLife &&
+                                <Typography variant='body2'>/</Typography>
+                            }
+                            {recipe.calories !== 0 &&
+                                <Typography variant='body2'>{recipe.calories}kcal</Typography>
+                            }
                         </>
                     }
                     <RecipeEditButton recipeId={recipe.id} />
