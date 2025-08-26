@@ -1,4 +1,4 @@
-import { StepSummary } from '@/types/entity';
+import { StepSummary } from '@/types/viewModel';
 import { Avatar, Divider, List, ListItem, ListItemAvatar, Stack, Typography } from '@mui/material';
 
 /**

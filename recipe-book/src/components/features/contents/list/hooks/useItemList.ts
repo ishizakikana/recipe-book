@@ -1,7 +1,8 @@
-import { ListCategory, ListItem } from "@prisma/client";
-import { useState } from "react";
-import { useCategorizedItems } from "./useCategorizedItems";
+import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
+import { ItemFormInput } from '../types/itemFormInput';
+import { getDoneIds, getUndoneIds } from '../utils/itemStatus';
 import { useItemListActions } from "./useItemListActions";
+import { useListContext } from './useListContext';
 import { useListItemsState } from "./useListItemsState";
 
 /**
@@ -20,25 +21,76 @@ import { useListItemsState } from "./useListItemsState";
  *  deleteAll（全リストアイテム削除関数）
  *  setError（エラー設定関数）
  */
-export function useItemList(
-    listCategories: ListCategory[],
-    initialListItems: ListItem[]
-) {
+export function useItemList() {
 
     // エラー管理
-    const [error, setError] = useState<string | null>(null);
 
-    const { listItems, add, modifyAll, removeAll } = useListItemsState(initialListItems);
-    const categorizedItems = useCategorizedItems(listCategories, listItems);
-    const { create, update, updateAll, deleteAll } = useItemListActions(categorizedItems, { add, modifyAll, removeAll }, setError);
+    const { categorizedItems, setError } = useListContext();
+    const { createState, updateAllState, deleteAllState } = useListItemsState();
+    const { createData, updateData, updateAllData, deleteAllData } = useItemListActions();
+
+    const create = async (data: ItemFormInput) => {
+        const result = await createData(data);
+        createState(result);
+    }
+
+    const update = async (id: number, isDone: boolean, onFinally: () => void) => {
+        try {
+            await updateData(id, isDone);
+            updateAllState([id], isDone);
+        } catch (e) {
+            console.error(e);
+            const msg = formatMessage(ERROR_MESSAGES.UPDATE_FAILED, 'リストアイテム');
+            setError(msg);
+        } finally {
+            onFinally();
+        }
+    }
+
+    const updateAll = async (isDone: boolean, onFinally: () => void) => {
+        try {
+
+            // 対象となるリストアイテム
+            const ids = isDone ? getUndoneIds(categorizedItems) : getDoneIds(categorizedItems);
+
+            // すでにすべての項目が未完了または完了済みの時
+            if (ids.length === 0) return;
+
+            await updateAllData(ids, isDone);
+            updateAllState(ids, isDone);
+        } catch (e) {
+            console.error(e);
+            const msg = formatMessage(ERROR_MESSAGES.UPDATE_FAILED, 'リストアイテム');
+            setError(msg);
+        } finally {
+            onFinally();
+        }
+    }
+
+    const deleteAll = async (onFinally: () => void) => {
+        try {
+
+            // 対象となるリストアイテム
+            const ids = getDoneIds(categorizedItems);
+
+            // 完了済みのアイテムが0件のとき
+            if (ids.length === 0) return;
+
+            await deleteAllData(ids);
+            deleteAllState(ids);
+        } catch (e) {
+            console.error(e);
+            const msg = formatMessage(ERROR_MESSAGES.DELETE_FAILED, 'リストアイテム');
+            setError(msg);
+        } finally {
+            onFinally();
+        }
+    }
 
     return {
-        categorizedItems,
-        error,
         create,
         update,
         updateAll,
-        deleteAll,
-        setError,
+        deleteAll
     };
 }

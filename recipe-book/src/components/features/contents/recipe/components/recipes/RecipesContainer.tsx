@@ -2,15 +2,14 @@
 import RecipeSummaryCard from '@/components/features/contents/recipe/components/recipes/RecipeSummaryCard';
 import SearchAccordion from '@/components/features/contents/recipe/components/recipes/search/SearchAccordion';
 import { Box, Grid } from '@mui/material';
-import { useContext } from 'react';
-import { RecipeContext } from '../../providers/RecipeContextProvider';
+import { useRecipeContext } from '../../hooks/useRecipeContext';
 
 /**
  * レシピ一覧コンテナ
  */
 export default function RecipesContainer() {
 
-    const { recipes } = useContext(RecipeContext);
+    const { recipeSummaries } = useRecipeContext();
 
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
@@ -21,15 +20,12 @@ export default function RecipesContainer() {
                 px={{ xs: 1, sm: 2, md: 3, lg: 4 }}
                 sx={{ py: 4 }}>
 
-                {recipes
+                {recipeSummaries
                     .filter(r => r.visible)
-                    .map(recipe =>
-                        <Grid key={recipe.id} size={1}
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center'
-                            }}>
-                            <RecipeSummaryCard recipe={recipe} />
+                    .map(r =>
+                        <Grid key={r.id} size={1}
+                            sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <RecipeSummaryCard recipe={r} />
                         </Grid>
                     )}
             </Grid>

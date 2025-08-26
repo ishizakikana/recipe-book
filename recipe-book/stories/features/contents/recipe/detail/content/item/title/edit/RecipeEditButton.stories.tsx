@@ -1,4 +1,4 @@
-import RecipeEditButton from "@/components/features/contents/recipe/components/detail/content/item/title/edit/RecipeEditButton";
+import RecipeEditButton from "@/components/features/contents/recipe/components/detail/content/item/title/buttons/RecipeEditButton";
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { userEvent, within } from "@storybook/testing-library";

@@ -1,11 +1,11 @@
+import { RecipeDetail, RecipeSummary } from '@/types/viewModel'
 import { RecipeCategory } from '@prisma/client'
 import { Dispatch, SetStateAction } from 'react'
-import { RecipeDetail, RecipeSummary } from '../../../../../types/entity'
 
 export type RecipeContextType = {
-    recipeCategories: RecipeCategory[],
-    recipes: RecipeSummary[],
-    recipe: RecipeDetail | null,
-    setRecipes: Dispatch<SetStateAction<RecipeSummary[]>>
-    setRecipe: Dispatch<SetStateAction<RecipeDetail | null>>
+    recipeCategories: RecipeCategory[]
+    recipeSummaries: RecipeSummary[]
+    setRecipeSummaries: Dispatch<SetStateAction<RecipeSummary[]>>
+    recipeDetail: RecipeDetail | null
+    setRecipeDetail: Dispatch<SetStateAction<RecipeDetail | null>>
 }

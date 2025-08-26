@@ -1,22 +1,20 @@
 import { ListItem } from '@prisma/client';
-import { useState } from 'react';
+import { useListContext } from './useListContext';
 
 /**
  * リストアイテム配列の状態管理カスタムフック
  * 
  * 初期データをもとに、アイテムの追加・一括変更・一括削除などの機能を提供します。
  * 
- * @param initialListItems 初期リストアイテム一覧
  * @returns 
  *  listItems（現在のアイテム配列）、
  *  add（リストアイテム追加関数）、
  *  modifyAll（リストアイテム一括変更関数）、
  *  removeAll（リストアイテム一括削除関数）
  */
-export function useListItemsState(initialListItems: ListItem[]) {
+export function useListItemsState() {
 
-    // リストアイテム管理
-    const [listItems, setListItems] = useState<ListItem[]>(initialListItems);
+    const { setListItems } = useListContext();
 
     /**
      * リストアイテム追加
@@ -25,7 +23,7 @@ export function useListItemsState(initialListItems: ListItem[]) {
      * 
      * @param item 追加するアイテム
      */
-    const add = (item: ListItem) => {
+    const createState = (item: ListItem) => {
         setListItems((prev) => [...prev, item]);
     };
 
@@ -37,7 +35,7 @@ export function useListItemsState(initialListItems: ListItem[]) {
     * @param ids チェック状態を変更するアイテムのIDリスト
     * @param isDone チェック状態
     */
-    const modifyAll = (ids: number[], isDone: boolean) => {
+    const updateAllState = (ids: number[], isDone: boolean) => {
         setListItems((prev) =>
             prev.map((item) => (ids.includes(item.id) ? { ...item, isDone } : item))
         );
@@ -50,9 +48,9 @@ export function useListItemsState(initialListItems: ListItem[]) {
      * 
      * @param ids 削除するアイテムのIDリスト
      */
-    const removeAll = (ids: number[]) => {
+    const deleteAllState = (ids: number[]) => {
         setListItems((prev) => prev.filter((item) => !ids.includes(item.id)));
     };
 
-    return { listItems, add, modifyAll, removeAll };
+    return { createState, updateAllState, deleteAllState };
 }

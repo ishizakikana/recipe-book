@@ -1,7 +1,8 @@
 import Chip, { ChipColors } from '@/components/ui/display/Chip';
-import { RecipeCategorySummary, RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 import { Stack, Typography } from '@mui/material';
-import RecipeEditButton from './edit/RecipeEditButton';
+import { RecipeCategory } from '@prisma/client';
+import RecipeEditButton from './buttons/RecipeEditButton';
 
 /**
  * レシピタイトル
@@ -12,7 +13,7 @@ export default function RecipeTitle({
     recipe: RecipeDetail
 }) {
 
-    const category = recipe.category as RecipeCategorySummary;
+    const category: RecipeCategory = recipe.category;
 
     return (
         <>

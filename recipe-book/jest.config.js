@@ -12,6 +12,7 @@ module.exports = {
     '^@lib/(.*)$': '<rootDir>/src/lib/$1',
   },
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{ts}'],
   coverageReporters: ['text', 'html', 'lcov', 'json'],
   coverageDirectory: 'coverage/jest',
 };

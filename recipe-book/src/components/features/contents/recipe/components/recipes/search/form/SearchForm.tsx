@@ -1,8 +1,7 @@
 'use client'
 import TextBox from '@/components/ui/form/input/TextBox';
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
-import { useContext } from 'react';
-import { RecipeContext } from '../../../../providers/RecipeContextProvider';
+import { useRecipeContext } from '../../../../hooks/useRecipeContext';
 import { RecipeSearchInput } from '../../../../types/search';
 
 /**
@@ -16,7 +15,7 @@ export default function SearchForm({
     setFormValue: (key: string, value: string | number[]) => void,
 }) {
 
-    const { recipeCategories } = useContext(RecipeContext);
+    const { recipeCategories } = useRecipeContext();
 
     return (
         <form>

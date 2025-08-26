@@ -6,7 +6,6 @@ import SelectBox from '@/components/ui/form/SelectBox';
 import { useDialog } from '@/hooks/useDialog';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Stack } from '@mui/material';
-import { ListCategory } from '@prisma/client';
 import { Controller } from 'react-hook-form';
 import { useCreateItemForm as defaultUseCreateItemForm } from '../../../hooks/useCreateItemForm';
 import { ItemFormInput } from '../../../types/itemFormInput';
@@ -18,16 +17,13 @@ import ListButton from './ListButton';
  * リストアイテム新規作成ボタン
  */
 export default function CreateButton({
-    listCategories,
     mobile = false,
-    create,
     useCreateItemForm = defaultUseCreateItemForm
 }: {
-    listCategories: ListCategory[]
     mobile?: boolean
-    create: (item: ItemFormInput) => void
     useCreateItemForm?: typeof defaultUseCreateItemForm
 }) {
+
     const { open, onOpen, onClose } = useDialog();
 
     const {
@@ -39,11 +35,11 @@ export default function CreateButton({
         errors,
         isSubmitting,
         onCreate
-    } = useCreateItemForm(listCategories, create);
+    } = useCreateItemForm();
 
     // フォーム送信イベント
-    const onSubmit = (data: ItemFormInput) => {
-        const success = onCreate(data);
+    const onSubmit = async (data: ItemFormInput) => {
+        const success = await onCreate(data);
         if (success) {
             onClose(); // 作成成功時はモーダルを閉じる
         }

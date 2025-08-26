@@ -9,13 +9,10 @@ import ListItem from './item/ListItem'
  */
 export default function CategoryList({
     category,
-    items,
-    update
+    items
 }: {
     category: ListCategory,
-    items: ListItemType[],
-    update: (id: number, isDone: boolean, onFinally: () => void) => void
-
+    items: ListItemType[]
 }) {
 
     return (
@@ -33,10 +30,7 @@ export default function CategoryList({
                 </ListSubheader>
 
                 {items.map((item) => (
-                    <ListItem
-                        key={item.id}
-                        item={item}
-                        update={update} />
+                    <ListItem key={item.id} item={item} />
                 ))}
             </ul>
         </li>

@@ -2,6 +2,7 @@
 import CheckIcon from '@mui/icons-material/Check';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
+import { useItemList } from '../../../hooks/useItemList';
 import ListButton from './ListButton';
 
 /**
@@ -10,12 +11,12 @@ import ListButton from './ListButton';
 export default function BulkToggleStatusButton({
     markAsDone = false,
     mobile = false,
-    updateAll
 }: {
     markAsDone?: boolean
     mobile?: boolean
-    updateAll: (isDone: boolean, onFinally: () => void) => void
 }) {
+
+    const { updateAll } = useItemList();
 
     // ローディング管理
     const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ export default function BulkToggleStatusButton({
         setLoading(true);
 
         // すべてのアイテムの完了状態を更新
-        updateAll(markAsDone, () => setLoading(false));
+        await updateAll(markAsDone, () => setLoading(false));
     }
 
     return (

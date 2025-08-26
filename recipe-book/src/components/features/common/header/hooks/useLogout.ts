@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 /**
  * ログアウトカスタムフック
  * 
- * @returns logout (ログアウト)
+ * @returns logout (ログアウト処理)
  */
 export function useLogout() {
     const router = useRouter();

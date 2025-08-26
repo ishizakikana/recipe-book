@@ -1,6 +1,6 @@
 'use client'
 import Chip, { ChipColors } from '@/components/ui/display/Chip';
-import { RecipeSummary } from '@/types/entity';
+import { RecipeSummary } from '@/types/viewModel';
 import { Card, CardActionArea, CardContent, CardHeader, CardMedia, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

@@ -6,10 +6,9 @@ import TextBox from '@/components/ui/form/input/TextBox'
 import SelectBox from '@/components/ui/form/SelectBox'
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
-import { useContext } from 'react'
 import { Controller } from 'react-hook-form'
+import { useRecipeContext } from '../../../hooks/useRecipeContext'
 import { useRecipeEditForm as defaultRecipeEditForm } from '../../../hooks/useRecipeEditForm'
-import { RecipeContext } from '../../../providers/RecipeContextProvider'
 import { RecipeFormInput } from '../../../types/edit'
 import StepsTextBoxList from './steps/StepsTextBoxList'
 
@@ -23,7 +22,7 @@ export default function RecipeEditForm({
 }) {
     const router = useRouter();
 
-    const { recipe } = useContext(RecipeContext);
+    const { recipeDetail } = useRecipeContext();
 
     const {
         control,
@@ -34,7 +33,7 @@ export default function RecipeEditForm({
         submitError,
         formErrors,
         loading
-    } = useRecipeEditForm(recipe);
+    } = useRecipeEditForm(recipeDetail);
 
     // 送信イベント
     const onSubmit = async (data: RecipeFormInput) => {
@@ -42,7 +41,7 @@ export default function RecipeEditForm({
         if (success) {
             router.replace('/recipe');
             setTimeout(() => {
-                router.replace(`/recipe/${recipe?.id}`);
+                router.replace(`/recipe/${recipeDetail?.id}`);
             }, 0);
         }
     }
@@ -68,12 +67,12 @@ export default function RecipeEditForm({
                         control={control}
                         render={({ field }) => (
                             <ImageBox
-                                value={recipe?.imageUrl} onChange={field.onChange} />
+                                value={recipeDetail?.imageUrl} onChange={field.onChange} />
                         )} />
 
                     <SelectBox
                         label='カテゴリー'
-                        defaultValue={recipe?.category.id.toString()}
+                        defaultValue={recipeDetail?.category.id.toString()}
                         options={categoryOptions}
                         {...register('categoryId')} />
 

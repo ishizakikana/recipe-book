@@ -1,5 +1,9 @@
 import { handleApi } from "@/lib/server/api";
+import { toRecipeDetail } from '@/lib/server/converter/recipeConverter';
 import { recipeRepository } from "@/lib/server/repositories/recipeRepository";
+import { RecipeDetailResponse, RecipeUpdateResponse } from '@/types/entity';
+import { StepSummary } from '@/types/viewModel';
+import { RecipeIngredient } from '@prisma/client';
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -7,19 +11,16 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { id, data } = body;
 
-        console.log('data.steps', data.steps)
+        const recipe: RecipeUpdateResponse = await recipeRepository.updateRecipe(id, data.recipe);
+        const ingredients: RecipeIngredient[] = await recipeRepository.updateIngredients(id, data.ingredients);
+        const steps: StepSummary[] = await recipeRepository.updateSteps(id, data.steps);
 
-        const recipe = await recipeRepository.update(id, data.recipe);
-        const ingredients = await recipeRepository.updateIngredients(id, data.ingredients);
-
-        const result = {
-            recipe,
-            ingredients
+        const result: RecipeDetailResponse = {
+            ...recipe,
+            ingredients,
+            steps: steps
         }
 
-        console.log('input', data)
-
-        console.log(ingredients);
-        return NextResponse.json(result, { status: 200 });
+        return NextResponse.json(toRecipeDetail(result), { status: 200 });
     })
 }

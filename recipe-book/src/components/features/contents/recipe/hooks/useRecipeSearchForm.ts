@@ -1,8 +1,8 @@
 import { RecipeSearchInput, RecipeSearchParams } from '@/components/features/contents/recipe/types/search';
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { useRouter } from 'next/navigation';
-import { useContext, useEffect, useState } from 'react';
-import { RecipeContext } from '../providers/RecipeContextProvider';
+import { useEffect, useState } from 'react';
+import { useRecipeContext } from './useRecipeContext';
 
 /**
  * GETパラメータをもとに検索フォーム入力値作成
@@ -53,7 +53,7 @@ const buildSearchQuery = (searchInput: RecipeSearchInput): string => {
 export function useRecipeSearchForm() {
     const router = useRouter();
     const { getParams } = useQueryParams<RecipeSearchParams>();
-    const { setRecipes } = useContext(RecipeContext);
+    const { setRecipeSummaries } = useRecipeContext();
 
     // フォーム入力値管理
     const [form, setForm] = useState<RecipeSearchInput>({ keyword: '', categoryIds: [] });
@@ -88,7 +88,7 @@ export function useRecipeSearchForm() {
         const searchInput = initialForm ?? form;
 
         // レシピリスト更新
-        setRecipes(prev =>
+        setRecipeSummaries(prev =>
             prev.map(r => {
                 let visible =
                     (searchInput.categoryIds.length === 0 || searchInput.categoryIds.includes(r.category.id)) &&
