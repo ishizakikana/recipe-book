@@ -53,11 +53,10 @@ model Recipe {
 
 // レシピ材料
 model RecipeIngredient {
-  id       Int     @id @default(autoincrement())
+  id       String  @id
   recipeId Int     @map("recipe_id")
   name     String
   volume   String?
-  order    Int?
 
   recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 
@@ -81,11 +80,10 @@ model RecipeStep {
 
 // レシピ調味料
 model RecipeSeasoning {
-  id     Int     @id @default(autoincrement())
+  id     String  @id
   stepId Int     @map("step_id")
   name   String
   volume String?
-  order  Int?
 
   step RecipeStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
 

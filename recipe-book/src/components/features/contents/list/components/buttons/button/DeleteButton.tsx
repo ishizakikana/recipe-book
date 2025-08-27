@@ -1,6 +1,7 @@
 'use client'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
+import { useItemList } from '../../../hooks/useItemList';
 import ListButton from './ListButton';
 
 /**
@@ -8,11 +9,11 @@ import ListButton from './ListButton';
  */
 export default function DeleteButton({
     mobile = false,
-    deleteAll
 }: {
     mobile?: boolean
-    deleteAll: (onFinally: () => void) => void
 }) {
+
+    const { deleteAll } = useItemList();
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

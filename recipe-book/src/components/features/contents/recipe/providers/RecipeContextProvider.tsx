@@ -1,16 +1,8 @@
 'use client'
+import { RecipeDetail, RecipeSummary } from '@/types/viewModel';
 import { RecipeCategory } from '@prisma/client';
-import { createContext, ReactNode, useState } from 'react';
-import { RecipeDetail, RecipeSummary } from '../../../../../types/entity';
-import { RecipeContextType } from '../types/context';
-
-export const RecipeContext = createContext<RecipeContextType>({
-    recipeCategories: [],
-    recipes: [],
-    recipe: null,
-    setRecipes: () => { },
-    setRecipe: () => { }
-});
+import { ReactNode, useState } from 'react';
+import { RecipeContext } from '../hooks/useRecipeContext';
 
 /**
  * レシピコンテキストプロバイダ
@@ -25,15 +17,15 @@ export default function RecipeContextProvider({
     initialRecipes: RecipeSummary[]
 }) {
 
-    const [recipes, setRecipes] = useState(initialRecipes);
-    const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
+    const [recipeSummaries, setRecipeSummaries] = useState(initialRecipes);
+    const [recipeDetail, setRecipeDetail] = useState<RecipeDetail | null>(null);
 
     const data = {
         recipeCategories,
-        recipes,
-        recipe,
-        setRecipes,
-        setRecipe
+        recipeSummaries,
+        recipeDetail,
+        setRecipeSummaries,
+        setRecipeDetail
     }
 
     return (

@@ -1,7 +1,10 @@
 import RecipeDetailDialog from '@/components/features/contents/recipe/components/detail/RecipeDetailDialog';
 import { apiGetServer } from '@/lib/server/fetchServer';
-import { RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 
+/**
+ * レシピ詳細ダイアログ
+ */
 export default async function RecipeDialogPage({
     params
 }: {
@@ -15,6 +18,6 @@ export default async function RecipeDialogPage({
     }
 
     return (
-        <RecipeDetailDialog recipe={recipe} />
+        <RecipeDetailDialog initialValue={recipe} />
     )
 }

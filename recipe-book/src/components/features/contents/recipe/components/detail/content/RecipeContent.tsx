@@ -1,4 +1,4 @@
-import { RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 import { Stack } from '@mui/material';
 import IngredientList from './item/IngredientList';
 import RecipeImage from './item/RecipeImage';

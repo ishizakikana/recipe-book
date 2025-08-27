@@ -30,7 +30,6 @@ export async function POST(req: Request) {
 
         // 成功したとき、JWTトークン発行しCookieに保存
         const token = await signToken({ userId: user.id });
-        console.log('/login', token)
         const res = NextResponse.json({}, { status: 200 });
         return setCookie(res, COOKIE_KEYS.AUTH_TOKEN, token);
     });

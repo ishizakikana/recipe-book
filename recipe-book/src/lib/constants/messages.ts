@@ -14,6 +14,8 @@ export const ERROR_MESSAGES = {
     INVALID_VALUE: '{0}が無効です。',
     SERVER_ERROR: 'サーバーでエラーが発生しました。',
     UNKNOWN_ERROR: '予期せぬエラーが発生しました。',
+
+    HOOK_OUTSIDE_PROVIDER: '{0}はプロバイダーの外で使用できません。'
 } as const;
 
 /**

@@ -1,18 +1,18 @@
 import { RecipeFormInput, schema } from '@/components/features/contents/recipe/types/edit';
 import { SelectOption } from '@/components/ui/form/SelectBox';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
-import { RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { RecipeContext } from '../providers/RecipeContextProvider';
 import { useRecipes } from './recipes/useRecipes';
+import { useRecipeContext } from './useRecipeContext';
 
 export const useRecipeEditForm = (
     recipe: RecipeDetail | null
 ) => {
 
-    const { recipeCategories } = useContext(RecipeContext);
+    const { recipeCategories } = useRecipeContext();
     const { update } = useRecipes();
 
     const {
@@ -29,7 +29,7 @@ export const useRecipeEditForm = (
             shelfLife: recipe?.shelfLife || '',
             calories: recipe?.calories || undefined,
             ingredients: recipe?.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
-            steps: recipe?.steps.map(s => ({
+            steps: recipe?.steps?.map(s => ({
                 id: s.id,
                 text: s.text,
                 seasonings: s.seasonings?.map(s => `${s.name} ${s.volume}`).join('\n') ?? ''

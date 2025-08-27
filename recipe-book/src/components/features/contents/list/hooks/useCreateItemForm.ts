@@ -1,10 +1,11 @@
 import { SelectOption } from '@/components/ui/form/SelectBox';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ListCategory } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ItemFormInput, itemSchema } from '../types/itemFormInput';
+import { useItemList } from './useItemList';
+import { useListContext } from './useListContext';
 
 /**
  * リストアイテム新規作成フォームカスタムフック
@@ -21,10 +22,10 @@ import { ItemFormInput, itemSchema } from '../types/itemFormInput';
  *  isSubmitting（送信中フラグ）
  *  onCreate（リストアイテム新規作成関数）
  */
-export function useCreateItemForm(
-    listCategories: ListCategory[],
-    create: (item: ItemFormInput) => void
-) {
+export function useCreateItemForm() {
+
+    const { listCategories } = useListContext();
+    const { create } = useItemList();
 
     const {
         control,
@@ -55,9 +56,9 @@ export function useCreateItemForm(
      * @param data フォーム入力値
      * @returns 処理結果
      */
-    const onCreate = (data: ItemFormInput) => {
+    const onCreate = async (data: ItemFormInput) => {
         try {
-            create(data);
+            await create(data);
             reset();        // 入力値リセット
             setSubmitError(null); // エラーメッセージクリア
             return true;

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/server/db/prisma";
 import { recipeRepository } from "@/lib/server/repositories/recipeRepository";
-import { RecipeSummary } from "@/types/entity";
+import { RecipeSummary } from "@/types/viewModel";
 
 jest.mock('@lib/server/db/prisma', () => ({
     prisma: {
@@ -29,6 +29,7 @@ describe('recipeRepository', () => {
             id: 1,
             name: 'test recipe',
             imageUrl: 'test_image',
+            categoryId: 1,
             category: {
                 id: 1,
                 name: 'test category',
@@ -36,7 +37,9 @@ describe('recipeRepository', () => {
                 color: 'test color'
             },
             shelfLife: '1日',
-            calories: 1
+            calories: 1,
+            keywords: ['keyword1', 'keyword2'],
+            visible: true
         };
         const imageUrl = 'https://res.cloudinary.com/drf6p5cyv/image/upload/test_image';
 
@@ -80,18 +83,18 @@ describe('recipeRepository', () => {
             shelfLife: '1日',
             calories: 1,
             ingredients: [
-                { id: 1, name: 'ingredient1', order: 1 },
-                { id: 3, name: 'ingredient3', order: 3 },
-                { id: 4, name: 'ingredient4', order: null },
-                { id: 2, name: 'ingredient2', order: 2 },
+                { id: 1, name: 'ingredient1' },
+                { id: 3, name: 'ingredient3' },
+                { id: 4, name: 'ingredient4' },
+                { id: 2, name: 'ingredient2' },
             ],
             steps: [
                 {
                     id: 1, stepNumber: 1, text: 'step1', seasonings: [
-                        { id: 1, name: 'seasoning1', order: 1 },
-                        { id: 3, name: 'seasoning3', order: 3 },
-                        { id: 4, name: 'seasoning4', order: null },
-                        { id: 2, name: 'seasoning2', order: 2 },
+                        { id: 1, name: 'seasoning1' },
+                        { id: 3, name: 'seasoning3' },
+                        { id: 4, name: 'seasoning4' },
+                        { id: 2, name: 'seasoning2' },
                     ]
                 },
                 { id: 3, stepNumber: 3, text: 'step3', seasonings: [] },
@@ -100,18 +103,18 @@ describe('recipeRepository', () => {
         };
         const imageUrl = 'https://res.cloudinary.com/drf6p5cyv/image/upload/test_image';
         const ingredients = [
-            { id: 1, name: 'ingredient1', order: 1 },
-            { id: 2, name: 'ingredient2', order: 2 },
-            { id: 3, name: 'ingredient3', order: 3 },
-            { id: 4, name: 'ingredient4', order: null },
+            { id: 1, name: 'ingredient1' },
+            { id: 2, name: 'ingredient2' },
+            { id: 3, name: 'ingredient3' },
+            { id: 4, name: 'ingredient4' },
         ]
         const steps = [
             {
                 id: 1, stepNumber: 1, text: 'step1', seasonings: [
-                    { id: 1, name: 'seasoning1', order: 1 },
-                    { id: 2, name: 'seasoning2', order: 2 },
-                    { id: 3, name: 'seasoning3', order: 3 },
-                    { id: 4, name: 'seasoning4', order: null },
+                    { id: 1, name: 'seasoning1' },
+                    { id: 2, name: 'seasoning2' },
+                    { id: 3, name: 'seasoning3' },
+                    { id: 4, name: 'seasoning4' },
                 ]
             },
             { id: 2, stepNumber: 2, text: 'step2', seasonings: undefined },

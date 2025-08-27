@@ -41,7 +41,7 @@ export default function Menu({
                         justifyContent='space-between'
                         sx={{ height: '100%', p: 2, bgcolor: 'primary.main' }}>
 
-                        <MenuLinks onClose={onClose} />
+                        <MenuLinks />
                         <UserPanel user={user} />
                     </Stack>
                 </Drawer>

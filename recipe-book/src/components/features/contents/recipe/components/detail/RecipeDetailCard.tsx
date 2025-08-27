@@ -1,5 +1,9 @@
-import { RecipeDetail } from '@/types/entity';
+'use client'
+import Loading from '@/app/loading';
+import { RecipeDetail } from '@/types/viewModel';
 import { Box, Divider, Paper, Stack } from '@mui/material';
+import { useEffect } from 'react';
+import { useRecipeContext } from '../../hooks/useRecipeContext';
 import RecipeTitle from './content/item/title/RecipeTitle';
 import RecipeContent from './content/RecipeContent';
 
@@ -7,10 +11,24 @@ import RecipeContent from './content/RecipeContent';
  * レシピ詳細カード
  */
 export default function RecipeDetailCard({
-    recipe
+    initialValue
 }: {
-    recipe: RecipeDetail
+    initialValue: RecipeDetail
 }) {
+
+    const { recipeDetail, setRecipeDetail } = useRecipeContext();
+
+    // 初回読み込み時にレシピをセット
+    useEffect(() => {
+
+        if (recipeDetail?.id === initialValue.id) return;
+        setRecipeDetail(initialValue);
+
+    }, [initialValue, recipeDetail, setRecipeDetail]);
+
+    if (!recipeDetail || recipeDetail?.id !== initialValue.id) {
+        return <Loading />;
+    }
 
     return (
         <Box sx={{ height: '100%', width: '100%' }}>
@@ -20,13 +38,13 @@ export default function RecipeDetailCard({
 
                 {/* title */}
                 <Box sx={{ px: 3, py: 2 }}>
-                    <RecipeTitle recipe={recipe} />
+                    <RecipeTitle recipe={recipeDetail} />
                 </Box>
                 <Divider />
 
                 {/* content */}
                 <Box sx={{ px: 3, py: 2 }}>
-                    <RecipeContent recipe={recipe} />
+                    <RecipeContent recipe={recipeDetail} />
                 </Box>
             </Paper>
         </Box>

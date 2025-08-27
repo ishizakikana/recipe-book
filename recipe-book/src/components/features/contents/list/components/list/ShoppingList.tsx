@@ -1,17 +1,12 @@
-import { List, Typography } from '@mui/material'
-import { CategorizedItem } from '../../types/categorizedItem'
-import CategoryList from './categoryList/CategoryList'
+import { List, Typography } from '@mui/material';
+import { useListContext } from '../../hooks/useListContext';
+import CategoryList from './categoryList/CategoryList';
 
 /**
  * 買い物リスト
  */
-export default function ShoppingList({
-    categorizedItems,
-    update
-}: {
-    categorizedItems: CategorizedItem[],
-    update: (id: number, isDone: boolean, onFinally: () => void) => void
-}) {
+export default function ShoppingList() {
+    const { categorizedItems } = useListContext();
 
     return (
         <List disablePadding
@@ -26,8 +21,7 @@ export default function ShoppingList({
                 <CategoryList
                     key={category.id}
                     category={category}
-                    items={items}
-                    update={update} />
+                    items={items} />
             ))}
 
             {/* 表示するアイテムがないとき */}

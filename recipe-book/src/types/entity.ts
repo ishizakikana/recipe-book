@@ -1,49 +1,35 @@
-export type RecipeSummary = {
-    id: number;
-    name: string;
-    imageUrl: string;
-    shelfLife: string | null;
-    calories: number | null;
-    category: {
-        id: number;
-        name: string;
-        icon: string;
-        color: string;
-    },
-    keywords: string[];
-    visible: boolean;
+import { RecipeCategory, RecipeIngredient } from '@prisma/client'
+import { StepSummary } from './viewModel'
+
+export type RecipeSummaryResponse = {
+    id: number
+    name: string
+    categoryId: number
+    imageUrl: string | null
+    calories: number | null
+    shelfLife: string | null
+    category: RecipeCategory
+    ingredients: RecipeIngredient[]
 }
 
-export type RecipeDetail = {
-    id: number;
-    name: string;
-    imageUrl: string;
-    shelfLife: string | null;
-    calories: number | null;
-    category: RecipeCategorySummary,
-    ingredients: {
-        id: number;
-        name: string;
-        volume: string | null;
-    }[],
+export type RecipeDetailResponse = {
+    id: number
+    name: string
+    categoryId: number
+    imageUrl: string | null
+    calories: number | null
+    shelfLife: string | null
+    category: RecipeCategory
+    ingredients: RecipeIngredient[]
     steps: StepSummary[]
 }
 
-export type RecipeCategorySummary = {
-    id: number;
-    name: string;
-    icon: string;
-    color: string;
-}
-
-export type StepSummary = {
-    id: number;
-    stepNumber: number;
-    text: string;
-    seasonings: {
-        id: number;
-        name: string;
-        volume: string | null;
-        order: number | null;
-    }[];
+export type RecipeUpdateResponse = {
+    id: number
+    name: string
+    categoryId: number
+    imageUrl: string | null
+    calories: number | null
+    shelfLife: string | null
+    category: RecipeCategory
 }

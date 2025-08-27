@@ -2,8 +2,6 @@ import IconButton from '@/components/ui/button/IconButton';
 import useMenu from '@/hooks/useMenu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Menu } from '@mui/material';
-import { ListCategory } from '@prisma/client';
-import { ItemFormInput } from '../../types/itemFormInput';
 import BulkToggleStatusButton from './button/BulkToggleStatusButton';
 import CreateButton from './button/CreateButton';
 import DeleteButton from './button/DeleteButton';
@@ -11,17 +9,7 @@ import DeleteButton from './button/DeleteButton';
 /**
  * リストボタン群（モバイル用）
  */
-export default function MobileListButtons({
-    listCategories,
-    create,
-    updateAll,
-    deleteAll
-}: {
-    listCategories: ListCategory[],
-    create: (item: ItemFormInput) => void,
-    updateAll: (isDone: boolean, onFinally: () => void) => void
-    deleteAll: (onFinally: () => void) => void
-}) {
+export default function MobileListButtons() {
 
     const { open, anchorEl, onOpen, onClose } = useMenu();
 
@@ -39,19 +27,16 @@ export default function MobileListButtons({
                 open={open}
                 onClose={onClose}>
 
-                <CreateButton mobile
-                    listCategories={listCategories}
-                    create={create} />
+                <CreateButton mobile />
 
                 {[false, true].map((markAsDone, idx) => (
                     <BulkToggleStatusButton
                         key={idx}
                         mobile
-                        markAsDone={markAsDone}
-                        updateAll={updateAll} />
+                        markAsDone={markAsDone} />
                 ))}
 
-                <DeleteButton mobile deleteAll={deleteAll} />
+                <DeleteButton mobile />
             </Menu>
         </>
     )

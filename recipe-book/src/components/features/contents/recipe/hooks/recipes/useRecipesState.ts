@@ -1,11 +1,9 @@
-import { RecipeDetail, RecipeSummary } from '@/types/entity';
-import { useContext } from 'react';
-import { RecipeContext } from '../../providers/RecipeContextProvider';
+import { RecipeDetail, RecipeSummary } from '@/types/viewModel';
+import { useRecipeContext } from '../useRecipeContext';
 
 export function useRecipesState() {
 
-    const { setRecipes, setRecipe } = useContext(RecipeContext);
-
+    const { setRecipeSummaries, setRecipeDetail } = useRecipeContext();
     const updateState = (recipe: RecipeDetail) => {
         const recipeSummary: RecipeSummary = {
             ...recipe,
@@ -13,8 +11,8 @@ export function useRecipesState() {
             visible: true
         }
 
-        setRecipe(null);
-        setRecipes(prev => prev.map(r => r.id === recipe.id ? { ...r, ...recipeSummary } : r));
+        setRecipeDetail(recipe);
+        setRecipeSummaries(prev => prev.map(r => r.id === recipe.id ? { ...r, ...recipeSummary } : r));
     }
 
     return {

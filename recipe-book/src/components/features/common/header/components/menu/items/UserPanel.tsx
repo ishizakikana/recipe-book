@@ -1,4 +1,3 @@
-'use client'
 import { Card, Stack, Typography } from '@mui/material';
 import { User } from '@prisma/client';
 import LogoutButton from './LogoutButton';
@@ -13,11 +12,8 @@ export default function UserPanel({
 }) {
 
     return (
-        <Card component={Stack} direction='row'
-            alignItems='center' justifyContent='space-between'
-            sx={{ px: 2, py: 1 }}>
-
-            <Typography>{user.name} </Typography>
+        <Card component={Stack} direction='row' alignItems='center' justifyContent='space-between' sx={{ px: 2, py: 1 }}>
+            <Typography>{user.name}</Typography>
             <LogoutButton />
         </Card >
     )

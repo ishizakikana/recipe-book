@@ -1,8 +1,6 @@
 import RecipeDetailCard from '@/components/features/contents/recipe/components/detail/RecipeDetailCard';
 import { apiGetServer } from '@/lib/server/fetchServer';
-import { RecipeDetail } from '@/types/entity';
-
-export const dynamic = 'force-dynamic';
+import { RecipeDetail } from '@/types/viewModel';
 
 /**
  * レシピ詳細画面
@@ -20,6 +18,6 @@ export default async function RecipePage({
     }
 
     return (
-        <RecipeDetailCard recipe={recipe} />
+        <RecipeDetailCard initialValue={recipe} />
     )
 }

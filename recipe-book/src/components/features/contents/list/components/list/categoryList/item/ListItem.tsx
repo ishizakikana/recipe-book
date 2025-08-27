@@ -4,17 +4,18 @@ import { ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material
 import MuiListItem from '@mui/material/ListItem';
 import { ListItem as ListItemType } from '@prisma/client';
 import { useState } from 'react';
+import { useItemList } from '../../../../hooks/useItemList';
 
 /**
  * 買い物リストアイテム
  */
 export default function ListItem({
-    item,
-    update
+    item
 }: {
     item: ListItemType
-    update: (id: number, isDone: boolean, onFinally: () => void) => void
 }) {
+
+    const { update } = useItemList();
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

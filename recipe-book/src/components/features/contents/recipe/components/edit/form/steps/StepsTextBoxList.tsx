@@ -105,7 +105,7 @@ export default function StepsTextBoxList({
                     icon={<AddIcon fontSize='inherit' />}
                     sx={{ ms: 1 }}
                     ariaLabel='行を追加'
-                    onClick={() => append({ id: 99, text: '', seasonings: '' })} />
+                    onClick={() => append({ id: 0, text: '', seasonings: '' })} />
             </Stack>
         </Paper>
     )

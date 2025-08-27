@@ -1,6 +1,6 @@
 import { apiPost } from '@/lib/client/fetch';
 import { stripFullImageUrl } from '@/lib/server/converter/recipeConverter';
-import { RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 import { RecipeFormInput } from '../../types/edit';
 
 export function useRecipesActions() {
@@ -8,7 +8,7 @@ export function useRecipesActions() {
     const updateData = async (data: RecipeFormInput): Promise<RecipeDetail> => {
 
         // レシピ更新
-        const recipe: RecipeDetail = await apiPost('/recipe/update', {
+        const result: RecipeDetail = await apiPost('/recipe/update', {
             id: data.id,
             data: {
                 recipe: {
@@ -19,18 +19,27 @@ export function useRecipesActions() {
                     calories: data.calories,
                     shelfLife: data.shelfLife,
                 },
-                ingredients: data.ingredients.split('\n').map(i => ({
+                ingredients: data.ingredients.split('\n').map((i, idx) => ({
+                    id: `${String(data.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
                     recipeId: data.id,
                     name: i.split(' ')[0],
                     volume: i.split(' ')[1]
                 })),
-                steps: data.steps
+                steps: data.steps.map((step, idx) => ({
+                    id: step.id,
+                    recipeId: data.id,
+                    stepNumber: idx + 1,
+                    text: step.text,
+                    seasonings: step.seasonings.split('\n').map((s, idx) => ({
+                        id: `${String(data.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
+                        name: s.split(' ')[0],
+                        volume: s.split(' ')[1]
+                    }))
+                }))
             }
         })
 
-        console.log(recipe);
-
-        return recipe;
+        return result;
     }
 
     return {

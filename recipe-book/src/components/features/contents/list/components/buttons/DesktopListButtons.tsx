@@ -1,8 +1,6 @@
 'use client'
 
 import { ButtonGroup, Stack } from '@mui/material';
-import { ListCategory } from '@prisma/client';
-import { ItemFormInput } from '../../types/itemFormInput';
 import BulkToggleStatusButton from './button/BulkToggleStatusButton';
 import CreateButton from './button/CreateButton';
 import DeleteButton from './button/DeleteButton';
@@ -10,33 +8,20 @@ import DeleteButton from './button/DeleteButton';
 /**
  * リストボタン群（デスクトップ用）
  */
-export default function DesktopListButtons({
-    listCategories,
-    create,
-    updateAll,
-    deleteAll
-}: {
-    listCategories: ListCategory[],
-    create: (item: ItemFormInput) => void,
-    updateAll: (isDone: boolean, onFinally: () => void) => void
-    deleteAll: (onFinally: () => void) => void
-}) {
+export default function DesktopListButtons() {
 
     return (
         <Stack width='100%' alignItems='center'>
             <ButtonGroup variant='outlined'>
-                <CreateButton
-                    create={create}
-                    listCategories={listCategories} />
+                <CreateButton />
 
                 {[false, true].map((markAsDone, idx) => (
                     <BulkToggleStatusButton
                         key={idx}
-                        markAsDone={markAsDone}
-                        updateAll={updateAll} />
+                        markAsDone={markAsDone} />
                 ))}
 
-                <DeleteButton deleteAll={deleteAll} />
+                <DeleteButton />
             </ButtonGroup>
         </Stack>
     )

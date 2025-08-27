@@ -1,8 +1,11 @@
 import RecipeContextProvider from '@/components/features/contents/recipe/providers/RecipeContextProvider';
 import { apiGetServer } from '@/lib/server/fetchServer';
-import { RecipeSummary } from '@/types/entity';
+import { RecipeSummary } from '@/types/viewModel';
 import { RecipeCategory } from '@prisma/client';
 
+/**
+ * レシピ画面レイアウト
+ */
 export default async function RecipeLayout({
     children,
     dialog

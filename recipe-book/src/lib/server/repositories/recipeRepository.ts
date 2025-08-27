@@ -1,5 +1,6 @@
-import { RecipeDetail, RecipeSummary } from "@/types/entity";
-import { Recipe, RecipeIngredient } from "@prisma/client";
+import { RecipeDetailResponse, RecipeSummaryResponse, RecipeUpdateResponse } from "@/types/entity";
+import { RecipeDetail, RecipeSummary, StepSummary } from '@/types/viewModel';
+import { Recipe, RecipeIngredient, RecipeStep } from "@prisma/client";
 import { toRecipeDetail, toRecipeSummary } from "../converter/recipeConverter";
 import { prisma } from "../db/prisma";
 import { createRepository } from "./baseRepository";
@@ -22,31 +23,15 @@ export const recipeRepository = {
      * @returns レシピ概要リスト
      */
     findAllRecipeSummariesByConditions: async (conditions?: Partial<Recipe>): Promise<RecipeSummary[]> => {
-        const result = await prisma.recipe.findMany({
+        const result: RecipeSummaryResponse[] = await prisma.recipe.findMany({
             where: conditions,
-            select: {
-                id: true,
-                name: true,
-                imageUrl: true,
-                shelfLife: true,
-                calories: true,
-                categoryId: true,
-                category: {
-                    select: {
-                        name: true,
-                        icon: true,
-                        color: true
-                    }
-                },
-                ingredients: {
-                    select: {
-                        name: true
-                    }
-                }
+            include: {
+                category: true,
+                ingredients: true
             }
         });
 
-        return result.map(r => toRecipeSummary(r, r.category, r.ingredients, true));
+        return result.map(r => toRecipeSummary(r, true));
     },
     /**
      * レシピの詳細取得
@@ -54,7 +39,7 @@ export const recipeRepository = {
      * @returns レシピ詳細 | null
      */
     findRecipeDetailById: async (id: number): Promise<RecipeDetail | null> => {
-        const result = await prisma.recipe.findUnique({
+        const result: RecipeDetailResponse | null = await prisma.recipe.findUnique({
             where: {
                 id
             },
@@ -73,9 +58,9 @@ export const recipeRepository = {
             return null;
         }
 
-        return toRecipeDetail(result, result.category, result.ingredients, result.steps);
+        return toRecipeDetail(result);
     },
-    update: async (id: number, data: Recipe): Promise<Recipe> => ({
+    updateRecipe: async (id: number, data: Recipe): Promise<RecipeUpdateResponse> => ({
         ...await prisma.recipe.update({
             where: { id },
             data: data,
@@ -95,5 +80,62 @@ export const recipeRepository = {
                 data: i
             }))
         )
+    },
+    updateSteps: async (id: number, data: StepSummary[]): Promise<StepSummary[]> => {
+        return Promise.all(
+            data.map(async (step, idx) => {
+                const updateStep = await prisma.$transaction(async tx => {
+                    let newStep: RecipeStep | null = null;
+
+                    if (step.id > 0) {
+
+                        // 作業手順更新
+                        newStep = await tx.recipeStep.update({
+                            where: { id: step.id },
+                            data: {
+                                id: step.id,
+                                recipeId: step.recipeId,
+                                stepNumber: step.stepNumber,
+                                text: step.text
+                            }
+                        })
+
+                        // 既存の調味料をすべて削除
+                        await tx.recipeSeasoning.deleteMany({ where: { stepId: step.id } });
+                    } else {
+
+                        // 作業手順追加
+                        newStep = {
+                            ...await tx.recipeStep.create({
+                                data: {
+                                    recipeId: step.recipeId,
+                                    stepNumber: step.stepNumber,
+                                    text: step.text
+                                }
+                            })
+                        }
+                    }
+
+                    // 再度追加
+                    const updatedSeasonings = await Promise.all(
+                        step.seasonings.map((s, idx) => tx.recipeSeasoning.create({
+                            data: {
+                                id: `${String(id).padStart(4, '0')}${String(newStep.id).padStart(2, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + 作業手順ID + インデックス
+                                stepId: newStep.id,
+                                name: s.name,
+                                volume: s.volume
+                            }
+                        }))
+                    )
+
+                    return {
+                        ...newStep,
+                        seasonings: updatedSeasonings
+                    }
+                })
+
+                return updateStep;
+            })
+        )
     }
-}
+}   
