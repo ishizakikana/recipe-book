@@ -8,7 +8,7 @@ import { ElementType, JSX, ReactNode } from 'react';
 /**
  * モーダル
  */
-export default function Modal({
+export default function FormModal({
     children,
     open,
     title,

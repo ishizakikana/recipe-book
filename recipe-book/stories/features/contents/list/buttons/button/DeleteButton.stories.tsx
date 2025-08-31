@@ -4,9 +4,16 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
 import { fn, } from 'storybook/test';
 
-const mockDeleteAll = fn((onFinally) => {
+const mockDeleteAll = fn(async (onFinally) => {
     setTimeout(() => onFinally(), 1000);
-});
+})
+
+const mockUseItemList = () => ({
+    create: fn(),
+    update: fn(),
+    updateAll: fn(),
+    deleteAll: mockDeleteAll,
+})
 
 const meta: Meta<typeof DeleteButton> = {
     title: 'Features/List/Buttons/Button/DeleteButton',
@@ -19,16 +26,16 @@ const meta: Meta<typeof DeleteButton> = {
                 category: 'props'
             }
         },
-        deleteAll: {
-            action: 'deleteAll',
-            description: '全リストアイテム削除関数',
+        useItemList: {
+            description: 'storybookテスト用',
             table: {
-                category: 'function'
+                category: '_',
+                defaultValue: { summary: 'useItemList' }
             }
         }
     },
     args: {
-        deleteAll: mockDeleteAll
+        useItemList: mockUseItemList
     }
 }
 
@@ -42,7 +49,7 @@ export const Desktop: Story = {
                 story: 'デスクトップ'
             },
             source: {
-                code: '<DeleteButton deleteAll={deleteAll} />'
+                code: '<DeleteButton />'
             }
         }
     },
@@ -65,7 +72,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
-                code: '<DeleteButton mobile deleteAll={deleteAll} />'
+                code: '<DeleteButton mobile />'
             }
         }
     },

@@ -1,29 +1,29 @@
 import RecipeContent from '@/components/features/contents/recipe/components/detail/content/RecipeContent';
-import { RecipeDetail } from '@/types/entity';
+import { RecipeDetail } from '@/types/viewModel';
 import { Box } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
 const mockRecipe: RecipeDetail = {
     id: 1,
     name: 'レシピ1',
+    categoryId: 1,
     category: { id: 1, name: '主食', icon: '', color: '' },
     imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
     shelfLife: '冷蔵保存3日',
     calories: 100,
     ingredients: [
-        { id: 1, name: 'レシピ材料1', volume: '100g' },
-        { id: 2, name: 'レシピ材料2', volume: '200g' },
-        { id: 3, name: 'レシピ材料3', volume: '300g' },
+        { id: '000101', name: '材料1', volume: '100g', recipeId: 1 },
+        { id: '000102', name: '材料2', volume: '200g', recipeId: 1 }
     ],
     steps: [
-        { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [] },
+        { id: 1, text: '手順1', seasonings: [], stepNumber: 1, recipeId: 1 },
         {
-            id: 2, stepNumber: 2, text: 'レシピ手順2', seasonings: [
-                { id: 1, name: '塩', volume: '少々' },
-                { id: 2, name: 'にんにくチューブ', volume: '少々' },
-            ]
+            id: 2, text: '手順2', seasonings: [
+                { id: '000201', name: '調味料1', volume: '大さじ1', stepId: 2 },
+                { id: '000202', name: '調味料2', volume: '小さじ2', stepId: 2 }
+            ], stepNumber: 2, recipeId: 1
         },
-        { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [] },
+        { id: 3, text: '手順3', seasonings: [], stepNumber: 3, recipeId: 1 }
     ]
 }
 

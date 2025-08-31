@@ -1,5 +1,5 @@
 import Button from '@/components/ui/button/Button';
-import Modal from '@/components/ui/dialog/Modal';
+import Modal from '@/components/ui/dialog/FormModal';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor } from '@storybook/testing-library';

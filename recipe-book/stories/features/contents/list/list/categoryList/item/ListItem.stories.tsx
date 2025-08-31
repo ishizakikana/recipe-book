@@ -5,9 +5,17 @@ import { userEvent, within } from '@storybook/testing-library';
 import { fn } from 'storybook/test';
 
 const mockItem = { id: 1, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false };
-const mockUpdate = fn((id: number, isDone: boolean, onFinally: () => void) => {
+
+const mockUpdate = fn(async (id: number, isDone: boolean, onFinally: () => void) => {
     setTimeout(() => { onFinally(); }, 1000);
-});
+})
+
+const mockUseItemList = () => ({
+    create: fn(),
+    update: mockUpdate,
+    updateAll: fn(),
+    deleteAll: fn(),
+})
 
 const meta: Meta<typeof ListItem> = {
     title: 'Features/List/List/Category/Item/ListItem',
@@ -15,10 +23,7 @@ const meta: Meta<typeof ListItem> = {
     parameters: {
         docs: {
             source: {
-                code: `
-                <ListItem
-                    item={item}
-                    update={update} />`.trim()
+                code: '<ListItem item={item}/>'
             }
         }
     },
@@ -28,15 +33,18 @@ const meta: Meta<typeof ListItem> = {
             description: 'リストアイテム',
             table: { category: 'data' }
         },
-        update: {
+        useItemList: {
             control: false,
-            description: 'リストアイテム更新関数',
-            table: { category: 'function' }
+            description: 'storybookテスト用',
+            table: {
+                category: '_',
+                defaultValue: { summary: 'useItemList' }
+            }
         }
     },
     args: {
         item: mockItem,
-        update: mockUpdate
+        useItemList: mockUseItemList
     }
 };
 

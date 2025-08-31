@@ -1,4 +1,5 @@
 import { Box, Divider, List, ListItem, Typography } from '@mui/material';
+import { RecipeIngredient } from '@prisma/client';
 
 /**
  * 材料リスト
@@ -6,11 +7,7 @@ import { Box, Divider, List, ListItem, Typography } from '@mui/material';
 export default function IngredientList({
     ingredients
 }: {
-    ingredients: {
-        id: number,
-        name: string,
-        volume: string | null
-    }[]
+    ingredients: RecipeIngredient[]
 }) {
 
     if (!ingredients) {

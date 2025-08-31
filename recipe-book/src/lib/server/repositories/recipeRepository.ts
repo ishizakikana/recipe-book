@@ -14,7 +14,6 @@ export const recipeRepository = {
     findAllByConditions: undefined,
     findById: undefined,
     create: undefined,
-    delete: undefined,
     deleteAll: undefined,
 
     /**

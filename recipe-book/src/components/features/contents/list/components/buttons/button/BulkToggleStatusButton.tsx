@@ -1,9 +1,9 @@
 'use client';
+import { useItemList as defaultUseItemList } from '@/components/features/contents/list/hooks/useItemList';
+import ListButton from '@/components/ui/button/ListButton';
 import CheckIcon from '@mui/icons-material/Check';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
-import { useItemList } from '../../../hooks/useItemList';
-import ListButton from './ListButton';
 
 /**
  * リストアイテム完了状態一括切り替えボタン
@@ -11,9 +11,11 @@ import ListButton from './ListButton';
 export default function BulkToggleStatusButton({
     markAsDone = false,
     mobile = false,
+    useItemList = defaultUseItemList
 }: {
     markAsDone?: boolean
     mobile?: boolean
+    useItemList?: typeof defaultUseItemList
 }) {
 
     const { updateAll } = useItemList();

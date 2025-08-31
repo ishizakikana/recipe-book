@@ -1,15 +1,15 @@
-import { handleApi } from "@/lib/server/api";
+import { getRequestParams, handleApi } from '@/lib/server/api';
 import { toRecipeDetail } from '@/lib/server/converter/recipeConverter';
-import { recipeRepository } from "@/lib/server/repositories/recipeRepository";
+import { recipeRepository } from '@/lib/server/repositories/recipeRepository';
 import { RecipeDetailResponse, RecipeUpdateResponse } from '@/types/entity';
 import { StepSummary } from '@/types/viewModel';
 import { RecipeIngredient } from '@prisma/client';
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     return handleApi(req, async () => {
-        const body = await req.json();
-        const { id, data } = body;
+        const { json } = await getRequestParams(req, { requiredParams: ['id', 'data'] });
+        const { id, data } = json as { id: number, data: { recipe: any, ingredients: any[], steps: any[] } };
 
         const recipe: RecipeUpdateResponse = await recipeRepository.updateRecipe(id, data.recipe);
         const ingredients: RecipeIngredient[] = await recipeRepository.updateIngredients(id, data.ingredients);

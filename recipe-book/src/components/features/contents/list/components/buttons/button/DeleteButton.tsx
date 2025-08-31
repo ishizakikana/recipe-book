@@ -1,16 +1,18 @@
 'use client'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
-import { useItemList } from '../../../hooks/useItemList';
-import ListButton from './ListButton';
+import ListButton from '../../../../../../ui/button/ListButton';
+import { useItemList as defaultUseItemList } from '../../../hooks/useItemList';
 
 /**
  * 削除ボタン
  */
 export default function DeleteButton({
     mobile = false,
+    useItemList = defaultUseItemList
 }: {
     mobile?: boolean
+    useItemList?: typeof defaultUseItemList
 }) {
 
     const { deleteAll } = useItemList();

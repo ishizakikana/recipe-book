@@ -1,18 +1,20 @@
 'use client'
+import { useItemList as defaultUseItemList } from '@/components/features/contents/list/hooks/useItemList';
 import Checkbox from '@/components/ui/form/Checkbox';
 import { ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 import MuiListItem from '@mui/material/ListItem';
 import { ListItem as ListItemType } from '@prisma/client';
 import { useState } from 'react';
-import { useItemList } from '../../../../hooks/useItemList';
 
 /**
  * 買い物リストアイテム
  */
 export default function ListItem({
-    item
+    item,
+    useItemList = defaultUseItemList
 }: {
     item: ListItemType
+    useItemList?: typeof defaultUseItemList
 }) {
 
     const { update } = useItemList();

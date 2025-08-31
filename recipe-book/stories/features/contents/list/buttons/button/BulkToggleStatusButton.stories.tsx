@@ -1,17 +1,32 @@
 import BulkToggleStatusButton from '@/components/features/contents/list/components/buttons/button/BulkToggleStatusButton';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Stack } from '@mui/material';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
 import { fn } from 'storybook/test';
 
-const mockUpdateAll = fn((isDone, onFinally) => {
-    setTimeout(() => onFinally(), 1000);
-});
+const mockUpdateAll = fn(async (isDone, onFinally) => {
+    await setTimeout(() => onFinally(), 1000);
+})
+
+const mockUseItemList = () => ({
+    create: fn(),
+    update: fn(),
+    updateAll: mockUpdateAll,
+    deleteAll: fn(),
+})
 
 const meta: Meta<typeof BulkToggleStatusButton> = {
     title: 'Features/List/Buttons/Button/BulkToggleStatusButton',
     component: BulkToggleStatusButton,
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
+                <Story />
+            </ListContextProvider>
+        )
+    ],
     argTypes: {
         markAsDone: {
             control: 'boolean',
@@ -27,16 +42,16 @@ const meta: Meta<typeof BulkToggleStatusButton> = {
                 category: 'props'
             }
         },
-        updateAll: {
-            action: 'updateAll',
-            description: '全リストアイテム更新関数',
+        useItemList: {
+            description: 'storybookテスト用',
             table: {
-                category: 'function'
+                category: '_',
+                defaultValue: { summary: 'useItemList' }
             }
         }
     },
     args: {
-        updateAll: mockUpdateAll
+        useItemList: mockUseItemList
     }
 }
 
@@ -50,7 +65,7 @@ export const Desktop: Story = {
                 story: 'デスクトップ'
             },
             source: {
-                code: '<BulkToggleStatusButton updateAll={updateAll} />'
+                code: '<BulkToggleStatusButton />'
             }
         }
     },
@@ -73,7 +88,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
-                code: '<BulkToggleStatusButton mobile updateAll={updateAll} />'
+                code: '<BulkToggleStatusButton mobile />'
             }
         }
     },
@@ -99,7 +114,7 @@ export const MarkAsDone: Story = {
                 story: '完了状態に切り替え'
             },
             source: {
-                code: '<BulkToggleStatusButton markAsDone updateAll={updateAll} />'
+                code: '<BulkToggleStatusButton markAsDone />'
             }
         }
     },
@@ -121,7 +136,7 @@ export const MarkAsUnDone: Story = {
                 story: '未完了状態に切り替え'
             },
             source: {
-                code: '<BulkToggleStatusButton updateAll={updateAll} />'
+                code: '<BulkToggleStatusButton />'
             }
         }
     },

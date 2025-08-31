@@ -1,5 +1,5 @@
 'use client'
-import Modal from '@/components/ui/dialog/Modal';
+import FormModal from '@/components/ui/dialog/FormModal';
 import Alert from '@/components/ui/feedback/Alert';
 import TextBox from '@/components/ui/form/input/TextBox';
 import SelectBox from '@/components/ui/form/SelectBox';
@@ -7,9 +7,9 @@ import { useDialog } from '@/hooks/useDialog';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import ListButton from '../../../../../../ui/button/ListButton';
 import { useCreateItemForm as defaultUseCreateItemForm } from '../../../hooks/useCreateItemForm';
 import { ItemFormInput } from '../../../types/itemFormInput';
-import ListButton from './ListButton';
 
 // TODO カテゴリの選択をアイテム名から推測して自動でできるといい
 
@@ -54,7 +54,7 @@ export default function CreateButton({
                 項目を追加
             </ListButton>
 
-            <Modal
+            <FormModal
                 open={open}
                 disableBackDropClick
                 title='リストアイテム追加'
@@ -101,7 +101,7 @@ export default function CreateButton({
                         )} />
                     </Stack>
                 </Box>
-            </Modal>
+            </FormModal>
         </>
     );
 }

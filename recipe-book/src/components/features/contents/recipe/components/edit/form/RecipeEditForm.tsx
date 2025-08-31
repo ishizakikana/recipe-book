@@ -7,7 +7,7 @@ import SelectBox from '@/components/ui/form/SelectBox'
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { Controller } from 'react-hook-form'
-import { useRecipeContext } from '../../../hooks/useRecipeContext'
+import { useRecipeContext as defaultRecipeContext } from '../../../hooks/useRecipeContext'
 import { useRecipeEditForm as defaultRecipeEditForm } from '../../../hooks/useRecipeEditForm'
 import { RecipeFormInput } from '../../../types/edit'
 import StepsTextBoxList from './steps/StepsTextBoxList'
@@ -16,9 +16,11 @@ import StepsTextBoxList from './steps/StepsTextBoxList'
  * レシピ更新フォーム
  */
 export default function RecipeEditForm({
-    useRecipeEditForm = defaultRecipeEditForm
+    useRecipeEditForm = defaultRecipeEditForm,
+    useRecipeContext = defaultRecipeContext
 }: {
     useRecipeEditForm?: typeof defaultRecipeEditForm
+    useRecipeContext?: typeof defaultRecipeContext
 }) {
     const router = useRouter();
 
@@ -59,15 +61,14 @@ export default function RecipeEditForm({
                         width='100%'
                         {...register('name')}
                         error={!!formErrors?.name}
-                        helperText={formErrors?.name?.message}
-                        required />
+                        helperText={formErrors?.name?.message} />
 
                     <Controller
                         name='imageUrl'
                         control={control}
                         render={({ field }) => (
                             <ImageBox
-                                value={recipeDetail?.imageUrl} onChange={field.onChange} />
+                                value={recipeDetail?.imageUrl} ariaLabel='レシピ画像' onChange={field.onChange} />
                         )} />
 
                     <SelectBox

@@ -4,15 +4,17 @@ import { useRecipesState } from './useRecipesState';
 
 export function useRecipes() {
 
-    const { updateData } = useRecipesActions();
-    const { updateState } = useRecipesState();
-
-    const update = async (data: RecipeFormInput) => {
-        const result = await updateData(data);
-        updateState(result);
-    }
+    const { updateData, deleteData } = useRecipesActions();
+    const { updateState, deleteState } = useRecipesState();
 
     return {
-        update
+        update: async (data: RecipeFormInput) => {
+            const result = await updateData(data);
+            updateState(result);
+        },
+        delete: async (id: number) => {
+            await deleteData(id);
+            deleteState(id);
+        }
     }
 }

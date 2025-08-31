@@ -1,10 +1,11 @@
 import MobileListButtons from '@/components/features/contents/list/components/buttons/MobileListButtons';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { ListCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 
-const mockCategories: ListCategory[] = [
+const mockListCategories: ListCategory[] = [
     { id: 1, name: 'A', icon: '', color: '' },
     { id: 2, name: 'B', icon: '', color: '' },
     { id: 3, name: 'C', icon: '', color: '' },
@@ -16,52 +17,18 @@ const meta: Meta<typeof MobileListButtons> = {
     parameters: {
         docs: {
             source: {
-                code: `<MobileListButtons
-                            listCategories={listCategoriesSample}
-                            create={create}
-                            updateAll={updateAll}
-                            deleteAll={deleteAll} />
-                        `.trim()
+                code: '<MobileListButtons  />'
             }
         }
     },
-    argTypes: {
-        listCategories: {
-            control: false,
-            description: 'カテゴリー一覧',
-            table: {
-                category: 'data'
-            }
-        },
-        create: {
-            action: 'create',
-            description: 'リストアイテム追加関数',
-            table: {
-                category: 'function'
-            }
-        },
-        updateAll: {
-            action: 'updateAll',
-            description: '全リストアイテム更新関数',
-            table: {
-                category: 'function'
-            }
-        },
-        deleteAll: {
-            action: 'deleteAll',
-            description: '全リストアイテム削除関数',
-            table: {
-                category: 'function'
-            }
-        },
-    },
-    args: {
-        listCategories: mockCategories,
-        create: () => { },
-        updateAll: () => { },
-        deleteAll: () => { },
-    }
-};
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+                <Story />
+            </ListContextProvider >
+        )
+    ]
+}
 
 export default meta;
 type Story = StoryObj<typeof MobileListButtons>;

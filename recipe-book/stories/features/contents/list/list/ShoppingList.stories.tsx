@@ -1,39 +1,22 @@
 import ShoppingList from '@/components/features/contents/list/components/list/ShoppingList';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
-const mockCategorizedItems = [
-    {
-        category: { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
-        items: [
-            { id: 4, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
-            { id: 6, name: 'キャベツ', volume: '1玉', categoryId: 1, recipeName: null, isDone: false }
-        ]
-    },
-    {
-        category: { id: 2, name: '肉', icon: 'bacon', color: 'red' },
-        items: [
-            { id: 1, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false }
-        ]
-    },
-    {
-        category: { id: 3, name: '魚', icon: 'fish', color: 'blue' },
-        items: [
-            { id: 2, name: '鮭', volume: '３切れ', categoryId: 3, recipeName: null, isDone: false }
-        ]
-    },
-    {
-        category: { id: 4, name: '乳製品', icon: 'cheese', color: 'orange' },
-        items: [
-            { id: 3, name: '牛乳', volume: null, categoryId: 4, recipeName: null, isDone: false }
-        ]
-    },
-    {
-        category: { id: 5, name: '調味料', icon: 'seedling', color: 'brown' },
-        items: [
-            { id: 8, name: '醤油', volume: '500ml', categoryId: 5, recipeName: null, isDone: false }
-        ]
-    }
+const mockListCategories = [
+    { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
+    { id: 2, name: '肉', icon: 'bacon', color: 'red' },
+    { id: 3, name: '魚', icon: 'fish', color: 'blue' },
+    { id: 4, name: '乳製品', icon: 'cheese', color: 'orange' },
+    { id: 5, name: '調味料', icon: 'seedling', color: 'brown' },
+]
+
+const mockListItems = [
+    { id: 1, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false },
+    { id: 2, name: '鮭', volume: '３切れ', categoryId: 3, recipeName: null, isDone: false },
+    { id: 3, name: '牛乳', volume: null, categoryId: 4, recipeName: null, isDone: false },
+    { id: 4, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
+    { id: 5, name: '玉ねぎ', volume: '1個', categoryId: 1, recipeName: null, isDone: true }
 ]
 
 const meta: Meta<typeof ShoppingList> = {
@@ -43,40 +26,21 @@ const meta: Meta<typeof ShoppingList> = {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: `
-                <ShoppingList
-                    categorizedItems={categorizedItems}
-                    update={update} />`.trim()
+                code: '<ShoppingList />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
-                <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
-                    <Story />
+            <ListContextProvider listCategories={mockListCategories} initialListItems={mockListItems}>
+                <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+                    <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
+                        <Story />
+                    </Stack>
                 </Stack>
-            </Stack>
-        )],
-    argTypes: {
-        categorizedItems: {
-            control: false,
-            description: 'カテゴリごとに分類されたアイテムリスト',
-            table: {
-                category: 'data'
-            }
-        },
-        update: {
-            control: false,
-            description: 'リストアイテム更新関数',
-            table: {
-                category: 'function'
-            }
-        }
-    },
-    args: {
-        categorizedItems: mockCategorizedItems
-    }
+            </ListContextProvider >
+        )
+    ]
 }
 
 export default meta;
@@ -92,6 +56,17 @@ export const Empty: Story = {
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+                <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+                    <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
+                        <Story />
+                    </Stack>
+                </Stack>
+            </ListContextProvider >
+        )
+    ],
     args: {
         categorizedItems: []
     }

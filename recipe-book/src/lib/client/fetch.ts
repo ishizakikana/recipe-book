@@ -78,6 +78,7 @@ function getBaseUrl(): string {
  */
 async function handleResponse<T>(res: Response): Promise<T> {
 
+    // HTTPエラー
     if (!res.ok) {
         let errorMsg: string = ERROR_MESSAGES.SERVER_ERROR;
 
@@ -89,6 +90,11 @@ async function handleResponse<T>(res: Response): Promise<T> {
         }
 
         throw new Error(errorMsg);
+    }
+
+    // 204 No Content
+    if (res.status === 204) {
+        return {} as T;
     }
 
     return res.json();

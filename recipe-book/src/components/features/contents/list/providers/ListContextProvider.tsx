@@ -1,6 +1,6 @@
 'use client'
 import { ListCategory, ListItem } from '@prisma/client';
-import { ReactNode, useState } from 'react';
+import { Dispatch, ReactNode, useState } from 'react';
 import { useCategorizedItems } from '../hooks/useCategorizedItems';
 import { ListContext } from '../hooks/useListContext';
 
@@ -10,11 +10,15 @@ import { ListContext } from '../hooks/useListContext';
 export default function ListContextProvider({
     children,
     listCategories,
-    initialListItems
+    initialListItems,
+    mockError,
+    mockSetError
 }: {
     children: ReactNode
     listCategories: ListCategory[],
-    initialListItems: ListItem[]
+    initialListItems: ListItem[],
+    mockError?: string | null,
+    mockSetError?: Dispatch<React.SetStateAction<string | null>>
 }) {
 
     const [listItems, setListItems] = useState<ListItem[]>(initialListItems);
@@ -26,9 +30,9 @@ export default function ListContextProvider({
         listCategories,
         categorizedItems,
         listItems,
-        error,
+        error: mockError !== undefined ? mockError : error,
         setListItems,
-        setError
+        setError: mockSetError ? mockSetError : setError
     };
 
     return (

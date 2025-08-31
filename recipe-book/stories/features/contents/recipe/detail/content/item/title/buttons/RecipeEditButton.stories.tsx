@@ -5,14 +5,26 @@ import { userEvent, within } from "@storybook/testing-library";
 import { mockPush } from "../../../../../../../../__mocks__/router";
 
 const meta: Meta<typeof RecipeEditButton> = {
-    title: 'Features/Recipe/Detail/Content/Item/Header/Edit/RecipeEditButton',
+    title: 'Features/Recipe/Detail/Content/Item/Header/Buttons/RecipeEditButton',
     component: RecipeEditButton,
     parameters: {
         docs: {
             source: {
-                code: '<RecipeEditButton />'
+                code: '<RecipeEditButton recipeId={recipeId} />'
             }
         }
+    },
+    argTypes: {
+        recipeId: {
+            control: false,
+            description: 'レシピID',
+            table: {
+                category: 'props',
+            }
+        }
+    },
+    args: {
+        recipeId: 1
     }
 }
 
@@ -24,6 +36,6 @@ export const Default: Story = {
         const canvas = within(canvasElement);
         await userEvent.click(canvas.getByRole('button'));
 
-        expect(mockPush).toHaveBeenCalled();
+        expect(mockPush).toHaveBeenCalledWith('/recipe/1/edit');
     }
 }
