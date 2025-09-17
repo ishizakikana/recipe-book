@@ -4,7 +4,6 @@ import { useDialog } from '@/hooks/useDialog';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Drawer, Stack } from '@mui/material';
 import { User } from '@prisma/client';
-import { useCloseOnNavigation } from '../../hooks/useCloseOnNavigation';
 import MenuLinks from './items/MenuLinks';
 import UserPanel from './items/UserPanel';
 
@@ -17,7 +16,6 @@ export default function Menu({
     user: User
 }) {
     const { open, onOpen, onClose } = useDialog();
-    useCloseOnNavigation(onClose);
 
     return (
         <>
@@ -41,7 +39,7 @@ export default function Menu({
                         justifyContent='space-between'
                         sx={{ height: '100%', p: 2, bgcolor: 'primary.main' }}>
 
-                        <MenuLinks />
+                        <MenuLinks onClose={onClose} />
                         <UserPanel user={user} />
                     </Stack>
                 </Drawer>
