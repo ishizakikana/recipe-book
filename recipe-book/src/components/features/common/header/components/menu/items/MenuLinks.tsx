@@ -11,12 +11,17 @@ const links = [
 /**
  * メニューリンクリスト
  */
-export default function MenuLinks() {
+export default function MenuLinks({
+    onClose
+}: {
+    onClose: () => void
+}) {
     const router = useRouter();
 
     // クリックイベント
     const onClick = (path: string) => {
         router.push(path);
+        onClose();      // メニューを閉じる
     }
 
     return (

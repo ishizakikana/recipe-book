@@ -1,9 +1,12 @@
 import { useCategorizedItems } from '@/components/features/contents/list/hooks/useCategorizedItems';
 import { useItemList } from '@/components/features/contents/list/hooks/useItemList';
 import { useItemListActions } from '@/components/features/contents/list/hooks/useItemListActions';
+import { ListContext } from '@/components/features/contents/list/hooks/useListContext';
 import { useListItemsState } from '@/components/features/contents/list/hooks/useListItemsState';
+import { ListContextType } from '@/components/features/contents/list/types/context';
 import { ListCategory, ListItem } from '@prisma/client';
 import { renderHook } from '@testing-library/react';
+import { ReactNode } from 'react';
 
 jest.mock('@/components/features/contents/list/hooks/useListItemsState');
 jest.mock('@/components/features/contents/list/hooks/useCategorizedItems');
@@ -41,6 +44,26 @@ describe('useItemList', () => {
         deleteAll: jest.fn(),
     }
 
+    const renderUseItemList = () => {
+        const wrapper = ({ children }: { children: ReactNode }) => {
+            const contextValue: ListContextType = {
+                listCategories: mockCategories,
+                categorizedItems: [],
+                listItems: [],
+                setListItems: jest.fn(),
+                error: null,
+                setError: jest.fn(),
+            }
+
+            return (
+                <ListContext.Provider value={contextValue}>
+                    {children}
+                </ListContext.Provider>
+            )
+        }
+        return renderHook(() => useItemList(), { wrapper });
+    }
+
     beforeEach(() => {
         { (useListItemsState as jest.Mock).mockReturnValue(mockListItemsState) }
         { (useCategorizedItems as jest.Mock).mockReturnValue(categorizedItems) }
@@ -49,29 +72,13 @@ describe('useItemList', () => {
         jest.clearAllMocks();
     })
 
-    test('各依存フックが正しく呼ばれ、戻り値が結合される', () => {
-        const { result } = renderHook(() => useItemList(mockCategories, mockListItems));
-
-        expect(useListItemsState).toHaveBeenCalledWith(mockListItems);
-        expect(useCategorizedItems).toHaveBeenCalledWith(mockCategories, mockListItems);
-        expect(useItemListActions).toHaveBeenCalledWith(
-            categorizedItems,
-            {
-                add: mockListItemsState.add,
-                modifyAll: mockListItemsState.modifyAll,
-                removeAll: mockListItemsState.removeAll
-            },
-            expect.any(Function)
-        );
-
-        expect(result.current).toEqual({
-            categorizedItems: categorizedItems,
-            error: null,
-            create: mockActions.create,
-            update: mockActions.update,
-            updateAll: mockActions.updateAll,
-            deleteAll: mockActions.deleteAll,
-            setError: expect.any(Function)
+    describe('create', () => {
+        test('createData と createState が呼ばれる', async () => {
+            const { result } = renderUseItemList();
+            const input = { name: 'アイテム2', volume: '200', categoryId: 1 };
+            await result.current.create(input);
+            expect(mockActions.create).toHaveBeenCalledWith(input);
+            expect(mockListItemsState.add).toHaveBeenCalledWith(input);
         })
     })
 })

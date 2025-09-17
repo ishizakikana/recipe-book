@@ -9,6 +9,15 @@ const meta: Meta<typeof MenuLinks> = {
     component: MenuLinks,
     globals: {
         backgrounds: { value: 'dark' }
+    },
+    argTypes: {
+        onClose: {
+            control: false,
+            description: 'メニュー非表示処理'
+        }
+    },
+    args: {
+        onClose: mockOnClose
     }
 }
 
@@ -36,5 +45,7 @@ export const Default: Story = {
         expect(mockPush).toHaveBeenCalledWith('/recipe');
         expect(mockPush).toHaveBeenCalledWith('/calendar');
         expect(mockPush).toHaveBeenCalledWith('/list');
+
+        expect(mockOnClose).toHaveBeenCalledTimes(3);
     }
 }

@@ -22,13 +22,16 @@ import { useListItemsState } from "./useListItemsState";
  *  setError（エラー設定関数）
  */
 export function useItemList() {
-
-    // エラー管理
-
     const { categorizedItems, setError } = useListContext();
     const { createState, updateAllState, deleteAllState } = useListItemsState();
     const { createData, updateData, updateAllData, deleteAllData } = useItemListActions();
 
+    /**
+     * リストアイテム新規作成
+     * 
+     * @param data 作成するリストアイテム
+     * @return {Promise<void>}
+     */
     const create = async (data: ItemFormInput) => {
         const result = await createData(data);
         createState(result);
