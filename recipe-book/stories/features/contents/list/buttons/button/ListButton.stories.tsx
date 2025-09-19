@@ -37,6 +37,7 @@ const meta: Meta<typeof ListButton> = {
         },
         onClick: {
             control: false,
+            action: 'onClick',
             description: 'クリックイベント',
             table: {
                 category: 'event'

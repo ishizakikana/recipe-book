@@ -30,38 +30,39 @@ jest.mock('@/components/features/contents/list/hooks/useItemList', () => {
     }
 })
 
+const mockCategories: ListCategory[] = [
+    { id: 1, name: 'A', icon: '', color: '' },
+    { id: 2, name: 'B', icon: '', color: '' },
+]
+
+const validInput: ItemFormInput = {
+    name: 'test item',
+    volume: '100g',
+    categoryId: 1,
+}
+
+const renderUseCreateItemForm = () => {
+    const wrapper = ({ children }: { children: React.ReactNode }) => {
+        const contextValue: ListContextType = {
+            listCategories: mockCategories,
+            categorizedItems: [],
+            listItems: [],
+            setListItems: jest.fn(),
+            error: null,
+            setError: jest.fn(),
+        };
+
+        return (
+            <ListContext.Provider value={contextValue}>
+                {children}
+            </ListContext.Provider>
+        )
+    }
+    return renderHook(() => useCreateItemForm(), { wrapper });
+}
+
+
 describe('useCreateItemForm', () => {
-
-    const mockCategories: ListCategory[] = [
-        { id: 1, name: 'A', icon: '', color: '' },
-        { id: 2, name: 'B', icon: '', color: '' },
-    ]
-
-    const validInput: ItemFormInput = {
-        name: 'test item',
-        volume: '100g',
-        categoryId: 1,
-    }
-
-    const renderUseCreateItemForm = () => {
-        const wrapper = ({ children }: { children: React.ReactNode }) => {
-            const contextValue: ListContextType = {
-                listCategories: mockCategories,
-                categorizedItems: [],
-                listItems: [],
-                setListItems: jest.fn(),
-                error: null,
-                setError: jest.fn(),
-            };
-
-            return (
-                <ListContext.Provider value={contextValue}>
-                    {children}
-                </ListContext.Provider>
-            )
-        }
-        return renderHook(() => useCreateItemForm(), { wrapper });
-    }
 
     beforeEach(() => {
         jest.clearAllMocks();

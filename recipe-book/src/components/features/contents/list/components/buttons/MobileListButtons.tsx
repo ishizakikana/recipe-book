@@ -1,3 +1,4 @@
+'use client'
 import IconButton from '@/components/ui/button/IconButton';
 import useMenu from '@/hooks/useMenu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';

@@ -10,12 +10,15 @@ import { useItemList } from '../../../../hooks/useItemList';
  * 買い物リストアイテム
  */
 export default function ListItem({
-    item
+    item,
+    propUpdate
 }: {
     item: ListItemType
+    propUpdate?: (id: number, isDone: boolean, onFinally: () => void) => void
 }) {
 
-    const { update } = useItemList();
+    const { update: contextUpdate } = useItemList();
+    const update = propUpdate ?? contextUpdate;
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

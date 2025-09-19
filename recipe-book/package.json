@@ -57,6 +57,7 @@
     "ts-jest": "^29.4.0",
     "typescript": "^5",
     "v8-to-istanbul": "^9.3.0",
+    "vitest": "^3.2.4",
     "whatwg-fetch": "^3.6.20"
   }
 }

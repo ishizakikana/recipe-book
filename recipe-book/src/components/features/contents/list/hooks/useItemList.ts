@@ -30,13 +30,21 @@ export function useItemList() {
      * リストアイテム新規作成
      * 
      * @param data 作成するリストアイテム
-     * @return {Promise<void>}
+     * @returns {Promise<void>}
      */
     const create = async (data: ItemFormInput) => {
         const result = await createData(data);
         createState(result);
     }
 
+    /**
+     * リストアイテム更新
+     * 
+     * @param id ID
+     * @param isDone true: 完了済み, false: 未完了
+     * @param onFinally 更新後の処理
+     * @return {Promise<void>} 
+     */
     const update = async (id: number, isDone: boolean, onFinally: () => void) => {
         try {
             await updateData(id, isDone);
@@ -50,6 +58,13 @@ export function useItemList() {
         }
     }
 
+    /**
+     * リストアイテム全更新
+     *
+     * @param isDone true: 完了済み, false: 未完了
+     * @param onFinally 完了後の処理
+     * @returns {Promise<void>}
+     */
     const updateAll = async (isDone: boolean, onFinally: () => void) => {
         try {
 
@@ -70,6 +85,14 @@ export function useItemList() {
         }
     }
 
+    /**
+     * リストアイテム全削除
+     * 
+     * 完了状態が true のリストアイテムをすべて削除します。
+     * 
+     * @param onFinally 完了後の処理
+     * @returns {Promise<void>}
+     */
     const deleteAll = async (onFinally: () => void) => {
         try {
 

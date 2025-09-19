@@ -1,4 +1,5 @@
 import CategoryList from '@/components/features/contents/list/components/list/categoryList/CategoryList';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Box, Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
@@ -21,23 +22,21 @@ const meta: Meta<typeof CategoryList> = {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: `
-                <CategoryList
-                    category={category}
-                    items={items}
-                    update={update} />`.trim()
+                code: '<CategoryList category={category} items={items} />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
-                <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
-                    <Box sx={{ listStyle: 'none', width: '100%' }}>
-                        <Story />
-                    </Box>
+            <ListContextProvider listCategories={mockCategories} initialListItems={mockItems}>
+                <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
+                    <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
+                        <Box sx={{ listStyle: 'none', width: '100%' }}>
+                            <Story />
+                        </Box>
+                    </Stack>
                 </Stack>
-            </Stack>
+            </ListContextProvider>
         )],
     argTypes: {
         category: {
@@ -54,13 +53,6 @@ const meta: Meta<typeof CategoryList> = {
                 category: 'data'
             }
         },
-        update: {
-            control: false,
-            description: 'リストアイテム更新関数',
-            table: {
-                category: 'function'
-            }
-        }
     },
     args: {
         category: mockCategories[0],
@@ -87,11 +79,7 @@ export const Variant: Story = {
                 <CategoryList
                     key={index}
                     category={category}
-                    items={mockItems}
-                    update={(id, isDone, onFinally) => {
-                        setTimeout(onFinally, 500);
-                    }}
-                />
+                    items={mockItems} />
             ))}
         </Stack>
     )

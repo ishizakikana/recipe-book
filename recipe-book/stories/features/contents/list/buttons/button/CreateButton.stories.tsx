@@ -1,9 +1,11 @@
 import CreateButton from '@/components/features/contents/list/components/buttons/button/CreateButton';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import { useForm } from 'react-hook-form';
+import { action } from 'storybook/internal/actions';
 
 const mockCategories = [
     { id: 1, name: 'A', icon: '', color: '' },
@@ -22,7 +24,10 @@ const mockUseCreateItemForm = () => {
         submitError: null,
         errors,
         isSubmitting,
-        onCreate: () => true
+        onCreate: async (data: ItemFormInput) => {
+            action('create')(data);
+            return true;
+        }
     }
 }
 
@@ -32,34 +37,23 @@ const meta: Meta<typeof CreateButton> = {
     parameters: {
         docs: {
             source: {
-                code: '<CreateButton listCategories={listCategories} create={create} />'
+                code: '<CreateButton />'
             }
         }
     },
-    args: {
-        listCategories: mockCategories,
-        create: () => { }
-    },
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={mockCategories} initialListItems={[]}>
+                <Story />
+            </ListContextProvider>
+        )
+    ],
     argTypes: {
-        listCategories: {
-            control: false,
-            description: 'カテゴリー一覧',
-            table: {
-                category: 'data'
-            }
-        },
         mobile: {
             control: 'boolean',
             description: 'モバイル表示',
             table: {
                 category: 'props'
-            }
-        },
-        create: {
-            action: 'create',
-            description: 'リストアイテム新規作成関数',
-            table: {
-                category: 'function'
             }
         },
         useCreateItemForm: {
@@ -103,7 +97,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
-                code: '<CreateButton mobile listCategories={listCategories} create={create} />'
+                code: '<CreateButton mobile />'
             }
         }
     },
@@ -170,9 +164,14 @@ export const SubmitError: Story = {
         }
     },
     args: {
-        create: () => {
-            throw new Error('サーバーでエラーが発生しました。');
-        }
+        useCreateItemForm: () => ({
+            ...mockUseCreateItemForm(),
+            submitError: 'サーバーでエラーが発生しました。',
+            onCreate: async (data: ItemFormInput) => {
+                action('create')(data);
+                return false;
+            }
+        })
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);

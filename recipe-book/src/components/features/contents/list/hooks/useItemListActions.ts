@@ -8,10 +8,10 @@ import { ItemFormInput } from '../types/itemFormInput';
  * DBへリストアイテムの作成・更新・削除を行います。
  * 
  * @returns 
- *  create（リストアイテム追加関数）
- *  update（リストアイテム更新関数）
- *  updateAll（リストアイテム一括変更関数）
- *  deleteAll（リストアイテム一括削除関数）
+ *  createData（リストアイテム追加関数）
+ *  updateData（リストアイテム更新関数）
+ *  updateAllData（リストアイテム一括変更関数）
+ *  deleteAllData（リストアイテム一括削除関数）
  */
 export function useItemListActions() {
 

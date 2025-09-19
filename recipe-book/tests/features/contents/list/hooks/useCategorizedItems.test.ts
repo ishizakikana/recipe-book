@@ -2,21 +2,21 @@ import { useCategorizedItems } from '@/components/features/contents/list/hooks/u
 import { ListCategory, ListItem } from '@prisma/client'
 import { renderHook } from '@testing-library/react'
 
+const mockCategories: ListCategory[] = [
+    { id: 1, name: 'A', icon: '', color: '' },
+    { id: 2, name: 'B', icon: '', color: '' },
+    { id: 3, name: 'C', icon: '', color: '' },
+]
+
+const mockListItems: ListItem[] = [
+    { id: 1, name: '玉ねぎ', volume: '100', recipeName: 'レシピ1', categoryId: 1, isDone: true },
+    { id: 2, name: 'ひき肉', volume: '200', recipeName: 'レシピ2', categoryId: 1, isDone: false },
+    { id: 3, name: 'にんじん', volume: '300', recipeName: 'レシピ3', categoryId: 2, isDone: true },
+    { id: 4, name: 'じゃがいも', volume: '400', recipeName: 'レシピ4', categoryId: 2, isDone: false },
+    { id: 5, name: 'たまご', volume: '500', recipeName: 'レシピ5', categoryId: 3, isDone: true },
+]
+
 describe('useCategorizedItems', () => {
-    const mockCategories: ListCategory[] = [
-        { id: 1, name: 'A', icon: '', color: '' },
-        { id: 2, name: 'B', icon: '', color: '' },
-        { id: 3, name: 'C', icon: '', color: '' },
-    ]
-
-    const mockListItems: ListItem[] = [
-        { id: 1, name: '玉ねぎ', volume: '100', recipeName: 'レシピ1', categoryId: 1, isDone: true },
-        { id: 2, name: 'ひき肉', volume: '200', recipeName: 'レシピ2', categoryId: 1, isDone: false },
-        { id: 3, name: 'にんじん', volume: '300', recipeName: 'レシピ3', categoryId: 2, isDone: true },
-        { id: 4, name: 'じゃがいも', volume: '400', recipeName: 'レシピ4', categoryId: 2, isDone: false },
-        { id: 5, name: 'たまご', volume: '500', recipeName: 'レシピ5', categoryId: 3, isDone: true },
-    ]
-
     test('カテゴリごとにアイテムが正しく分類される', () => {
         const { result } = renderHook(() => useCategorizedItems(mockCategories, mockListItems));
 

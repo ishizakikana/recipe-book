@@ -11,12 +11,15 @@ import ListButton from './ListButton';
 export default function BulkToggleStatusButton({
     markAsDone = false,
     mobile = false,
+    propUpdateAll
 }: {
     markAsDone?: boolean
     mobile?: boolean
+    propUpdateAll?: (isDone: boolean, onFinally: () => void) => Promise<void>
 }) {
 
-    const { updateAll } = useItemList();
+    const { updateAll: contextUpdateAll } = useItemList();
+    const updateAll = propUpdateAll ?? contextUpdateAll;
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

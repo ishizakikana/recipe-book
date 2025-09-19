@@ -121,6 +121,7 @@ export function useRecipeSearchForm() {
     return {
         form,
         isSearch,
+        search,
         setFormValue,
     }
 }

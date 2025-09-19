@@ -3,7 +3,8 @@ import ListContextProvider from '@/components/features/contents/list/providers/L
 import { Stack } from '@mui/material';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
-import { screen, userEvent, within } from '@storybook/testing-library';
+import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
+import { useState } from 'react';
 
 const meta: Meta<typeof ListContainer> = {
     title: 'Features/List/ListContainer',
@@ -12,7 +13,7 @@ const meta: Meta<typeof ListContainer> = {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: '<ListContainer initialListItems={listItems} listCategories={listCategories} />'
+                code: '<ListContainer />'
             }
         }
     },
@@ -26,7 +27,23 @@ const meta: Meta<typeof ListContainer> = {
                 </Stack>
             </ListContextProvider>
         )
-    ]
+    ],
+    argTypes: {
+        propError: {
+            control: false,
+            description: 'storybookテスト用',
+            table: {
+                category: '-'
+            }
+        },
+        propSetError: {
+            control: false,
+            description: 'storybookテスト用',
+            table: {
+                category: '-'
+            }
+        }
+    }
 }
 
 export default meta;
@@ -112,6 +129,11 @@ export const Error: StoryObj<typeof ListContainer> = {
             }
         }
     },
+    render: () => {
+        const [error, setError] = useState<string | null>('通信エラーが発生しました');
+
+        return <ListContainer propError={error} propSetError={setError} />
+    },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
@@ -119,10 +141,15 @@ export const Error: StoryObj<typeof ListContainer> = {
         const snackbar = canvas.getByText('通信エラーが発生しました');
         expect(snackbar).toBeInTheDocument();
 
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         // 非表示ボタンクリック
         const closeButton = await canvas.findByRole('button', { name: 'Close' });
         await userEvent.click(closeButton);
 
-        // expect(mockSetError).toHaveBeenCalled();
+        await waitFor(() => {
+            const el = canvas.queryByText('通信エラーが発生しました');
+            expect(el).not.toBeInTheDocument();
+        });
     }
 }

@@ -8,6 +8,18 @@ import { useForm } from 'react-hook-form';
 import { useRecipes } from './recipes/useRecipes';
 import { useRecipeContext } from './useRecipeContext';
 
+/**
+ * レシピ編集フォームカスタムフック
+ * 
+ * @param recipe 編集対象レシピ（新規作成時はnull）
+ * @returns 
+ *  control (react-hook-formコントロールオブジェクト)
+ *  categoryOptions (カテゴリセレクトボックスオプション)
+ *  submitError (送信エラーメッセージ)
+ *  formErrors (フォーム入力エラー)
+ *  loading (送信中フラグ)
+ *  onUpdate (レシピ更新処理)
+ */
 export const useRecipeEditForm = (
     recipe: RecipeDetail | null
 ) => {

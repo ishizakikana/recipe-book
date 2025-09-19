@@ -1,16 +1,26 @@
 import DeleteButton from '@/components/features/contents/list/components/buttons/button/DeleteButton';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
+import { action } from 'storybook/internal/actions';
 import { fn, } from 'storybook/test';
 
-const mockDeleteAll = fn((onFinally) => {
+const mockDeleteAll = fn(async (onFinally) => {
     setTimeout(() => onFinally(), 1000);
+    action('deleteAll')();
 });
 
 const meta: Meta<typeof DeleteButton> = {
     title: 'Features/List/Buttons/Button/DeleteButton',
     component: DeleteButton,
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
+                <Story />
+            </ListContextProvider>
+        )
+    ],
     argTypes: {
         mobile: {
             control: 'boolean',
@@ -19,16 +29,15 @@ const meta: Meta<typeof DeleteButton> = {
                 category: 'props'
             }
         },
-        deleteAll: {
-            action: 'deleteAll',
-            description: '全リストアイテム削除関数',
+        propDeleteAll: {
+            description: 'storybookテスト用',
             table: {
-                category: 'function'
+                category: '-'
             }
         }
     },
     args: {
-        deleteAll: mockDeleteAll
+        propDeleteAll: mockDeleteAll
     }
 }
 
@@ -42,7 +51,7 @@ export const Desktop: Story = {
                 story: 'デスクトップ'
             },
             source: {
-                code: '<DeleteButton deleteAll={deleteAll} />'
+                code: '<DeleteButton />'
             }
         }
     },
@@ -65,7 +74,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
-                code: '<DeleteButton mobile deleteAll={deleteAll} />'
+                code: '<DeleteButton mobile />'
             }
         }
     },

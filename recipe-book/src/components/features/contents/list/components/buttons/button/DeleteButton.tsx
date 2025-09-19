@@ -9,11 +9,14 @@ import ListButton from './ListButton';
  */
 export default function DeleteButton({
     mobile = false,
+    propDeleteAll
 }: {
-    mobile?: boolean
+    mobile?: boolean,
+    propDeleteAll?: (onFinally: () => void) => Promise<void>
 }) {
 
-    const { deleteAll } = useItemList();
+    const { deleteAll: contextDeleteAll } = useItemList();
+    const deleteAll = propDeleteAll ?? contextDeleteAll;
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

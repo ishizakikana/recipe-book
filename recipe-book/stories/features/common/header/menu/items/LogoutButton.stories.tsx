@@ -1,10 +1,10 @@
 import LogoutButton from '@/components/features/common/header/components/menu/items/LogoutButton';
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
-import { fn } from 'storybook/test';
+import { action } from 'storybook/internal/actions';
+import { expect, fn } from 'storybook/test';
 
-const mockLogout = fn();
+const mockLogout = fn(async () => action('logout')());
 const mockUseLogout = () => ({ logout: mockLogout });
 
 const meta: Meta<typeof LogoutButton> = {

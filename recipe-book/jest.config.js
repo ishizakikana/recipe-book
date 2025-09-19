@@ -15,6 +15,8 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
+    '!src/**/components/**/*.tsx',
+    '!src/**/types/**/*.ts',
   ],
   coverageReporters: ['text', 'html', 'lcov', 'json'],
   coverageDirectory: 'coverage/jest',
