@@ -1,6 +1,6 @@
 import { apiPost } from '@/lib/client/fetch';
 import { ListItem } from '@prisma/client';
-import { ItemFormInput } from '../types/itemFormInput';
+import { ItemFormInput } from '../../types/itemFormInput';
 
 /**
  * リストアイテムDB操作カスタムフック

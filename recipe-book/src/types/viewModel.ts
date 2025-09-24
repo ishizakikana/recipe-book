@@ -1,12 +1,11 @@
-import { RecipeCategory, RecipeIngredient, RecipeSeasoning } from '@prisma/client';
 
 export type RecipeSummary = {
     id: number
     name: string
     categoryId: number
     imageUrl: string
-    calories: number | null
-    shelfLife: string | null
+    calories: number | undefined
+    shelfLife: string | undefined
     category: RecipeCategory
     keywords: string[]
     visible: boolean
@@ -17,8 +16,8 @@ export type RecipeDetail = {
     name: string
     categoryId: number
     imageUrl: string
-    calories: number | null
-    shelfLife: string | null
+    calories: number | undefined
+    shelfLife: string | undefined
     category: RecipeCategory
     ingredients: RecipeIngredient[],
     steps: StepSummary[]
@@ -30,4 +29,26 @@ export type StepSummary = {
     stepNumber: number
     text: string
     seasonings: RecipeSeasoning[];
+}
+
+export type RecipeCategory = {
+    id: number
+    name: string
+    icon: string
+    color: string
+}
+
+export type RecipeIngredient = {
+    id: string
+    recipeId: number
+    name: string
+    volume: string | undefined
+}
+
+export type RecipeSeasoning = {
+    id: string
+    stepId?: number
+    recipeId?: number
+    name: string
+    volume: string | undefined
 }

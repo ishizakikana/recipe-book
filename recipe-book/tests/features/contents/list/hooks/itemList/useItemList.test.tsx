@@ -1,4 +1,4 @@
-import { useItemList } from '@/components/features/contents/list/hooks/useItemList';
+import { useItemList } from '@/components/features/contents/list/hooks/itemList/useItemList';
 import { ListContext } from '@/components/features/contents/list/hooks/useListContext';
 import { ListContextType } from '@/components/features/contents/list/types/context';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
@@ -17,15 +17,16 @@ const mockSetError = jest.fn();
 const mockGetDoneIds = jest.fn();
 const mockGetUndoneIds = jest.fn();
 
-jest.mock('@/components/features/contents/list/hooks/useListItemsState', () => ({
-    useListItemsState: () => ({
+jest.mock('@/components/features/contents/list/hooks/itemList/useItemListState', () => ({
+    useItemListState: () => ({
         listItems: [],
         createState: mockCreateState,
         updateAllState: mockUpdateAllState,
         deleteAllState: mockDeleteAllState,
     }),
 }));
-jest.mock('@/components/features/contents/list/hooks/useItemListActions', () => ({
+
+jest.mock('@/components/features/contents/list/hooks/itemList/useItemListActions', () => ({
     useItemListActions: () => ({
         createData: mockCreateData,
         updateData: mockUpdateData,

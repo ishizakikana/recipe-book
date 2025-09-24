@@ -1,5 +1,5 @@
 import { ListItem } from '@prisma/client';
-import { useListContext } from './useListContext';
+import { useListContext } from '../useListContext';
 
 /**
  * リストアイテム配列の状態管理カスタムフック
@@ -12,7 +12,7 @@ import { useListContext } from './useListContext';
  *  modifyAll（リストアイテム一括変更関数）、
  *  removeAll（リストアイテム一括削除関数）
  */
-export function useListItemsState() {
+export function useItemListState() {
 
     const { setListItems } = useListContext();
 

@@ -5,8 +5,8 @@ import { RecipeDetail } from '@/types/viewModel';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useRecipes } from './recipes/useRecipes';
-import { useRecipeContext } from './useRecipeContext';
+import { useRecipes } from '../recipes/useRecipes';
+import { useRecipeContext } from '../useRecipeContext';
 
 /**
  * レシピ編集フォームカスタムフック
@@ -36,15 +36,17 @@ export const useRecipeEditForm = (
     } = useForm<RecipeFormInput>({
         resolver: zodResolver(schema),
         defaultValues: {
-            ...recipe,
-            categoryId: recipe?.category.id.toString(),
-            shelfLife: recipe?.shelfLife || '',
+            id: recipe?.id || undefined,
+            name: recipe?.name || undefined,
+            categoryId: recipe?.category.id.toString() || undefined,
+            imageUrl: recipe?.imageUrl || undefined,
+            shelfLife: recipe?.shelfLife || undefined,
             calories: recipe?.calories || undefined,
             ingredients: recipe?.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
             steps: recipe?.steps?.map(s => ({
                 id: s.id,
                 text: s.text,
-                seasonings: s.seasonings?.map(s => `${s.name} ${s.volume}`).join('\n') ?? ''
+                seasonings: s.seasonings.map(s => `${s.name} ${s.volume}`).join('\n')
             }))
         }
     });
@@ -60,7 +62,7 @@ export const useRecipeEditForm = (
     // レシピ更新
     const onUpdate = async (data: RecipeFormInput) => {
         try {
-            update(data);       // データ更新
+            await update(data);       // データ更新
             reset();        // 入力値リセット
             setSubmitError(null); // エラーメッセージクリア
             return true;
@@ -79,6 +81,6 @@ export const useRecipeEditForm = (
         submitError,
         formErrors: errors,
         loading: isSubmitting,
-        onUpdate
-    };
+        onUpdate,
+    }
 }

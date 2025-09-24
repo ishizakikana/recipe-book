@@ -7,7 +7,9 @@ export function useRecipesState() {
     const updateState = (recipe: RecipeDetail) => {
         const recipeSummary: RecipeSummary = {
             ...recipe,
-            keywords: [recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []],
+            keywords: [
+                recipe.name,
+                ...recipe.ingredients.length > 0 ? recipe.ingredients.map(i => i.name) : []],
             visible: true
         }
 

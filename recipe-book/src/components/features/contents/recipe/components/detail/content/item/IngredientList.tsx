@@ -1,3 +1,4 @@
+import { RecipeIngredient } from '@/types/viewModel';
 import { Box, Divider, List, ListItem, Typography } from '@mui/material';
 
 /**
@@ -6,11 +7,7 @@ import { Box, Divider, List, ListItem, Typography } from '@mui/material';
 export default function IngredientList({
     ingredients
 }: {
-    ingredients: {
-        id: number,
-        name: string,
-        volume: string | null
-    }[]
+    ingredients: RecipeIngredient[]
 }) {
 
     if (!ingredients) {
@@ -22,9 +19,9 @@ export default function IngredientList({
             <List>
                 {ingredients.map(ingredient => (
                     <div key={ingredient.id}>
-                        <ListItem disablePadding>
+                        <ListItem disablePadding slotProps={{ root: { 'aria-label': 'ingredients-item' } }}>
                             <Box sx={{ display: 'flex', width: '100%' }}>
-                                <Typography variant='body1' sx={{ flexGrow: 1 }}>
+                                <Typography variant='body1' sx={{ flexGrow: 1, paddingRight: 1 }}>
                                     {ingredient.name}
                                 </Typography>
                                 <Typography variant='body1'>

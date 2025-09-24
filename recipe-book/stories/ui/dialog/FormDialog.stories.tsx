@@ -1,14 +1,14 @@
 import Button from '@/components/ui/button/Button';
-import Modal from '@/components/ui/dialog/Modal';
+import FormDialog from '@/components/ui/dialog/FormDialog';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor } from '@storybook/testing-library';
 import { useState } from 'react';
 import { disableAllArgTypes } from '../../__utils__/utils';
 
-const meta: Meta<typeof Modal> = {
-    title: 'UI/Dialog/Modal',
-    component: Modal,
+const meta: Meta<typeof FormDialog> = {
+    title: 'UI/Dialog/FormDialog',
+    component: FormDialog,
     argTypes: {
         children: {
             control: { type: 'text' },
@@ -96,7 +96,7 @@ const meta: Meta<typeof Modal> = {
 }
 
 export default meta;
-type Story = StoryObj<typeof Modal>;
+type Story = StoryObj<typeof FormDialog>;
 type ModalArgs = typeof meta.args;
 
 export const Default: Story = {
@@ -106,7 +106,7 @@ export const Default: Story = {
                 code: `
                 import { useState } from 'react';
                 import Button from '@/components/ui/button/button/Button';
-                import Modal form '@/components/ui/dialog/Modal';
+                import FormDialog form '@/components/ui/dialog/FormDialog';
                 
                 const [open, setOpen] = useState(false);
 
@@ -114,12 +114,12 @@ export const Default: Story = {
                     <>
                         <Button onClick={() => setOpen(true)}>open</Button>
 
-                        <Modal 
+                        <FormDialog 
                             open={open} 
                             title='Modal'
                             onClose={() => setOpen(false)}>
                             content
-                        </Modal>
+                        </FormDialog>
                     </>
                 );
                 `.trim(),
@@ -132,12 +132,12 @@ export const Default: Story = {
         return (
             <>
                 <Button onClick={() => setOpen(true)}>open</Button>
-                <Modal
+                <FormDialog
                     {...args}
                     open={open}
                     onClose={() => setOpen(false)}>
                     {args.children}
-                </Modal>
+                </FormDialog>
             </>
         );
     },
@@ -208,14 +208,14 @@ export const ReadOnly: Story = {
         return (
             <>
                 <Button onClick={() => setOpen(true)}>open</Button>
-                <Modal
+                <FormDialog
                     open={open}
                     title='Read Only Modal'
                     hasSubmitButton={false}
                     hasCancelButton={false}
                     onClose={() => setOpen(false)}>
                     read only content
-                </Modal>
+                </FormDialog>
             </>
         );
     },
@@ -259,14 +259,14 @@ export const Blocking: Story = {
         return (
             <>
                 <Button onClick={() => setOpen(true)}>open</Button>
-                <Modal
+                <FormDialog
                     open={open}
                     title='Blocking Modal'
                     disableBackDropClick
                     disableEscapeKeyDown
                     onClose={() => setOpen(false)}>
                     blocking content
-                </Modal>
+                </FormDialog>
             </>
         );
     },
@@ -330,13 +330,13 @@ export const Loading: Story = {
         return (
             <>
                 <Button onClick={() => setOpen(true)}>open</Button>
-                <Modal
+                <FormDialog
                     open={open}
                     title='Loading Modal'
                     loading
                     onClose={() => setOpen(false)}>
                     loading content
-                </Modal>
+                </FormDialog>
             </>
         );
     },

@@ -1,7 +1,11 @@
-import RecipeContent from '@/components/features/contents/recipe/components/detail/content/RecipeContent';
+import RecipeTitle from '@/components/features/contents/recipe/components/detail/content/item/header/RecipeTitle';
+import { RecipeContextType } from '@/components/features/contents/recipe/types/context';
 import { RecipeDetail } from '@/types/viewModel';
-import { Box } from '@mui/material';
+import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { within } from '@storybook/testing-library';
+import { fn } from 'storybook/test';
 
 const mockRecipe: RecipeDetail = {
     id: 1,
@@ -29,23 +33,30 @@ const mockRecipe: RecipeDetail = {
     ]
 }
 
+const mockRecipeContext: RecipeContextType = {
+    recipeDetail: mockRecipe,
+    recipeCategories: [],
+    recipeSummaries: [],
+    setRecipeDetail: fn(),
+    setRecipeSummaries: fn()
+}
 
-const meta: Meta<typeof RecipeContent> = {
-    title: 'Features/Recipe/Detail/Content/RecipeContent',
-    component: RecipeContent,
+const meta: Meta<typeof RecipeTitle> = {
+    title: 'Features/Recipe/Detail/Content/Item/Header/RecipeTitle',
+    component: RecipeTitle,
     parameters: {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: '<RecipeContent recipe={recipe} />'
+                code: '<RecipeTitle recipe={recipe} />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <Box p={6}>
+            <Stack px={2} py={4}>
                 <Story />
-            </Box>
+            </Stack>
         )],
     argTypes: {
         recipe: {
@@ -63,6 +74,19 @@ const meta: Meta<typeof RecipeContent> = {
 }
 
 export default meta;
-type Story = StoryObj<typeof RecipeContent>;
+type Story = StoryObj<typeof RecipeTitle>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const name = await canvas.findByText(mockRecipe.name);
+        const category = await canvas.findByText(mockRecipe.category.name);
+        const shelfLife = await canvas.findByText(mockRecipe.shelfLife ? mockRecipe.shelfLife : '');
+        const calories = await canvas.findByText(mockRecipe.calories ? `${mockRecipe.calories}kcal` : '');
+
+        expect(name).toBeInTheDocument();
+        expect(category).toBeInTheDocument();
+        expect(shelfLife).toBeInTheDocument();
+        expect(calories).toBeInTheDocument();
+    }
+}

@@ -1,17 +1,15 @@
 import { ERROR_MESSAGES, formatMessage } from '@/lib/constants/messages';
-import { ItemFormInput } from '../types/itemFormInput';
-import { getDoneIds, getUndoneIds } from '../utils/itemStatus';
-import { useItemListActions } from "./useItemListActions";
-import { useListContext } from './useListContext';
-import { useListItemsState } from "./useListItemsState";
+import { ItemFormInput } from '../../types/itemFormInput';
+import { getDoneIds, getUndoneIds } from '../../utils/itemStatus';
+import { useListContext } from '../useListContext';
+import { useItemListActions } from './useItemListActions';
+import { useItemListState } from "./useItemListState";
 
 /**
- * リストアイテムの状態管理とDB操作を統合したカスタムフック
+ * リストアイテムの状態管理とDB操作の統合カスタムフック
  * 
- * カテゴリ別にリストアイテムを分類し、ローカル状態とDBの同期処理を一括で扱えるようにします。
+ * カテゴリ別にリストアイテムを分類し、ローカル状態とDBの同期処理を一括で行います。
  * 
- * @param listCategories リストカテゴリ一覧
- * @param initialListItems 初期リストアイテム一覧
  * @returns 
  *  categorizedItems（カテゴリごとに分類されたリストアイテム）
  *  error（エラーメッセージ）
@@ -23,7 +21,7 @@ import { useListItemsState } from "./useListItemsState";
  */
 export function useItemList() {
     const { categorizedItems, setError } = useListContext();
-    const { createState, updateAllState, deleteAllState } = useListItemsState();
+    const { createState, updateAllState, deleteAllState } = useItemListState();
     const { createData, updateData, updateAllData, deleteAllData } = useItemListActions();
 
     /**

@@ -2,7 +2,7 @@ import { RecipeSearchInput, RecipeSearchParams } from '@/components/features/con
 import { useQueryParams } from '@/hooks/useQueryParams';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useRecipeContext } from './useRecipeContext';
+import { useRecipeContext } from '../useRecipeContext';
 
 /**
  * GETパラメータをもとに検索フォーム入力値作成

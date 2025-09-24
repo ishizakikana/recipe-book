@@ -1,5 +1,5 @@
+import { useItemListState } from '@/components/features/contents/list/hooks/itemList/useItemListState'
 import { ListContext } from '@/components/features/contents/list/hooks/useListContext'
-import { useListItemsState } from '@/components/features/contents/list/hooks/useListItemsState'
 import { ListContextType } from '@/components/features/contents/list/types/context'
 import { ListItem } from '@prisma/client'
 import { act, renderHook } from '@testing-library/react'
@@ -30,7 +30,7 @@ const renderUseListItemsState = (override: Partial<ListContextType> = {}) => {
     }
 
     return {
-        ...renderHook(() => useListItemsState(), { wrapper }),
+        ...renderHook(() => useItemListState(), { wrapper }),
         mockSetListItems
     }
 }

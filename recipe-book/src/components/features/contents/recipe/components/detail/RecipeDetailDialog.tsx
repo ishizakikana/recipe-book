@@ -4,9 +4,9 @@ import { RecipeDetail } from '@/types/viewModel';
 import { DialogContent, DialogTitle } from '@mui/material';
 import MuiDialog from '@mui/material/Dialog';
 import { useEffect } from 'react';
-import { useRecipeContext } from '../../hooks/useRecipeContext';
+import { useRecipeContext as defaultUseRecipeContext } from '../../hooks/useRecipeContext';
 import { useRecipeModal as defaultUseRecipeModal } from '../../hooks/useRecipeModal';
-import RecipeTitle from './content/item/title/RecipeTitle';
+import RecipeTitle from './content/item/header/RecipeTitle';
 import RecipeContent from './content/RecipeContent';
 
 /**
@@ -14,10 +14,12 @@ import RecipeContent from './content/RecipeContent';
  */
 export default function RecipeDetailDialog({
     initialValue,
-    useRecipeModal = defaultUseRecipeModal
+    useRecipeModal = defaultUseRecipeModal,
+    useRecipeContext = defaultUseRecipeContext
 }: {
     initialValue: RecipeDetail
     useRecipeModal?: typeof defaultUseRecipeModal
+    useRecipeContext?: typeof defaultUseRecipeContext
 }) {
 
     const { open, onClose } = useRecipeModal();
@@ -31,7 +33,7 @@ export default function RecipeDetailDialog({
 
     }, [initialValue, recipeDetail, setRecipeDetail]);
 
-    if (!recipeDetail || recipeDetail?.id !== initialValue.id) {
+    if (!recipeDetail || recipeDetail.id !== initialValue.id) {
         return <Loading />;
     }
 

@@ -1,9 +1,9 @@
 'use client'
+import { useRecipeSearchForm as defaultUseRecipeSearchForm } from '@/components/features/contents/recipe/hooks/form/useRecipeSearchForm';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SearchIcon from '@mui/icons-material/Search';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useRecipeSearchForm as defaultUseRecipeSearchForm } from '../../../hooks/useRecipeSearchForm';
 import SearchForm from './form/SearchForm';
 
 /**

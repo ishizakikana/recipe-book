@@ -4,7 +4,7 @@ import { ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material
 import MuiListItem from '@mui/material/ListItem';
 import { ListItem as ListItemType } from '@prisma/client';
 import { useState } from 'react';
-import { useItemList } from '../../../../hooks/useItemList';
+import { useItemList } from '../../../../hooks/itemList/useItemList';
 
 /**
  * 買い物リストアイテム

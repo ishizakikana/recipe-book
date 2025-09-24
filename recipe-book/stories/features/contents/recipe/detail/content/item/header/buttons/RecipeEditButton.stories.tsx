@@ -1,16 +1,26 @@
-import RecipeEditButton from "@/components/features/contents/recipe/components/detail/content/item/title/buttons/RecipeEditButton";
+import RecipeEditButton from "@/components/features/contents/recipe/components/detail/content/item/header/buttons/RecipeEditButton";
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { userEvent, within } from "@storybook/testing-library";
 import { mockPush } from "../../../../../../../../__mocks__/router";
 
 const meta: Meta<typeof RecipeEditButton> = {
-    title: 'Features/Recipe/Detail/Content/Item/Header/Edit/RecipeEditButton',
+    title: 'Features/Recipe/Detail/Content/Item/Header/Buttons/RecipeEditButton',
     component: RecipeEditButton,
     parameters: {
         docs: {
             source: {
-                code: '<RecipeEditButton />'
+                code: '<RecipeEditButton recipeId={recipeId} />'
+            }
+        }
+    },
+    argTypes: {
+        recipeId: {
+            control: false,
+            description: 'レシピID',
+            table: {
+                category: 'props',
+                type: { summary: 'number' }
             }
         }
     }

@@ -1,4 +1,4 @@
-import { useItemListActions } from '@/components/features/contents/list/hooks/useItemListActions';
+import { useItemListActions } from '@/components/features/contents/list/hooks/itemList/useItemListActions';
 import { getDoneIds, getUndoneIds } from '@/components/features/contents/list/utils/itemStatus';
 import { apiPost } from '@/lib/client/fetch';
 import { act, renderHook } from '@testing-library/react';

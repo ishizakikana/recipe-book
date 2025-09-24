@@ -6,9 +6,9 @@ import Dialog, { DialogBackdropSlotPropsOverrides, DialogContainerSlotPropsOverr
 import { ElementType, JSX, ReactNode } from 'react';
 
 /**
- * モーダル
+ * フォームモーダル
  */
-export default function Modal({
+export default function FormDialog({
     children,
     open,
     title,

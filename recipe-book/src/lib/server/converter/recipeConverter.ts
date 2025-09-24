@@ -1,6 +1,5 @@
 import { RecipeDetailResponse, RecipeSummaryResponse } from '@/types/entity';
-import { RecipeDetail, RecipeSummary, StepSummary } from '@/types/viewModel';
-import { RecipeIngredient } from '@prisma/client';
+import { RecipeDetail, RecipeIngredient, RecipeSummary, StepSummary } from '@/types/viewModel';
 
 export function toRecipeSummary(
     recipe: RecipeSummaryResponse,
@@ -11,6 +10,8 @@ export function toRecipeSummary(
         ...recipe,
         imageUrl: getFullImageUrl(recipe.imageUrl),
         category: recipe.category,
+        calories: recipe.calories ?? undefined,
+        shelfLife: recipe.shelfLife ?? undefined,
         keywords: [
             recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []
         ],
@@ -22,13 +23,13 @@ export function toRecipeDetail(
     recipe: RecipeDetailResponse
 ): RecipeDetail {
 
-    // 並び替え
-    sortIngredients(recipe.ingredients);
-    sortSteps(recipe.steps);
-
     return {
         ...recipe,
-        imageUrl: getFullImageUrl(recipe.imageUrl)
+        imageUrl: getFullImageUrl(recipe.imageUrl),
+        calories: recipe.calories ?? undefined,
+        shelfLife: recipe.shelfLife ?? undefined,
+        ingredients: formatIngredients(recipe),
+        steps: formatSteps(recipe)
     }
 }
 
@@ -40,11 +41,11 @@ export function toRecipeDetail(
  * @param imgUrl 画像のURL
  * @returns 画像のURL
  */
-export function stripFullImageUrl(imgUrl: string | null): string | null {
+export function stripFullImageUrl(imgUrl: string | undefined): string | undefined {
     const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
 
     if (!imgUrl) {
-        return null;
+        return undefined;
     }
 
     return imgUrl.startsWith(BASE_URL) ? imgUrl.slice(BASE_URL.length) : imgUrl;
@@ -58,12 +59,12 @@ export function stripFullImageUrl(imgUrl: string | null): string | null {
 /**
  * 画像のフルURL取得
  * 
- * 引数が NULL のとき、no_image.png の URL を返します。
+ * 引数が undefined のとき、no_image.png の URL を返します。
  * 
  * @param imgUrl 画像のURL
  * @returns 画像のフルURL
  */
-function getFullImageUrl(imgUrl: string | null): string {
+function getFullImageUrl(imgUrl: string | undefined | null): string {
     const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
     const NO_IMG_URL = 'no_image.png';
 
@@ -74,16 +75,34 @@ function getFullImageUrl(imgUrl: string | null): string {
     }
 }
 
-function sortIngredients(ingredients: RecipeIngredient[]) {
-    ingredients.sort((a, b) => {
+/**
+ * レシピ材料のフォーマット
+ * 
+ * idをもとにした並び替えと、null の値を undefined に変更します。
+ * 
+ * @param recipe レシピ
+ */
+function formatIngredients(recipe: RecipeDetailResponse): RecipeIngredient[] {
+    return recipe.ingredients.sort((a, b) => {
         const orderA = Number(a.id.slice(-2));
         const orderB = Number(b.id.slice(-2));
         return orderA - orderB;
-    })
+    }).map(i => ({
+        ...i,
+        volume: i.volume ?? undefined
+    }))
 }
 
-function sortSteps(steps: StepSummary[]) {
-    steps
+/**
+ * レシピ手順リストのフォーマット
+ * 
+ * レシピ手順リスト・調味料リストの並び替えを行います。
+ * レシピ手順リストは stepNumber をもとに、調味料リストは id をもとに並び替えを行います。
+ * 
+ * @param recipe レシピ
+ */
+function formatSteps(recipe: RecipeDetailResponse): StepSummary[] {
+    return recipe.steps
         .sort((a, b) => a.stepNumber - b.stepNumber)
         .map(step => ({
             ...step,

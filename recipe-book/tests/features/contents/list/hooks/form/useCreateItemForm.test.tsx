@@ -1,4 +1,4 @@
-import { useCreateItemForm } from '@/components/features/contents/list/hooks/useCreateItemForm';
+import { useCreateItemForm } from '@/components/features/contents/list/hooks/form/useCreateItemForm';
 import { ListContext } from '@/components/features/contents/list/hooks/useListContext';
 import { ListContextType } from '@/components/features/contents/list/types/context';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
@@ -22,7 +22,7 @@ jest.mock('react-hook-form', () => {
     }
 })
 
-jest.mock('@/components/features/contents/list/hooks/useItemList', () => {
+jest.mock('@/components/features/contents/list/hooks/itemList/useItemList', () => {
     return {
         useItemList: () => ({
             create: mockCreate,
@@ -30,6 +30,7 @@ jest.mock('@/components/features/contents/list/hooks/useItemList', () => {
     }
 })
 
+// モックデータ
 const mockCategories: ListCategory[] = [
     { id: 1, name: 'A', icon: '', color: '' },
     { id: 2, name: 'B', icon: '', color: '' },

@@ -43,7 +43,7 @@ export function createRepository<
         update: (args: { where: { id: T['id'] }; data: UpdateData }) => Promise<T>;
         delete: (args: { where: { id: T['id'] } }) => Promise<T>;
         deleteMany: (args: { where: { id: { in: T['id'][] } } }) => Promise<{ count: number }>;
-    };
+    }
 
     return {
         /**

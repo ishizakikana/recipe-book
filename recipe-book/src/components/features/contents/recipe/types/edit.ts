@@ -10,13 +10,13 @@ export const schema = z.object({
     id: z.number(),
     name: z.string().min(1, '入力してください'),
     categoryId: z.string(),
-    imageUrl: z.string(),
+    imageUrl: z.string().optional(),
     shelfLife: z.string().optional(),
     calories: z.coerce.number().optional(),
     ingredients: z.string(),
     steps: z.object({
         id: z.number().optional(),
         text: z.string(),
-        seasonings: z.string()
+        seasonings: z.string().optional()
     }).array()
 })

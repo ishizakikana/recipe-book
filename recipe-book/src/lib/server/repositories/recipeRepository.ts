@@ -120,7 +120,7 @@ export const recipeRepository = {
                     const updatedSeasonings = await Promise.all(
                         step.seasonings.map((s, idx) => tx.recipeSeasoning.create({
                             data: {
-                                id: `${String(id).padStart(4, '0')}${String(newStep.id).padStart(2, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + 作業手順ID + インデックス
+                                id: `${String(id).padStart(4, '0')}${String(newStep.id).padStart(2, '0')}${String(idx).padStart(2, '0')}`,      // ex) 00010101 レシピID + 作業手順ID + インデックス
                                 stepId: newStep.id,
                                 name: s.name,
                                 volume: s.volume
