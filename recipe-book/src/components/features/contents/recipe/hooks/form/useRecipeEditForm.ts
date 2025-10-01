@@ -36,12 +36,12 @@ export const useRecipeEditForm = (
     } = useForm<RecipeFormInput>({
         resolver: zodResolver(schema),
         defaultValues: {
-            id: recipe?.id || undefined,
-            name: recipe?.name || undefined,
-            categoryId: recipe?.category.id.toString() || undefined,
-            imageUrl: recipe?.imageUrl || undefined,
-            shelfLife: recipe?.shelfLife || undefined,
-            calories: recipe?.calories || undefined,
+            id: recipe?.id,
+            name: recipe?.name,
+            categoryId: recipe?.category.id.toString(),
+            imageUrl: recipe?.imageUrl,
+            shelfLife: recipe?.shelfLife,
+            calories: recipe?.calories,
             ingredients: recipe?.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
             steps: recipe?.steps?.map(s => ({
                 id: s.id,

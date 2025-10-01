@@ -8,7 +8,7 @@ import SelectBox from '@/components/ui/form/SelectBox'
 import { Stack } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { Controller } from 'react-hook-form'
-import { useRecipeContext } from '../../../hooks/useRecipeContext'
+import { useRecipeContext as defaultRecipeContext } from '../../../hooks/useRecipeContext'
 import { RecipeFormInput } from '../../../types/edit'
 import StepsTextBoxList from './steps/StepsTextBoxList'
 
@@ -16,14 +16,14 @@ import StepsTextBoxList from './steps/StepsTextBoxList'
  * レシピ更新フォーム
  */
 export default function RecipeEditForm({
+    useRecipeContext = defaultRecipeContext,
     useRecipeEditForm = defaultRecipeEditForm
 }: {
+    useRecipeContext?: typeof defaultRecipeContext
     useRecipeEditForm?: typeof defaultRecipeEditForm
 }) {
     const router = useRouter();
-
     const { recipeDetail } = useRecipeContext();
-
     const {
         control,
         categoryOptions,
@@ -41,7 +41,7 @@ export default function RecipeEditForm({
         if (success) {
             router.replace('/recipe');
             setTimeout(() => {
-                router.replace(`/recipe/${recipeDetail?.id}`);
+                router.replace(`/recipe/${recipeDetail!.id}`);
             }, 0);
         }
     }
@@ -59,26 +59,34 @@ export default function RecipeEditForm({
                         width='100%'
                         {...register('name')}
                         error={!!formErrors?.name}
-                        helperText={formErrors?.name?.message}
-                        required />
+                        helperText={formErrors?.name?.message} />
 
                     <Controller
                         name='imageUrl'
                         control={control}
                         render={({ field }) => (
                             <ImageBox
-                                value={recipeDetail?.imageUrl} onChange={field.onChange} />
+                                value={field.value} onChange={field.onChange} />
                         )} />
 
-                    <SelectBox
-                        label='カテゴリー'
-                        defaultValue={recipeDetail?.category.id.toString()}
-                        options={categoryOptions}
-                        {...register('categoryId')} />
+                    <Controller
+                        name='categoryId'
+                        control={control}
+                        defaultValue=''
+                        render={({ field }) => (
+                            <SelectBox
+                                label='カテゴリー'
+                                defaultValue={field.value}
+                                options={categoryOptions}
+                                onChange={field.onChange}
+                                error={!!formErrors?.categoryId}
+                                helperText={formErrors?.categoryId?.message} />
+                        )} />
 
                     <Stack direction='row' gap={4}>
                         <TextBox
                             label='保存期間'
+                            type='text'
                             width='50%'
                             {...register('shelfLife')}
                             error={!!formErrors?.shelfLife}
@@ -87,16 +95,12 @@ export default function RecipeEditForm({
                             label='カロリー'
                             width='50%'
                             {...register('calories')}
-                            endAdornment='kcal'
-                            error={!!formErrors?.calories}
-                            helperText={formErrors?.calories?.message} />
+                            endAdornment='kcal' />
                     </Stack>
 
                     <TextBox
                         label='材料'
                         {...register('ingredients')}
-                        error={!!formErrors?.ingredients}
-                        helperText={formErrors?.ingredients?.message}
                         multiline
                         rows={5} />
 

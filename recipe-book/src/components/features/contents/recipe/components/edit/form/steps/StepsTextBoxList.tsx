@@ -4,8 +4,7 @@ import TextBox from '@/components/ui/form/input/TextBox';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Divider, Grow, InputLabel, Paper, Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, Box, Divider, Fade, InputLabel, Paper, Stack, Typography } from '@mui/material';
 import { Control, Controller, useFieldArray } from 'react-hook-form';
 
 /**
@@ -22,15 +21,6 @@ export default function StepsTextBoxList({
         name: 'steps'
     });
 
-    // マウント状態管理
-    const [mounted, setMounted] = useState(false);
-
-    // 初期マウント時にアニメーションを有効化
-    useEffect(() => {
-        const timer = setTimeout(() => setMounted(true), 0);
-        return () => clearTimeout(timer);
-    }, []);
-
     return (
         <Paper component={Stack} elevation={0} position='relative'
             sx={{ py: 2, px: 3, alignItems: 'start', justifyContent: 'center', border: '1px solid #ccc' }}>
@@ -43,7 +33,7 @@ export default function StepsTextBoxList({
             <Stack alignItems='start' sx={{ width: '100%' }} gap={2}>
                 {fields.map((field, index) => (
                     <Box key={field.id} sx={{ width: '100%' }}>
-                        <Grow in={mounted} timeout={300}>
+                        <Fade in={true} timeout={300}>
                             <Stack direction='row' gap={3} sx={{ width: '100%', my: 1 }}>
                                 <Avatar
                                     sx={{ bgcolor: 'primary.main', width: 30, height: 30, mt: 2 }}>
@@ -60,7 +50,8 @@ export default function StepsTextBoxList({
                                                 size='small'
                                                 {...field}
                                                 multiline
-                                                rows={3} />
+                                                rows={3}
+                                                ariaLabel={`手順${index + 1}`} />
                                         } />
 
                                     <Accordion disableGutters
@@ -81,7 +72,8 @@ export default function StepsTextBoxList({
                                                         size='small'
                                                         {...field}
                                                         multiline
-                                                        rows={4} />
+                                                        rows={4}
+                                                        ariaLabel={`調味料${index + 1}`} />
                                                 } />
                                         </AccordionDetails>
                                     </Accordion>
@@ -91,12 +83,12 @@ export default function StepsTextBoxList({
                                     icon={<CloseIcon fontSize='inherit' />}
                                     size='small'
                                     color='ui'
-                                    ariaLabel='行を削除'
+                                    ariaLabel={`手順${index + 1}を削除`}
                                     onClick={() => {
                                         if (fields.length > 1) remove(index);
                                     }} />
                             </Stack>
-                        </Grow>
+                        </Fade>
                         <Divider sx={{ width: '100%' }} />
                     </Box>
                 ))}
@@ -104,7 +96,7 @@ export default function StepsTextBoxList({
                 <IconButton
                     icon={<AddIcon fontSize='inherit' />}
                     sx={{ ms: 1 }}
-                    ariaLabel='行を追加'
+                    ariaLabel='手順を追加'
                     onClick={() => append({ id: 0, text: '', seasonings: '' })} />
             </Stack>
         </Paper>

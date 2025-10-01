@@ -1,30 +1,48 @@
-import { RecipeDetailResponse, RecipeSummaryResponse } from '@/types/entity';
-import { RecipeDetail, RecipeIngredient, RecipeSummary, StepSummary } from '@/types/viewModel';
+import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
+import { RecipeDetailResponse, RecipeSummaryResponse, RecipeUpdateRequest } from '@/types/entity';
+import { RecipeDetail, RecipeIngredient, RecipeStepSummary, RecipeSummary } from '@/types/viewModel';
+import { RecipeSeasoning } from '@prisma/client';
 
+/**
+ * レシピ概要変換
+ * 
+ * DBから取得したレシピデータをレシピ概要へ変換します。
+ * 
+ * @param recipe レシピ
+ * @param visible 表示状態
+ * @returns レシピ概要
+ */
 export function toRecipeSummary(
     recipe: RecipeSummaryResponse,
     visible: boolean
 ): RecipeSummary {
-
     return {
-        ...recipe,
+        id: recipe.id,
+        name: recipe.name,
         imageUrl: getFullImageUrl(recipe.imageUrl),
         category: recipe.category,
         calories: recipe.calories ?? undefined,
         shelfLife: recipe.shelfLife ?? undefined,
-        keywords: [
-            recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []
-        ],
+        keywords: [recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []],
         visible
     }
 }
 
+/**
+ * レシピ詳細変更
+ * 
+ * DBから取得したレシピデータをレシピ詳細へ変換します。
+ * 
+ * @param recipe レシピ
+ * @returns レシピ詳細
+ */
 export function toRecipeDetail(
     recipe: RecipeDetailResponse
 ): RecipeDetail {
-
     return {
-        ...recipe,
+        id: recipe.id,
+        name: recipe.name,
+        category: recipe.category,
         imageUrl: getFullImageUrl(recipe.imageUrl),
         calories: recipe.calories ?? undefined,
         shelfLife: recipe.shelfLife ?? undefined,
@@ -33,22 +51,51 @@ export function toRecipeDetail(
     }
 }
 
-/**
- * 画像のURLを取得
- * 
- * 画像のフルURLから、画像のURLを取得します。
- * 
- * @param imgUrl 画像のURL
- * @returns 画像のURL
- */
-export function stripFullImageUrl(imgUrl: string | undefined): string | undefined {
-    const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
+export function toRecipeRequest(
+    recipe: RecipeFormInput
+): RecipeUpdateRequest {
 
-    if (!imgUrl) {
-        return undefined;
+    const ingredients = recipe.ingredients.split('\n').map((i, idx) => ({
+        id: `${String(recipe.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
+        recipeId: recipe.id,
+        name: i.split(' ')[0],
+        volume: i.split(' ')[1]
+    }))
+
+    const seasonings: { stepId: number, items: RecipeSeasoning[] }[] = [];
+    const steps = recipe.steps.map((step, idx) => {
+        const items = step.seasonings?.split('\n').map((s, idx) => ({
+            stepId: step.id,
+            items: {
+                id: `${String(recipe.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
+                name: s.split(' ')[0],
+                volume: s.split(' ')[1]
+            }
+        }))
+
+        seasonings.push({ stepId: step.id ?? 0, items: items ?? [] })
+        return {
+            id: step.id ?? 0,
+            recipeId: recipe.id,
+            stepNumber: idx + 1,
+            text: step.text
+        }
+    })
+
+    return {
+        id: recipe.id,
+        recipe: {
+            id: recipe.id,
+            name: recipe.name,
+            categoryId: parseInt(recipe.categoryId),
+            imageUrl: stripFullImageUrl(recipe.imageUrl),
+            calories: recipe.calories ?? null,
+            shelfLife: recipe.shelfLife ?? null,
+        },
+        ingredients,
+        steps,
+        seasonings: seasonings.items.length > 0 ? seasonings : undefined,
     }
-
-    return imgUrl.startsWith(BASE_URL) ? imgUrl.slice(BASE_URL.length) : imgUrl;
 }
 
 
@@ -73,6 +120,24 @@ function getFullImageUrl(imgUrl: string | undefined | null): string {
     } else {
         return `${BASE_URL}${NO_IMG_URL}`
     }
+}
+
+/**
+ * 画像のURLを取得
+ * 
+ * 画像のフルURLから、画像のURLを取得します。
+ * 
+ * @param imgUrl 画像のURL
+ * @returns 画像のURL
+ */
+function stripFullImageUrl(imgUrl: string | undefined): string | null {
+    const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
+
+    if (!imgUrl) {
+        return null;
+    }
+
+    return imgUrl.startsWith(BASE_URL) ? imgUrl.slice(BASE_URL.length) : imgUrl;
 }
 
 /**
@@ -101,15 +166,26 @@ function formatIngredients(recipe: RecipeDetailResponse): RecipeIngredient[] {
  * 
  * @param recipe レシピ
  */
-function formatSteps(recipe: RecipeDetailResponse): StepSummary[] {
+function formatSteps(recipe: RecipeDetailResponse): RecipeStepSummary[] {
     return recipe.steps
         .sort((a, b) => a.stepNumber - b.stepNumber)
-        .map(step => ({
-            ...step,
-            seasonings: step.seasonings?.sort((a, b) => {
+        .map(step => {
+
+            const seasonings = step.seasonings?.sort((a, b) => {
                 const orderA = Number(a.id.slice(-2));
                 const orderB = Number(b.id.slice(-2));
                 return orderA - orderB;
-            })
-        }));
+            }).map(s => ({
+                id: s.id,
+                name: s.name,
+                volume: s.volume ?? undefined
+            }))
+
+            return {
+                id: step.id,
+                stepNumber: step.stepNumber,
+                text: step.text,
+                seasonings
+            }
+        });
 }

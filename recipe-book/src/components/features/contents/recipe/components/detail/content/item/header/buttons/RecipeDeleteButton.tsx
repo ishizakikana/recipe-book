@@ -1,26 +1,38 @@
 'use client'
 
 import IconButton from '@/components/ui/button/IconButton';
-import Modal from '@/components/ui/dialog/FormDialog';
+import DeleteDialog from '@/components/ui/dialog/DeleteDialog';
 import { useDialog } from '@/hooks/useDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { DialogContent, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+
+// TODO 削除処理
 
 /**
  * レシピ削除ボタン
  */
 export default function RecipeDeleteButton({
     recipeId,
-    recipeName
+    recipeName,
+    onDelete,
 }: {
     recipeId: number
     recipeName: string
+    onDelete?: () => boolean
 }) {
     const router = useRouter();
     const { open, onOpen, onClose } = useDialog();
 
     // 削除ボタンクリックイベント
+    const onDeleteButtonClick = () => {
+        const result = onDelete?.();
+
+        if (result) {
+            onClose();
+        } else {
+
+        }
+    }
 
     return (
         <>
@@ -33,15 +45,11 @@ export default function RecipeDeleteButton({
                 tipOffset={[0, -8]}
                 onClick={onOpen} />
 
-            <Modal
+            <DeleteDialog
                 open={open}
-                title='レシピ削除'
-                onClose={onClose}>
-
-                <DialogContent>
-                    <Typography variant='body1'>{recipeName} を削除しますか?</Typography>
-                </DialogContent>
-            </Modal>
+                target={recipeName}
+                onDeleteButtonClick={onDeleteButtonClick}
+                onClose={onClose} />
         </>
     )
 }

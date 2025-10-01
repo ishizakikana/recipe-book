@@ -1,5 +1,14 @@
 import { useState } from 'react';
 
+/**
+ * メニュー開閉状態管理カスタムフック
+ * 
+ * @returns
+ *  open: メニュー開閉状態
+ *  anchorEl: メニューのアンカー要素
+ *  onOpen: メニューを開く関数
+ *  onClose: メニューを閉じる関数 
+ */
 export default function useMenu() {
 
     // 開閉状態管理

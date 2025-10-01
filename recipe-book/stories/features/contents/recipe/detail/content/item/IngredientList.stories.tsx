@@ -60,8 +60,9 @@ export const Empty: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const ingredient = await canvas.findAllByRole('listitem', { name: 'ingredients-item' });
 
-        expect(ingredient).toHaveLength(0);
+        // 材料リストが存在しないこと
+        const ingredients = await canvas.queryAllByRole('listitem', { name: 'ingredients-item' });
+        expect(ingredients).toHaveLength(0);
     }
 }

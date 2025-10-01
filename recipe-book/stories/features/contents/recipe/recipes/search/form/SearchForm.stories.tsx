@@ -1,11 +1,14 @@
 import SearchForm from '@/components/features/contents/recipe/components/recipes/search/form/SearchForm';
-import { RecipeContext } from '@/components/features/contents/recipe/providers/RecipeContextProvider';
+import RecipeContextProvider from '@/components/features/contents/recipe/providers/RecipeContextProvider';
 import { RecipeSearchInput } from '@/components/features/contents/recipe/types/search';
 import { RecipeCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
+
+const mockSetFormValue = fn();
 
 const mockCategories: RecipeCategory[] = [
     { id: 1, name: '主食', icon: '', color: '' },
@@ -14,7 +17,7 @@ const mockCategories: RecipeCategory[] = [
 ]
 
 const meta: Meta<typeof SearchForm> = {
-    title: 'Features/Recipe/List/Search/Form/SearchForm',
+    title: 'Features/Recipe/Recipes/Search/Form/SearchForm',
     component: SearchForm,
     parameters: {
         docs: {
@@ -25,9 +28,9 @@ const meta: Meta<typeof SearchForm> = {
     },
     decorators: [
         (Story) => (
-            <RecipeContext.Provider value={{ recipes: [], recipeCategories: mockCategories, setRecipes: () => { } }} >
+            <RecipeContextProvider initialRecipes={[]} recipeCategories={mockCategories} >
                 {Story()}
-            </RecipeContext.Provider >
+            </RecipeContextProvider >
         )
     ],
     argTypes: {
@@ -48,7 +51,7 @@ const meta: Meta<typeof SearchForm> = {
     },
     args: {
         form: { keyword: '', categoryIds: [] },
-        setFormValue: () => { }
+        setFormValue: mockSetFormValue
     }
 }
 
@@ -68,24 +71,17 @@ export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
-        const keywordInput = canvas.getByLabelText('キーワード') as HTMLInputElement;
+        // 表示・入力確認
+        const keywordInput = canvas.getByRole('textbox', { name: 'キーワード' });
+        expect(keywordInput).toBeInTheDocument();
         await userEvent.type(keywordInput, 'テスト');
-        expect(keywordInput.value).toBe('テスト');
+        expect(keywordInput).toHaveValue('テスト');
 
-        const categoryCheckboxes = mockCategories.map(c =>
-            canvas.getByLabelText(c.name) as HTMLInputElement
-        );
-
-        // チェック
-        for (const checkbox of categoryCheckboxes) {
-            await userEvent.click(checkbox);
-            expect(checkbox.checked).toBe(true);
-        }
-
-        // チェック解除
-        for (const checkbox of categoryCheckboxes) {
-            await userEvent.click(checkbox);
-            expect(checkbox.checked).toBe(false);
-        }
+        const checkbox1 = canvas.getByRole('checkbox', { name: mockCategories[0].name });
+        expect(checkbox1).toBeInTheDocument();
+        await userEvent.click(checkbox1);
+        expect(checkbox1).toBeChecked();
+        await userEvent.click(checkbox1);
+        expect(checkbox1).not.toBeChecked();
     },
 }

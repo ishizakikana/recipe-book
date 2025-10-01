@@ -1,10 +1,12 @@
 import SearchAccordion from '@/components/features/contents/recipe/components/recipes/search/SearchAccordion';
-import { RecipeContext } from '@/components/features/contents/recipe/providers/RecipeContextProvider';
+import RecipeContextProvider from '@/components/features/contents/recipe/providers/RecipeContextProvider';
 import { RecipeCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
+import { waitFor } from '@testing-library/react';
 import { fn } from 'storybook/test';
+'@/components/features/contents/recipe/providers/RecipeContextProvider';
 
 const mockCategories: RecipeCategory[] = [
     { id: 1, name: '主食', icon: '', color: '' },
@@ -15,7 +17,7 @@ const mockCategories: RecipeCategory[] = [
 const mockSetFormValue = fn();
 
 const meta: Meta<typeof SearchAccordion> = {
-    title: 'Features/Recipe/List/Search/SearchAccordion',
+    title: 'Features/Recipe/Recipes/Search/SearchAccordion',
     component: SearchAccordion,
     parameters: {
         docs: {
@@ -26,9 +28,9 @@ const meta: Meta<typeof SearchAccordion> = {
     },
     decorators: [
         (Story) => (
-            <RecipeContext.Provider value={{ recipes: [], recipeCategories: mockCategories, setRecipes: () => { } }} >
+            <RecipeContextProvider initialRecipes={[]} recipeCategories={mockCategories} >
                 {Story()}
-            </RecipeContext.Provider >
+            </RecipeContextProvider >
         )
     ],
     argTypes: {
@@ -37,7 +39,7 @@ const meta: Meta<typeof SearchAccordion> = {
             description: 'storybookテスト用',
             table: {
                 category: '_',
-                defaultValue: { summary: 'useRecipeSearchForm' }
+                defaultValue: { summary: '_' }
             }
         }
     }
@@ -50,19 +52,24 @@ export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
+        // アコーディオン展開
         const button = canvas.getByRole('button');
         await userEvent.click(button);
 
+        // 表示確認
         const input = await canvas.findByRole('textbox', { name: 'キーワード' });
         expect(input).toBeInTheDocument();
 
+        // アコーディオン折りたたみ
         await userEvent.click(button);
+        await waitFor(() => expect(input).not.toBeVisible());
     },
     args: {
         useRecipeSearchForm: () => ({
             form: { keyword: '', categoryIds: [] },
             isSearch: false,
-            setFormValue: mockSetFormValue
+            setFormValue: mockSetFormValue,
+            search: () => { }
         })
     }
 }
@@ -79,7 +86,8 @@ export const Expanded: Story = {
         useRecipeSearchForm: () => ({
             form: { keyword: 'test', categoryIds: [1] },
             isSearch: true,
-            setFormValue: mockSetFormValue
+            setFormValue: mockSetFormValue,
+            search: () => { }
         })
     }
 }

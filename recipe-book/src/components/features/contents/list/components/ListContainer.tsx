@@ -14,8 +14,8 @@ export default function ListContainer({
     propError,
     propSetError
 }: {
-    propError: string | null,
-    propSetError: Dispatch<SetStateAction<string | null>>
+    propError?: string | null,
+    propSetError?: Dispatch<SetStateAction<string | null>>
 }) {
 
     // スマホ判定

@@ -3,6 +3,7 @@ import DeleteDialog from '@/components/ui/dialog/DeleteDialog';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor } from '@storybook/testing-library';
+import { within } from '@testing-library/react';
 import { useState } from 'react';
 import { disableAllArgTypes } from '../../__utils__/utils';
 
@@ -31,6 +32,13 @@ const meta: Meta<typeof DeleteDialog> = {
             table: {
                 category: 'status',
                 defaultValue: { summary: 'false' }
+            }
+        },
+        onDeleteButtonClick: {
+            control: false,
+            description: '削除ボタンクリックイベント',
+            table: {
+                category: 'event'
             }
         },
         onClose: {
@@ -85,162 +93,41 @@ export const Default: Story = {
                 <DeleteDialog
                     {...args}
                     open={open}
-                    onClose={() => setOpen(false)}>
-                    {args.children}
-                </DeleteDialog>
+                    onClose={() => setOpen(false)} />
             </>
         );
     },
     play: async ({ canvasElement }) => {
-        const canvas = canvasElement as HTMLElement;
-        const button = canvas.querySelector('button');
+        const canvas = within(canvasElement);
 
-        await userEvent.click(button!);
+        // ダイアログ表示
+        const openButton = canvas.getByRole('button', { name: 'open' });
+        await userEvent.click(openButton);
+        const dialog = await screen.findByRole('dialog');
 
+        // ダイアログ非表示（キャンセルボタン）
         const cancelButton = screen.getByRole('button', { name: 'キャンセル' });
         await userEvent.click(cancelButton);
         await waitFor(() => {
-            expect(screen.queryByText('Modal')).not.toBeVisible();
+            expect(dialog).not.toBeVisible();
         });
 
-        await userEvent.click(button!);
+        // ダイアログ非表示（背景クリック）
+        await userEvent.click(openButton);
         const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
         if (backdrop) {
             await userEvent.click(backdrop);
         }
         await waitFor(() => {
-            expect(screen.queryByText('Modal')).not.toBeVisible();
+            expect(dialog).not.toBeVisible();
         });
 
-        await userEvent.click(button!);
+        // ダイアログ非表示（Escキー）
+        await userEvent.click(openButton);
         await userEvent.keyboard('{Escape}');
         await waitFor(() => {
-            expect(screen.queryByText('Modal')).not.toBeVisible();
+            expect(dialog).not.toBeVisible();
         });
-    }
-}
-
-export const ReadOnly: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: '読み取り専用モーダル'
-            },
-            source: {
-                code: `
-                import { useState } from 'react';
-                import Button from '@/components/ui/button/button/Button';
-                import Modal from '@/components/ui/dialog/Modal';
-
-                const [open, setOpen] = useState(false);
-
-                return (
-                    <>
-                        <Button onClick={() => setOpen(true)}>open</Button>
-
-                        <Modal 
-                            open={open} 
-                            title='Read Only Modal'
-                            hasSubmitButton={false}
-                            hasCancelButton={false}
-                            onClose={() => setOpen(false)}>
-                            read only content
-                        </Modal>
-                    </>
-                );
-                `.trim(),
-            }
-        }
-    },
-    render: () => {
-        const [open, setOpen] = useState(false);
-
-        return (
-            <>
-                <Button onClick={() => setOpen(true)}>open</Button>
-                <DeleteDialog
-                    open={open}
-                    title='Read Only Modal'
-                    hasSubmitButton={false}
-                    hasCancelButton={false}
-                    onClose={() => setOpen(false)}>
-                    read only content
-                </DeleteDialog>
-            </>
-        );
-    },
-    argTypes: disableAllArgTypes<ModalArgs>(meta.argTypes)
-}
-
-export const Blocking: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'バックドロップクリックとEscキーを無効にしたモーダル'
-            },
-            source: {
-                code: `
-                import { useState } from 'react';
-                import Button from '@/components/ui/button/button/Button';
-                import Modal from '@/components/ui/dialog/Modal';
-
-                const [open, setOpen] = useState(false);
-
-                return (
-                    <>
-                        <Button onClick={() => setOpen(true)}>open</Button>
-
-                        <Modal 
-                            open={open} 
-                            title='Blocking Modal'
-                            disableBackDropClick
-                            disableEscapeKeyDown
-                            onClose={() => setOpen(false)}>
-                            blocking content
-                        </Modal>
-                    </>
-                );
-                `.trim(),
-            }
-        }
-    },
-    render: () => {
-        const [open, setOpen] = useState(false);
-        return (
-            <>
-                <Button onClick={() => setOpen(true)}>open</Button>
-                <DeleteDialog
-                    open={open}
-                    title='Blocking Modal'
-                    disableBackDropClick
-                    disableEscapeKeyDown
-                    onClose={() => setOpen(false)}>
-                    blocking content
-                </DeleteDialog>
-            </>
-        );
-    },
-    argTypes: disableAllArgTypes<ModalArgs>(meta.argTypes),
-    play: async ({ canvasElement }) => {
-        const canvas = canvasElement as HTMLElement;
-        const button = canvas.querySelector('button');
-
-        await userEvent.click(button!);
-
-        const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
-        if (backdrop) {
-            await userEvent.click(backdrop);
-        }
-        expect(screen.queryByText('Blocking Modal')).toBeInTheDocument();
-
-        await userEvent.keyboard('{Escape}');
-        expect(screen.queryByText('Blocking Modal')).toBeInTheDocument();
-
-        const cancelButton = screen.getByRole('button', { name: 'キャンセル' });
-        await userEvent.click(cancelButton);
-
-        await new Promise(resolve => setTimeout(resolve, 500));
-        expect(screen.queryByText('Blocking Modal')).not.toBeInTheDocument();
     }
 }
 
@@ -254,7 +141,7 @@ export const Loading: Story = {
                 code: `
                 import { useState } from 'react';
                 import Button from '@/components/ui/button/button/Button';
-                import Modal from '@/components/ui/dialog/Modal';
+                import DeleteDialog from '@/components/ui/dialog/DeleteDialog';
 
                 const [open, setOpen] = useState(false);
 
@@ -262,13 +149,11 @@ export const Loading: Story = {
                     <>
                         <Button onClick={() => setOpen(true)}>open</Button>
 
-                        <Modal 
+                        <DeleteDialog 
                             open={open} 
-                            title='Loading Modal'
+                            target='コンテンツ'
                             loading
-                            onClose={() => setOpen(false)}>
-                            loading content
-                        </Modal>
+                            onClose={() => setOpen(false)} />
                     </>
                 );
                 `.trim(),
@@ -282,11 +167,9 @@ export const Loading: Story = {
                 <Button onClick={() => setOpen(true)}>open</Button>
                 <DeleteDialog
                     open={open}
-                    title='Loading Modal'
+                    target='コンテンツ'
                     loading
-                    onClose={() => setOpen(false)}>
-                    loading content
-                </DeleteDialog>
+                    onClose={() => setOpen(false)} />
             </>
         );
     },

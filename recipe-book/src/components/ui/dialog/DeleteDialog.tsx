@@ -1,7 +1,7 @@
 import Button from '@/components/ui/button/Button';
 import IconButton from '@/components/ui/button/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { ReactNode } from 'react';
 
@@ -12,11 +12,13 @@ export default function DeleteDialog({
     open,
     target,
     loading,
+    onDeleteButtonClick,
     onClose
 }: {
     open: boolean;
     target?: ReactNode;
     loading?: boolean;
+    onDeleteButtonClick?: () => void;
     onClose?: () => void;
 }) {
 
@@ -27,8 +29,7 @@ export default function DeleteDialog({
                 color={'ui.contrastText'}
                 display={'flex'}
                 alignItems={'center'}
-                justifyContent={'space-between'}
-            >
+                justifyContent={'space-between'}>
                 削除
                 <IconButton
                     color={'ui'}
@@ -36,8 +37,10 @@ export default function DeleteDialog({
                     onClick={onClose} />
             </DialogTitle>
 
-            <DialogContent sx={{ mt: 2 }}>
-                {target}を削除しますか?
+            <DialogContent sx={{ mx: 3, my: 4, p: 0 }}>
+                <Typography variant='body1'>
+                    {target} を削除しますか?
+                </Typography>
             </DialogContent>
 
             <DialogActions
@@ -51,9 +54,10 @@ export default function DeleteDialog({
 
                 <Button
                     variant='text'
-                    type='submit'
+                    color='error'
+                    onClick={onDeleteButtonClick}
                     loading={loading}>
-                    登録
+                    削除
                 </Button>
             </DialogActions>
         </Dialog>
