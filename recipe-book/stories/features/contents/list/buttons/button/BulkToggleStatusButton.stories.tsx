@@ -1,5 +1,6 @@
 import BulkToggleStatusButton from '@/components/features/contents/list/components/buttons/button/BulkToggleStatusButton';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Stack } from '@mui/material';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
@@ -13,6 +14,13 @@ const mockUpdateAll = fn(async (isDone, onFinally) => {
 const meta: Meta<typeof BulkToggleStatusButton> = {
     title: 'Features/List/Buttons/Button/BulkToggleStatusButton',
     component: BulkToggleStatusButton,
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
+                <Story />
+            </ListContextProvider>
+        )
+    ],
     decorators: [
         (Story) => (
             <ListContextProvider listCategories={[]} initialListItems={[]}>
@@ -59,6 +67,7 @@ export const Desktop: Story = {
             },
             source: {
                 code: '<BulkToggleStatusButton />'
+                code: '<BulkToggleStatusButton />'
             }
         }
     },
@@ -81,6 +90,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
+                code: '<BulkToggleStatusButton mobile />'
                 code: '<BulkToggleStatusButton mobile />'
             }
         }
@@ -108,6 +118,7 @@ export const MarkAsDone: Story = {
             },
             source: {
                 code: '<BulkToggleStatusButton markAsDone />'
+                code: '<BulkToggleStatusButton markAsDone />'
             }
         }
     },
@@ -129,6 +140,7 @@ export const MarkAsUnDone: Story = {
                 story: '未完了状態に切り替え'
             },
             source: {
+                code: '<BulkToggleStatusButton />'
                 code: '<BulkToggleStatusButton />'
             }
         }

@@ -7,7 +7,8 @@ import { action } from 'storybook/internal/actions';
 import { fn } from 'storybook/test';
 
 const mockItem = { id: 1, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false };
-const mockUpdate = fn((id: number, isDone: boolean, onFinally: () => void) => {
+
+const mockUpdate = fn(async (id: number, isDone: boolean, onFinally: () => void) => {
     setTimeout(() => { onFinally(); }, 1000);
     action('update')(id, isDone);
 });

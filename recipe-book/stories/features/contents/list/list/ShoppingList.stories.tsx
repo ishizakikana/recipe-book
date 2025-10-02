@@ -28,7 +28,6 @@ const meta: Meta<typeof ShoppingList> = {
             }
         }
     },
-
 }
 
 export default meta;

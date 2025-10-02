@@ -7,6 +7,7 @@ const mockRecipe: RecipeDetail = {
     id: 1,
     name: 'レシピ1',
     categoryId: 1,
+    categoryId: 1,
     category: { id: 1, name: '主食', icon: '', color: '' },
     imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
     shelfLife: '冷蔵保存3日',

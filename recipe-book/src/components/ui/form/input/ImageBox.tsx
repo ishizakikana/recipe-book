@@ -9,10 +9,12 @@ import { useDropzone } from 'react-dropzone';
 export default function ImageBox({
     value,
     defaultImage,
+    ariaLabel,
     onChange
 }: {
     value?: string
     defaultImage?: string
+    ariaLabel?: string
     onChange?: (value: string) => void
 }) {
     const [preview, setPreview] = useState<string | null>(value ?? defaultImage ?? null);
@@ -36,7 +38,7 @@ export default function ImageBox({
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: { 'image/*': [] },
-        multiple: false
+        multiple: false,
     });
 
     return (
@@ -52,7 +54,7 @@ export default function ImageBox({
                 transition: 'background-color 0.2s',
             }}
         >
-            <input {...getInputProps()} />
+            <input {...getInputProps()} aria-label={ariaLabel} />
             <Stack spacing={2} alignItems="center">
                 {preview ? (
                     <Image src={preview} alt="Preview" width={200} height={200} style={{ objectFit: 'contain' }} />

@@ -9,7 +9,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box, Stack } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { ItemFormInput } from '../../../types/itemFormInput';
-import ListButton from './ListButton';
 
 // TODO カテゴリの選択をアイテム名から推測して自動でできるといい
 

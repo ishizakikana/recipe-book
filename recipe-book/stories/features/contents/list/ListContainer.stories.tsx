@@ -19,7 +19,7 @@ const meta: Meta<typeof ListContainer> = {
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={[]} initialListItems={[]}>
+            <ListContextProvider listCategories={mockListCategories} initialListItems={mockListItems}>
                 <Stack width='100%' height='100%'>
                     <Stack py={3} justifyContent='center' alignItems='center'>
                         <Story />
@@ -111,6 +111,17 @@ export const Empty: Story = {
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+                <Stack width='100%' height='100%'>
+                    <Stack py={3} justifyContent='center' alignItems='center'>
+                        <Story />
+                    </Stack>
+                </Stack>
+            </ListContextProvider>
+        )
+    ],
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
         const addButton = await canvas.findByRole('button', { name: '項目を追加' });
@@ -138,7 +149,7 @@ export const Error: StoryObj<typeof ListContainer> = {
         const canvas = within(canvasElement);
 
         // スナックバーの表示確認
-        const snackbar = canvas.getByText('通信エラーが発生しました');
+        const snackbar = canvas.getByText('エラーが発生しました');
         expect(snackbar).toBeInTheDocument();
 
         await new Promise(resolve => setTimeout(resolve, 1000));

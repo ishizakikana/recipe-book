@@ -14,19 +14,26 @@ const meta: Meta<typeof IngredientList> = {
     title: 'Features/Recipe/Detail/Content/Item/IngredientList',
     component: IngredientList,
     parameters: {
+        layout: 'fullscreen',
         docs: {
             source: {
                 code: '<IngredientList ingredients={ingredients} />'
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <Box sx={{ px: 6, py: 2 }}>
+                <Story />
+            </Box>
+        ),
+    ],
     argTypes: {
         ingredients: {
             control: false,
             description: '材料リスト',
             table: {
-                category: 'data',
-                type: { summary: '{ id: number, name: string, volume: string | null }[]' }
+                category: 'data'
             }
         }
     },

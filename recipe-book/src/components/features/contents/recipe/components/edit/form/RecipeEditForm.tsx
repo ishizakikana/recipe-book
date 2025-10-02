@@ -66,7 +66,7 @@ export default function RecipeEditForm({
                         control={control}
                         render={({ field }) => (
                             <ImageBox
-                                value={field.value} onChange={field.onChange} />
+                                value={recipeDetail?.imageUrl} ariaLabel='レシピ画像' onChange={field.onChange} />
                         )} />
 
                     <Controller

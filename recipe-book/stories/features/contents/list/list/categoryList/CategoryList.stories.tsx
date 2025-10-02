@@ -1,5 +1,6 @@
 import CategoryList from '@/components/features/contents/list/components/list/categoryList/CategoryList';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Box, Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
@@ -22,6 +23,7 @@ const meta: Meta<typeof CategoryList> = {
         layout: 'fullscreen',
         docs: {
             source: {
+                code: '<CategoryList category={category} items={items} />'
                 code: '<CategoryList category={category} items={items} />'
             }
         }

@@ -25,6 +25,13 @@ export function useRecipes() {
     }
 
     return {
-        update
+        update: async (data: RecipeFormInput) => {
+            const result = await updateData(data);
+            updateState(result);
+        },
+        delete: async (id: number) => {
+            await deleteData(id);
+            deleteState(id);
+        }
     }
 }

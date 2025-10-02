@@ -56,7 +56,12 @@ export function useRecipesActions() {
         return result;
     }
 
+    const deleteData = async (id: number): Promise<void> => {
+        await apiPost('/recipe/delete', { id });
+    }
+
     return {
-        updateData
+        updateData,
+        deleteData
     }
 }

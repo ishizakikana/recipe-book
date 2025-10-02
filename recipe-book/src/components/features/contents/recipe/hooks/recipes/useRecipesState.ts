@@ -17,7 +17,13 @@ export function useRecipesState() {
         setRecipeSummaries(prev => prev.map(r => r.id === recipe.id ? { ...r, ...recipeSummary } : r));
     }
 
+    const deleteState = (id: number) => {
+        setRecipeSummaries(prev => prev.filter(r => r.id !== id));
+        setRecipeDetail(null);
+    }
+
     return {
-        updateState
+        updateState,
+        deleteState
     }
 }

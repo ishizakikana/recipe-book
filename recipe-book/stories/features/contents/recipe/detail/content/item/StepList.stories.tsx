@@ -7,6 +7,7 @@ import { within } from '@testing-library/react';
 
 const mockSteps: StepSummary[] = [
     { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [], recipeId: 1 },
+    { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [], recipeId: 1 },
     {
         id: 2, stepNumber: 2, text: 'レシピ手順2', seasonings: [
             { id: '00010201', name: '塩', volume: '少々' },
@@ -14,6 +15,7 @@ const mockSteps: StepSummary[] = [
         ],
         recipeId: 1
     },
+    { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [], recipeId: 1 },
     { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [], recipeId: 1 },
 ]
 

@@ -1,10 +1,10 @@
-import ListButton from '@/components/features/contents/list/components/buttons/button/ListButton';
+import ListButton from '@/components/ui/button/ListButton';
 import AddIcon from '@mui/icons-material/Add';
 import { Stack } from '@mui/material';
 import { Meta, StoryObj } from "@storybook/nextjs";
 
 const meta: Meta<typeof ListButton> = {
-    title: 'Features/List/Buttons/Button/ListButton',
+    title: 'UI/Button/ListButton',
     component: ListButton,
     argTypes: {
         children: {

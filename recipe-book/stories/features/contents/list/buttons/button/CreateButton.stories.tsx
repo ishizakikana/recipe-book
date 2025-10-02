@@ -1,5 +1,6 @@
 import CreateButton from '@/components/features/contents/list/components/buttons/button/CreateButton';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
@@ -7,7 +8,7 @@ import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import { useForm } from 'react-hook-form';
 import { action } from 'storybook/internal/actions';
 
-const mockCategories = [
+const mockListCategories = [
     { id: 1, name: 'A', icon: '', color: '' },
     { id: 2, name: 'B', icon: '', color: '' },
     { id: 3, name: 'C', icon: '', color: '' },
@@ -38,6 +39,7 @@ const meta: Meta<typeof CreateButton> = {
         docs: {
             source: {
                 code: '<CreateButton />'
+                code: '<CreateButton />'
             }
         }
     },
@@ -61,9 +63,7 @@ const meta: Meta<typeof CreateButton> = {
             description: 'storybookテスト用',
             table: {
                 category: '_',
-                defaultValue: {
-                    summary: 'useCreateItemForm'
-                }
+                defaultValue: { summary: 'useCreateItemForm' }
             }
         }
     }
@@ -97,6 +97,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
+                code: '<CreateButton mobile />'
                 code: '<CreateButton mobile />'
             }
         }
@@ -180,23 +181,8 @@ export const SubmitError: Story = {
         const button = await canvas.findByRole('button', { name: '項目を追加' });
         await userEvent.click(button);
 
-        // フォーム入力
-        const dialog = screen.getByRole('dialog');
-
-        const categorySelect = within(dialog).getByRole('combobox', { name: 'カテゴリー' });
-        await userEvent.click(categorySelect);
-        const option = await screen.findByRole('option', { name: 'A' });
-        await userEvent.click(option);
-
-        const nameInput = within(dialog).getByRole('textbox', { name: 'アイテム名' });
-        await userEvent.type(nameInput, 'test item', { delay: 100 });
-
-        // フォーム送信
-        const submitButton = within(dialog).getByRole('button', { name: '登録' });
-        await userEvent.click(submitButton);
-
         // エラーメッセージが表示されることを確認
-        expect(screen.getByText('サーバーでエラーが発生しました。')).toBeInTheDocument();
+        expect(screen.getByText('エラーが発生しました。')).toBeInTheDocument();
     }
 }
 

@@ -14,6 +14,7 @@ const mockRecipe: RecipeDetail = {
     id: 1,
     name: 'レシピ1',
     categoryId: 1,
+    categoryId: 1,
     category: { id: 1, name: '主食', icon: '', color: '' },
     imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
     shelfLife: '冷蔵保存3日',
@@ -69,89 +70,90 @@ const meta: Meta<typeof RecipeDetailDialog> = {
     ],
     argTypes: {
         initialValue: {
-            control: false,
-            description: 'レシピ初期情報',
-            table: {
-                category: 'data',
-                type: { summary: 'RecipeDetail' }
+            initialValue: {
+                control: false,
+                description: 'レシピ初期情報',
+                table: {
+                    category: 'data',
+                    type: { summary: 'RecipeDetail' }
+                }
+            },
+            useRecipeModal: {
+                control: false,
+                description: 'Storybookテスト用',
+                table: {
+                    category: '-',
+                }
+            },
+            useRecipeContext: {
+                control: false,
+                description: 'Storybookテスト用',
+                table: {
+                    category: '-',
+                }
             }
         },
-        useRecipeModal: {
-            control: false,
-            description: 'Storybookテスト用',
-            table: {
-                category: '-',
-            }
-        },
-        useRecipeContext: {
-            control: false,
-            description: 'Storybookテスト用',
-            table: {
-                category: '-',
-            }
+        args: {
+            initialValue: mockRecipe,
+            useRecipeModal: mockUseRecipeModal,
         }
-    },
-    args: {
-        initialValue: mockRecipe,
-        useRecipeModal: mockUseRecipeModal,
     }
-}
 
 export default meta;
-type Story = StoryObj<typeof RecipeDetailDialog>
+    type Story = StoryObj<typeof RecipeDetailDialog>
 
 export const Default: Story = {
-    play: async () => {
+        play: async () => {
 
-        // コンテキストの値と初期値の id が一致するとき、コンテキストの値を変更しない
-        expect(mockSetRecipeDetail).not.toHaveBeenCalled();
+            // コンテキストの値と初期値の id が一致するとき、コンテキストの値を変更しない
+            expect(mockSetRecipeDetail).not.toHaveBeenCalled();
 
-        // ダイアログ非表示処理が呼び出されたかどうか
-        const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
-        if (backdrop) {
-            await userEvent.click(backdrop);
-        } else {
-            throw new Error('Backdrop not found');
+            // ダイアログ非表示処理が呼び出されたかどうか
+            const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
+            if (backdrop) {
+                await userEvent.click(backdrop);
+            } else {
+                throw new Error('Backdrop not found');
+            }
+
+            expect(mockOnClose).toHaveBeenCalled();
         }
-
-        expect(mockOnClose).toHaveBeenCalled();
     }
-}
 
 export const Loading: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: 'ローディング'
+        parameters: {
+            docs: {
+                description: {
+                    story: 'ローディング'
+                }
             }
-        }
-    },
-    args: {
-        initialValue: mockRecipe,
-        useRecipeModal: mockUseRecipeModal,
-        useRecipeContext: () => ({
-            ...mockRecipeContext,
-            recipeDetail: {
-                id: 999,
-                name: 'レシピ1',
-                categoryId: 0,
-                category: { id: 0, name: '主食', icon: '', color: '' },
-                imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
-                shelfLife: '冷蔵保存3日',
-                calories: 100,
-                ingredients: [],
-                steps: []
-            }
-        })
-    },
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        const loading = await canvas.findByRole('progressbar');
+        },
+        args: {
+            initialValue: mockRecipe,
+            useRecipeModal: mockUseRecipeModal,
+            useRecipeContext: () => ({
+                ...mockRecipeContext,
+                recipeDetail: {
+                    id: 999,
+                    name: 'レシピ1',
+                    categoryId: 0,
+                    category: { id: 0, name: '主食', icon: '', color: '' },
+                    imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
+                    shelfLife: '冷蔵保存3日',
+                    calories: 100,
+                    ingredients: [],
+                    steps: []
+                }
+            })
+        },
+        play: async ({ canvasElement }) => {
+            const canvas = within(canvasElement);
+            const loading = await canvas.findByRole('progressbar');
 
-        // 表示チェック
-        expect(loading).toBeInTheDocument();
+            // 表示チェック
+            expect(loading).toBeInTheDocument();
 
-        // コンテキストの値と初期値の id が一致しないとき、コンテキストの値を変更する
-        expect(mockSetRecipeDetail).toHaveBeenCalled();
-    },
-}
+            // コンテキストの値と初期値の id が一致しないとき、コンテキストの値を変更する
+            expect(mockSetRecipeDetail).toHaveBeenCalled();
+        },
+    }

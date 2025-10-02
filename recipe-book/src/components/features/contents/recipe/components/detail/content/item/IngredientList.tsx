@@ -1,5 +1,6 @@
 import { RecipeIngredient } from '@/types/viewModel';
 import { Box, Divider, List, ListItem, Typography } from '@mui/material';
+import { RecipeIngredient } from '@prisma/client';
 
 /**
  * 材料リスト
