@@ -1,5 +1,8 @@
-import { RecipeCategory, RecipeIngredient } from '@prisma/client'
-import { StepSummary } from './viewModel'
+import { Recipe, RecipeCategory, RecipeIngredient, RecipeSeasoning, RecipeStep } from '@prisma/client'
+
+//
+// response
+//
 
 export type RecipeSummaryResponse = {
     id: number
@@ -21,15 +24,25 @@ export type RecipeDetailResponse = {
     shelfLife: string | null
     category: RecipeCategory
     ingredients: RecipeIngredient[]
-    steps: StepSummary[]
+    steps: RecipeStepSummaryResponse[]
 }
 
-export type RecipeUpdateResponse = {
+export type RecipeStepSummaryResponse = {
     id: number
-    name: string
-    categoryId: number
-    imageUrl: string | null
-    calories: number | null
-    shelfLife: string | null
-    category: RecipeCategory
+    recipeId: number
+    stepNumber: number
+    text: string
+    seasonings: RecipeSeasoning[]
+}
+
+//
+// request
+//
+
+export type RecipeUpdateRequest = {
+    id: number
+    recipe: Recipe
+    ingredients: RecipeIngredient[]
+    steps: RecipeStep[],
+    seasonings: { stepId: number, items: RecipeSeasoning[] | undefined }
 }

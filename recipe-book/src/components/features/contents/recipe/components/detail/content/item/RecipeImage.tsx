@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import Image from 'next/image';
 
 /**
@@ -13,12 +12,7 @@ export default function RecipeImage({
 }) {
 
     return (
-        <Box sx={{
-            position: 'relative', minHeight: 250,
-            width: { xs: '100%', sm: '60%', md: '40%', lg: '30%' }
-        }}>
-            <Image src={imageUrl} alt={`${recipeName}の画像`} fill
-                style={{ borderRadius: '5px', objectFit: 'cover' }} />
-        </Box>
+        <Image src={imageUrl} alt={`${recipeName}の画像`} fill
+            style={{ borderRadius: '5px', objectFit: 'cover' }} />
     )
 }

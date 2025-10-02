@@ -1,14 +1,7 @@
 import DesktopListButtons from '@/components/features/contents/list/components/buttons/DesktopListButtons';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
-import { ListCategory } from '@prisma/client';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, within } from '@storybook/testing-library';
-
-const mockListCategories: ListCategory[] = [
-    { id: 1, name: 'A', icon: '', color: '' },
-    { id: 2, name: 'B', icon: '', color: '' },
-    { id: 3, name: 'C', icon: '', color: '' },
-]
 
 const meta: Meta<typeof DesktopListButtons> = {
     title: 'Features/List/Buttons/DesktopListButtons',
@@ -16,17 +9,18 @@ const meta: Meta<typeof DesktopListButtons> = {
     parameters: {
         docs: {
             source: {
-                code: '<DesktopListButtons />'
+                code: `<DesktopListButtons />
+                    `.trim()
             }
         }
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
                 <Story />
-            </ListContextProvider >
+            </ListContextProvider>
         )
-    ]
+    ],
 }
 
 export default meta;

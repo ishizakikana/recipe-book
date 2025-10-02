@@ -1,21 +1,22 @@
 'use client'
+import ListButton from '@/components/ui/button/ListButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
-import ListButton from '../../../../../../ui/button/ListButton';
-import { useItemList as defaultUseItemList } from '../../../hooks/useItemList';
+import { useItemList } from '../../../hooks/itemList/useItemList';
 
 /**
  * 削除ボタン
  */
 export default function DeleteButton({
     mobile = false,
-    useItemList = defaultUseItemList
+    propDeleteAll
 }: {
-    mobile?: boolean
-    useItemList?: typeof defaultUseItemList
+    mobile?: boolean,
+    propDeleteAll?: (onFinally: () => void) => Promise<void>
 }) {
 
-    const { deleteAll } = useItemList();
+    const { deleteAll: contextDeleteAll } = useItemList();
+    const deleteAll = propDeleteAll ?? contextDeleteAll;
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

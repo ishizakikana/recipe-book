@@ -1,8 +1,11 @@
 import MenuLinks from '@/components/features/common/header/components/menu/items/MenuLinks';
-import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
+import { action } from 'storybook/internal/actions';
+import { expect, fn } from 'storybook/test';
 import { mockPush } from '../../../../../__mocks__/router';
+
+const mockOnClose = fn(async () => { action('onClose')() });
 
 const meta: Meta<typeof MenuLinks> = {
     title: 'Features/Common/Header/Menu/Items/MenuLinks',

@@ -1,7 +1,5 @@
 import RecipeEditCard from '@/components/features/contents/recipe/components/edit/RecipeEditCard';
 import RecipeContextProvider from '@/components/features/contents/recipe/providers/RecipeContextProvider';
-import { RecipeDetail, RecipeSummary } from '@/types/viewModel';
-import { RecipeCategory } from '@prisma/client';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
 const mockRecipeCategories: RecipeCategory[] = [
@@ -62,30 +60,17 @@ const meta: Meta<typeof RecipeEditCard> = {
     parameters: {
         docs: {
             source: {
-                code: '<RecipeEditCard recipe={recipe} />'
+                code: '<RecipeEditCard />'
             }
         },
     },
     decorators: [
         (Story) => (
-            <RecipeContextProvider recipeCategories={mockRecipeCategories} initialRecipes={mockRecipes}>
+            <RecipeContextProvider initialRecipes={[]} recipeCategories={[]}>
                 <Story />
             </RecipeContextProvider>
         )
     ],
-    argTypes: {
-        recipe: {
-            control: false,
-            description: 'レシピ情報',
-            table: {
-                category: 'data',
-                type: { summary: 'RecipeDetail' }
-            }
-        }
-    },
-    args: {
-        recipe: mockRecipe
-    }
 }
 
 

@@ -1,15 +1,8 @@
 import MobileListButtons from '@/components/features/contents/list/components/buttons/MobileListButtons';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
-import { ListCategory } from '@prisma/client';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
-
-const mockListCategories: ListCategory[] = [
-    { id: 1, name: 'A', icon: '', color: '' },
-    { id: 2, name: 'B', icon: '', color: '' },
-    { id: 3, name: 'C', icon: '', color: '' },
-]
 
 const meta: Meta<typeof MobileListButtons> = {
     title: 'Features/List/Buttons/MobileListButtons',
@@ -17,17 +10,17 @@ const meta: Meta<typeof MobileListButtons> = {
     parameters: {
         docs: {
             source: {
-                code: '<MobileListButtons  />'
+                code: '<MobileListButtons />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
                 <Story />
-            </ListContextProvider >
+            </ListContextProvider>
         )
-    ]
+    ],
 }
 
 export default meta;

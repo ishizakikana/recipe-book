@@ -19,6 +19,7 @@ export default function ListButton({
     onClick: MouseEventHandler<HTMLElement> | undefined
 }) {
 
+    // モバイル
     if (mobile) return (
         <MenuItem dense onClick={onClick}>
             <ListItemIcon>
@@ -28,6 +29,7 @@ export default function ListButton({
         </MenuItem>
     )
 
+    // デスクトップ
     return (
         <Button
             variant="outlined"

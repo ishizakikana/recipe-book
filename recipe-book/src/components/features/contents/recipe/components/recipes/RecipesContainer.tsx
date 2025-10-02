@@ -1,13 +1,17 @@
 'use client'
-import RecipeSummaryCard from '@/components/features/contents/recipe/components/recipes/RecipeSummaryCard';
+import RecipeSummaryCard from '@/components/features/contents/recipe/components/recipes/card/RecipeSummaryCard';
 import SearchAccordion from '@/components/features/contents/recipe/components/recipes/search/SearchAccordion';
 import { Box, Grid } from '@mui/material';
-import { useRecipeContext } from '../../hooks/useRecipeContext';
+import { useRecipeContext as defaultUseRecipeContext } from '../../hooks/useRecipeContext';
 
 /**
  * レシピ一覧コンテナ
  */
-export default function RecipesContainer() {
+export default function RecipesContainer({
+    useRecipeContext = defaultUseRecipeContext
+}: {
+    useRecipeContext?: typeof defaultUseRecipeContext
+}) {
 
     const { recipeSummaries } = useRecipeContext();
 

@@ -24,6 +24,7 @@ export default function TextBox({
     rows,
     startAdornment,
     endAdornment,
+    ariaLabel,
     ref,
     onChange
 }: {
@@ -45,6 +46,7 @@ export default function TextBox({
     rows?: string | number
     startAdornment?: ReactNode | string | number
     endAdornment?: ReactNode | string | number
+    ariaLabel?: string
     ref?: Ref<HTMLInputElement>
     onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
 }) {
@@ -75,8 +77,12 @@ export default function TextBox({
                 slotProps={{
                     input: {
                         readOnly: readOnly,
+                    },
+                    htmlInput: {
+                        "aria-label": ariaLabel
                     }
                 }}
+
                 onChange={onChange} />
         )
     } else {
@@ -112,11 +118,15 @@ export default function TextBox({
                     disabled={disabled}
                     size={size}
                     fullWidth
+                    aria-label={ariaLabel}
                     slotProps={{
                         input: {
                             readOnly: readOnly,
                             startAdornment: adornments.start,
                             endAdornment: adornments.end,
+                        },
+                        htmlInput: {
+                            "aria-label": ariaLabel
                         }
                     }}
                     {...inputProps} />

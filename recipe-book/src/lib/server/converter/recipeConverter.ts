@@ -1,34 +1,124 @@
-import { RecipeDetailResponse, RecipeSummaryResponse } from '@/types/entity';
-import { RecipeDetail, RecipeSummary, StepSummary } from '@/types/viewModel';
-import { RecipeIngredient } from '@prisma/client';
+import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
+import { RecipeDetailResponse, RecipeSummaryResponse, RecipeUpdateRequest } from '@/types/entity';
+import { RecipeDetail, RecipeIngredient, RecipeStepSummary, RecipeSummary } from '@/types/viewModel';
+import { RecipeSeasoning } from '@prisma/client';
 
+/**
+ * レシピ概要変換
+ * 
+ * DBから取得したレシピデータをレシピ概要へ変換します。
+ * 
+ * @param recipe レシピ
+ * @param visible 表示状態
+ * @returns レシピ概要
+ */
 export function toRecipeSummary(
     recipe: RecipeSummaryResponse,
     visible: boolean
 ): RecipeSummary {
-
     return {
-        ...recipe,
+        id: recipe.id,
+        name: recipe.name,
         imageUrl: getFullImageUrl(recipe.imageUrl),
         category: recipe.category,
-        keywords: [
-            recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []
-        ],
+        calories: recipe.calories ?? undefined,
+        shelfLife: recipe.shelfLife ?? undefined,
+        keywords: [recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []],
         visible
     }
 }
 
+/**
+ * レシピ詳細変更
+ * 
+ * DBから取得したレシピデータをレシピ詳細へ変換します。
+ * 
+ * @param recipe レシピ
+ * @returns レシピ詳細
+ */
 export function toRecipeDetail(
     recipe: RecipeDetailResponse
 ): RecipeDetail {
+    return {
+        id: recipe.id,
+        name: recipe.name,
+        category: recipe.category,
+        imageUrl: getFullImageUrl(recipe.imageUrl),
+        calories: recipe.calories ?? undefined,
+        shelfLife: recipe.shelfLife ?? undefined,
+        ingredients: formatIngredients(recipe),
+        steps: formatSteps(recipe)
+    }
+}
 
-    // 並び替え
-    sortIngredients(recipe.ingredients);
-    sortSteps(recipe.steps);
+export function toRecipeRequest(
+    recipe: RecipeFormInput
+): RecipeUpdateRequest {
+
+    const ingredients = recipe.ingredients.split('\n').map((i, idx) => ({
+        id: `${String(recipe.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
+        recipeId: recipe.id,
+        name: i.split(' ')[0],
+        volume: i.split(' ')[1]
+    }))
+
+    const seasonings: { stepId: number, items: RecipeSeasoning[] }[] = [];
+    const steps = recipe.steps.map((step, idx) => {
+        const items = step.seasonings?.split('\n').map((s, idx) => ({
+            stepId: step.id,
+            items: {
+                id: `${String(recipe.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
+                name: s.split(' ')[0],
+                volume: s.split(' ')[1]
+            }
+        }))
+
+        seasonings.push({ stepId: step.id ?? 0, items: items ?? [] })
+        return {
+            id: step.id ?? 0,
+            recipeId: recipe.id,
+            stepNumber: idx + 1,
+            text: step.text
+        }
+    })
 
     return {
-        ...recipe,
-        imageUrl: getFullImageUrl(recipe.imageUrl)
+        id: recipe.id,
+        recipe: {
+            id: recipe.id,
+            name: recipe.name,
+            categoryId: parseInt(recipe.categoryId),
+            imageUrl: stripFullImageUrl(recipe.imageUrl),
+            calories: recipe.calories ?? null,
+            shelfLife: recipe.shelfLife ?? null,
+        },
+        ingredients,
+        steps,
+        seasonings: seasonings.items.length > 0 ? seasonings : undefined,
+    }
+}
+
+
+//
+// private
+// 
+
+/**
+ * 画像のフルURL取得
+ * 
+ * 引数が undefined のとき、no_image.png の URL を返します。
+ * 
+ * @param imgUrl 画像のURL
+ * @returns 画像のフルURL
+ */
+function getFullImageUrl(imgUrl: string | undefined | null): string {
+    const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
+    const NO_IMG_URL = 'no_image.png';
+
+    if (imgUrl) {
+        return `${BASE_URL}${imgUrl}`
+    } else {
+        return `${BASE_URL}${NO_IMG_URL}`
     }
 }
 
@@ -40,7 +130,7 @@ export function toRecipeDetail(
  * @param imgUrl 画像のURL
  * @returns 画像のURL
  */
-export function stripFullImageUrl(imgUrl: string | null): string | null {
+function stripFullImageUrl(imgUrl: string | undefined): string | null {
     const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
 
     if (!imgUrl) {
@@ -50,47 +140,52 @@ export function stripFullImageUrl(imgUrl: string | null): string | null {
     return imgUrl.startsWith(BASE_URL) ? imgUrl.slice(BASE_URL.length) : imgUrl;
 }
 
-
-//
-// private
-// 
-
 /**
- * 画像のフルURL取得
+ * レシピ材料のフォーマット
  * 
- * 引数が NULL のとき、no_image.png の URL を返します。
+ * idをもとにした並び替えと、null の値を undefined に変更します。
  * 
- * @param imgUrl 画像のURL
- * @returns 画像のフルURL
+ * @param recipe レシピ
  */
-function getFullImageUrl(imgUrl: string | null): string {
-    const BASE_URL = 'https://res.cloudinary.com/drf6p5cyv/image/upload/';
-    const NO_IMG_URL = 'no_image.png';
-
-    if (imgUrl) {
-        return `${BASE_URL}${imgUrl}`
-    } else {
-        return `${BASE_URL}${NO_IMG_URL}`
-    }
-}
-
-function sortIngredients(ingredients: RecipeIngredient[]) {
-    ingredients.sort((a, b) => {
+function formatIngredients(recipe: RecipeDetailResponse): RecipeIngredient[] {
+    return recipe.ingredients.sort((a, b) => {
         const orderA = Number(a.id.slice(-2));
         const orderB = Number(b.id.slice(-2));
         return orderA - orderB;
-    })
+    }).map(i => ({
+        ...i,
+        volume: i.volume ?? undefined
+    }))
 }
 
-function sortSteps(steps: StepSummary[]) {
-    steps
+/**
+ * レシピ手順リストのフォーマット
+ * 
+ * レシピ手順リスト・調味料リストの並び替えを行います。
+ * レシピ手順リストは stepNumber をもとに、調味料リストは id をもとに並び替えを行います。
+ * 
+ * @param recipe レシピ
+ */
+function formatSteps(recipe: RecipeDetailResponse): RecipeStepSummary[] {
+    return recipe.steps
         .sort((a, b) => a.stepNumber - b.stepNumber)
-        .map(step => ({
-            ...step,
-            seasonings: step.seasonings?.sort((a, b) => {
+        .map(step => {
+
+            const seasonings = step.seasonings?.sort((a, b) => {
                 const orderA = Number(a.id.slice(-2));
                 const orderB = Number(b.id.slice(-2));
                 return orderA - orderB;
-            })
-        }));
+            }).map(s => ({
+                id: s.id,
+                name: s.name,
+                volume: s.volume ?? undefined
+            }))
+
+            return {
+                id: step.id,
+                stepNumber: step.stepNumber,
+                text: step.text,
+                seasonings
+            }
+        });
 }

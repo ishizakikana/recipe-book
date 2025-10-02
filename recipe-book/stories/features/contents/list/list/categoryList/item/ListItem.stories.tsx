@@ -1,21 +1,17 @@
 import ListItem from '@/components/features/contents/list/components/list/categoryList/item/ListItem';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { userEvent, within } from '@storybook/testing-library';
+import { action } from 'storybook/internal/actions';
 import { fn } from 'storybook/test';
 
 const mockItem = { id: 1, name: '豚肉', volume: '200g', categoryId: 2, recipeName: null, isDone: false };
 
 const mockUpdate = fn(async (id: number, isDone: boolean, onFinally: () => void) => {
     setTimeout(() => { onFinally(); }, 1000);
-})
-
-const mockUseItemList = () => ({
-    create: fn(),
-    update: mockUpdate,
-    updateAll: fn(),
-    deleteAll: fn(),
-})
+    action('update')(id, isDone);
+});
 
 const meta: Meta<typeof ListItem> = {
     title: 'Features/List/List/Category/Item/ListItem',
@@ -23,28 +19,32 @@ const meta: Meta<typeof ListItem> = {
     parameters: {
         docs: {
             source: {
-                code: '<ListItem item={item}/>'
+                code: '<ListItem item={item} />'
             }
         }
     },
+    decorators: [
+        (Story) => (
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
+                <Story />
+            </ListContextProvider>
+        )
+    ],
     argTypes: {
         item: {
             control: false,
             description: 'リストアイテム',
             table: { category: 'data' }
         },
-        useItemList: {
+        propUpdate: {
             control: false,
             description: 'storybookテスト用',
-            table: {
-                category: '_',
-                defaultValue: { summary: 'useItemList' }
-            }
+            table: { category: '-' }
         }
     },
     args: {
         item: mockItem,
-        useItemList: mockUseItemList
+        propUpdate: mockUpdate
     }
 };
 

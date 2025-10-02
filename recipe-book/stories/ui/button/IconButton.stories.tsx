@@ -1,8 +1,14 @@
 import IconButton from '@/components/ui/button/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { userEvent } from '@storybook/testing-library';
+import { within } from '@testing-library/react';
+import { fn } from 'storybook/internal/test';
 import { disableAllArgTypes } from '../../__utils__/utils';
+
+const mockOnClick = fn();
 
 const meta: Meta<typeof IconButton> = {
     title: 'UI/Button/IconButton',
@@ -139,6 +145,15 @@ export const Default: Story = {
                 `.trim()
             }
         }
+    },
+    args: {
+        onClick: mockOnClick,
+    },
+    play: async ({ args, canvasElement }) => {
+        const canvas = within(canvasElement);
+        const button = canvas.getByRole('button');
+        await userEvent.click(button);
+        expect(args.onClick).toHaveBeenCalled();
     }
 };
 

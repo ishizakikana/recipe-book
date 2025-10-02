@@ -1,24 +1,25 @@
-import { CategorizedItem } from "@/components/features/contents/list/types/itemFormInput";
+import { CategorizedItem } from '@/components/features/contents/list/types/categorizedItem';
 import { getDoneIds, getUndoneIds } from "@/components/features/contents/list/utils/itemStatus";
 
+const mockData: CategorizedItem[] = [
+    {
+        category: { id: 1, name: 'A', icon: '', color: '' },
+        items: [
+            { id: 1, name: 'アイテム1', volume: '100', recipeName: 'レシピ1', categoryId: 1, isDone: true },
+            { id: 2, name: 'アイテム2', volume: '200', recipeName: 'レシピ2', categoryId: 1, isDone: false },
+        ],
+    },
+    {
+        category: { id: 2, name: 'B', icon: '', color: '' },
+        items: [
+            { id: 3, name: 'アイテム3', volume: '300', recipeName: 'レシピ3', categoryId: 2, isDone: true },
+            { id: 4, name: 'アイテム4', volume: '400', recipeName: 'レシピ4', categoryId: 2, isDone: false },
+            { id: 5, name: 'アイテム5', volume: '500', recipeName: 'レシピ5', categoryId: 2, isDone: true },
+        ],
+    },
+];
+
 describe('itemStatus utils', () => {
-    const mockData: CategorizedItem[] = [
-        {
-            category: { id: 1, name: 'A', icon: '', color: '' },
-            items: [
-                { id: 1, name: 'アイテム1', volume: '100', recipeName: 'レシピ1', categoryId: 1, isDone: true },
-                { id: 2, name: 'アイテム2', volume: '200', recipeName: 'レシピ2', categoryId: 1, isDone: false },
-            ],
-        },
-        {
-            category: { id: 2, name: 'B', icon: '', color: '' },
-            items: [
-                { id: 3, name: 'アイテム3', volume: '300', recipeName: 'レシピ3', categoryId: 2, isDone: true },
-                { id: 4, name: 'アイテム4', volume: '400', recipeName: 'レシピ4', categoryId: 2, isDone: false },
-                { id: 5, name: 'アイテム5', volume: '500', recipeName: 'レシピ5', categoryId: 2, isDone: true },
-            ],
-        },
-    ];
 
     describe('getDoneIds', () => {
 

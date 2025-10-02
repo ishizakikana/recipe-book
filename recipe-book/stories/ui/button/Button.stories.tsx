@@ -1,8 +1,13 @@
 import Button from '@/components/ui/button/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
+import { userEvent, within } from '@storybook/testing-library';
+import { fn } from 'storybook/internal/test';
 import { disableAllArgTypes } from '../../__utils__/utils';
+
+const mockOnClick = fn();
 
 const meta: Meta<typeof Button> = {
     title: 'UI/Button/Button',
@@ -136,7 +141,8 @@ type ButtonArgs = typeof meta.args;
 
 export const Default: Story = {
     args: {
-        children: 'Button'
+        children: 'Button',
+        onClick: mockOnClick
     },
     parameters: {
         docs: {
@@ -144,6 +150,12 @@ export const Default: Story = {
                 code: '<Button>Button</Button>'
             }
         }
+    },
+    play: async ({ args, canvasElement }) => {
+        const canvas = within(canvasElement);
+        const button = canvas.getByRole('button');
+        await userEvent.click(button);
+        expect(args.onClick).toHaveBeenCalled();
     }
 }
 

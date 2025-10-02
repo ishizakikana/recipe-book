@@ -53,6 +53,11 @@ export async function apiPost<T>(
     return await handleResponse<T>(res);
 }
 
+/**
+ * ベースURL取得
+ * 
+ * @returns ベースURL
+ */
 function getBaseUrl(): string {
 
     // クライアント

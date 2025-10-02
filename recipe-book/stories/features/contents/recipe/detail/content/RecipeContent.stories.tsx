@@ -7,25 +7,29 @@ const mockRecipe: RecipeDetail = {
     id: 1,
     name: 'レシピ1',
     categoryId: 1,
+    categoryId: 1,
     category: { id: 1, name: '主食', icon: '', color: '' },
     imageUrl: 'https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg',
     shelfLife: '冷蔵保存3日',
     calories: 100,
     ingredients: [
-        { id: '000101', name: '材料1', volume: '100g', recipeId: 1 },
-        { id: '000102', name: '材料2', volume: '200g', recipeId: 1 }
+        { id: '000101', name: 'レシピ材料1', volume: '100g', recipeId: 1 },
+        { id: '000102', name: 'レシピ材料2', volume: '200g', recipeId: 1 },
+        { id: '000103', name: 'レシピ材料3', volume: '300g', recipeId: 1 },
     ],
     steps: [
-        { id: 1, text: '手順1', seasonings: [], stepNumber: 1, recipeId: 1 },
+        { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [], recipeId: 1 },
         {
-            id: 2, text: '手順2', seasonings: [
-                { id: '000201', name: '調味料1', volume: '大さじ1', stepId: 2 },
-                { id: '000202', name: '調味料2', volume: '小さじ2', stepId: 2 }
-            ], stepNumber: 2, recipeId: 1
+            id: 2, stepNumber: 2, text: 'レシピ手順2', seasonings: [
+                { id: '00010201', name: '塩', volume: '少々' },
+                { id: '00010202', name: 'にんにくチューブ', volume: '少々' },
+            ],
+            recipeId: 1
         },
-        { id: 3, text: '手順3', seasonings: [], stepNumber: 3, recipeId: 1 }
+        { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [], recipeId: 1 },
     ]
 }
+
 
 const meta: Meta<typeof RecipeContent> = {
     title: 'Features/Recipe/Detail/Content/RecipeContent',

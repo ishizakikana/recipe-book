@@ -1,0 +1,86 @@
+import { RecipeFormInput, schema } from '@/components/features/contents/recipe/types/edit';
+import { SelectOption } from '@/components/ui/form/SelectBox';
+import { ERROR_MESSAGES } from '@/lib/constants/messages';
+import { RecipeDetail } from '@/types/viewModel';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRecipes } from '../recipes/useRecipes';
+import { useRecipeContext } from '../useRecipeContext';
+
+/**
+ * レシピ編集フォームカスタムフック
+ * 
+ * @param recipe 編集対象レシピ（新規作成時はnull）
+ * @returns 
+ *  control (react-hook-formコントロールオブジェクト)
+ *  categoryOptions (カテゴリセレクトボックスオプション)
+ *  submitError (送信エラーメッセージ)
+ *  formErrors (フォーム入力エラー)
+ *  loading (送信中フラグ)
+ *  onUpdate (レシピ更新処理)
+ */
+export const useRecipeEditForm = (
+    recipe: RecipeDetail | null
+) => {
+
+    const { recipeCategories } = useRecipeContext();
+    const { update } = useRecipes();
+
+    const {
+        register,
+        reset,
+        control,
+        handleSubmit,
+        formState: { errors, isSubmitting }
+    } = useForm<RecipeFormInput>({
+        resolver: zodResolver(schema),
+        defaultValues: {
+            id: recipe?.id,
+            name: recipe?.name,
+            categoryId: recipe?.category.id.toString(),
+            imageUrl: recipe?.imageUrl,
+            shelfLife: recipe?.shelfLife,
+            calories: recipe?.calories,
+            ingredients: recipe?.ingredients.map(i => `${i.name} ${i.volume}`).join('\n'),
+            steps: recipe?.steps?.map(s => ({
+                id: s.id,
+                text: s.text,
+                seasonings: s.seasonings.map(s => `${s.name} ${s.volume}`).join('\n')
+            }))
+        }
+    });
+
+    // エラー管理
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
+    // カテゴリセレクトボックスオプション
+    const categoryOptions: SelectOption[] = recipeCategories.map(c =>
+        ({ label: c.name, value: c.id.toString() })
+    )
+
+    // レシピ更新
+    const onUpdate = async (data: RecipeFormInput) => {
+        try {
+            await update(data);       // データ更新
+            reset();        // 入力値リセット
+            setSubmitError(null); // エラーメッセージクリア
+            return true;
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : ERROR_MESSAGES.UNKNOWN_ERROR;
+            setSubmitError(msg);
+            return false;
+        }
+    }
+
+    return {
+        control,
+        categoryOptions,
+        register,
+        handleSubmit,
+        submitError,
+        formErrors: errors,
+        loading: isSubmitting,
+        onUpdate,
+    }
+}

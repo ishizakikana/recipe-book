@@ -15,6 +15,18 @@ const schema = z.object({
 // 入力型推論
 export type LoginFormInput = z.infer<typeof schema>;
 
+/**
+ * ログインフォームカスタムフック
+ * 
+ * @returns 
+ *  register (react-hook-form登録関数)
+ *  handleSubmit (react-hook-form送信関数)
+ *  onLogin (ログイン処理関数)
+ *  onSubmit (フォーム送信イベント関数)
+ *  submitError (送信エラーメッセージ)
+ *  formErrors (フォーム入力エラー)
+ *  loading (送信中フラグ)
+ */
 export const useLoginForm = () => {
     const router = useRouter();
     const {

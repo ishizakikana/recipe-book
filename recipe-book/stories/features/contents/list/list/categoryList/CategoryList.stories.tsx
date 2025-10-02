@@ -1,5 +1,6 @@
 import CategoryList from '@/components/features/contents/list/components/list/categoryList/CategoryList';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Box, Stack } from '@mui/material';
 import { Meta, StoryObj } from '@storybook/nextjs';
 
@@ -23,6 +24,7 @@ const meta: Meta<typeof CategoryList> = {
         docs: {
             source: {
                 code: '<CategoryList category={category} items={items} />'
+                code: '<CategoryList category={category} items={items} />'
             }
         }
     },
@@ -36,9 +38,8 @@ const meta: Meta<typeof CategoryList> = {
                         </Box>
                     </Stack>
                 </Stack>
-            </ListContextProvider >
-        )
-    ],
+            </ListContextProvider>
+        )],
     argTypes: {
         category: {
             control: false,
@@ -53,7 +54,7 @@ const meta: Meta<typeof CategoryList> = {
             table: {
                 category: 'data'
             }
-        }
+        },
     },
     args: {
         category: mockCategories[0],
@@ -80,8 +81,7 @@ export const Variant: Story = {
                 <CategoryList
                     key={index}
                     category={category}
-                    items={mockItems}
-                />
+                    items={mockItems} />
             ))}
         </Stack>
     )

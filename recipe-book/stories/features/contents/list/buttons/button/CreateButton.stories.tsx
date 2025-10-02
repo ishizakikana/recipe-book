@@ -1,10 +1,12 @@
 import CreateButton from '@/components/features/contents/list/components/buttons/button/CreateButton';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
+import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { screen, userEvent, waitFor, within } from '@storybook/testing-library';
 import { useForm } from 'react-hook-form';
+import { action } from 'storybook/internal/actions';
 
 const mockListCategories = [
     { id: 1, name: 'A', icon: '', color: '' },
@@ -23,7 +25,10 @@ const mockUseCreateItemForm = () => {
         submitError: null,
         errors,
         isSubmitting,
-        onCreate: async () => true
+        onCreate: async (data: ItemFormInput) => {
+            action('create')(data);
+            return true;
+        }
     }
 }
 
@@ -34,14 +39,15 @@ const meta: Meta<typeof CreateButton> = {
         docs: {
             source: {
                 code: '<CreateButton />'
+                code: '<CreateButton />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+            <ListContextProvider listCategories={mockCategories} initialListItems={[]}>
                 <Story />
-            </ListContextProvider >
+            </ListContextProvider>
         )
     ],
     argTypes: {
@@ -91,6 +97,7 @@ export const Mobile: Story = {
                 story: 'モバイル'
             },
             source: {
+                code: '<CreateButton mobile />'
                 code: '<CreateButton mobile />'
             }
         }
@@ -160,7 +167,11 @@ export const SubmitError: Story = {
     args: {
         useCreateItemForm: () => ({
             ...mockUseCreateItemForm(),
-            submitError: 'エラーが発生しました。'
+            submitError: 'サーバーでエラーが発生しました。',
+            onCreate: async (data: ItemFormInput) => {
+                action('create')(data);
+                return false;
+            }
         })
     },
     play: async ({ canvasElement }) => {

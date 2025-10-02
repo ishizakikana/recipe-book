@@ -2,6 +2,7 @@
 import { useListContext } from '@/components/features/contents/list/hooks/useListContext';
 import Snackbar from '@/components/ui/feedback/Snackbar';
 import { Paper, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 import DesktopListButtons from './buttons/DesktopListButtons';
 import MobileListButtons from './buttons/MobileListButtons';
 import ShoppingList from './list/ShoppingList';
@@ -9,13 +10,21 @@ import ShoppingList from './list/ShoppingList';
 /**
  * 買い物リストカード
  */
-export default function ListContainer() {
+export default function ListContainer({
+    propError,
+    propSetError
+}: {
+    propError?: string | null,
+    propSetError?: Dispatch<SetStateAction<string | null>>
+}) {
 
     // スマホ判定
     const theme = useTheme();
     const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const { error, setError } = useListContext();
+    const { error: contextError, setError: contextSetError } = useListContext();
+    const error = propError ?? contextError;
+    const setError = propSetError ?? contextSetError;
 
     return (
         <Paper elevation={5}

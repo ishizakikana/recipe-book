@@ -7,8 +7,6 @@ const mockListCategories = [
     { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
     { id: 2, name: '肉', icon: 'bacon', color: 'red' },
     { id: 3, name: '魚', icon: 'fish', color: 'blue' },
-    { id: 4, name: '乳製品', icon: 'cheese', color: 'orange' },
-    { id: 5, name: '調味料', icon: 'seedling', color: 'brown' },
 ]
 
 const mockListItems = [
@@ -16,7 +14,7 @@ const mockListItems = [
     { id: 2, name: '鮭', volume: '３切れ', categoryId: 3, recipeName: null, isDone: false },
     { id: 3, name: '牛乳', volume: null, categoryId: 4, recipeName: null, isDone: false },
     { id: 4, name: '人参', volume: '2本', categoryId: 1, recipeName: null, isDone: false },
-    { id: 5, name: '玉ねぎ', volume: '1個', categoryId: 1, recipeName: null, isDone: true }
+    { id: 5, name: 'キャベツ', volume: '1玉', categoryId: 1, recipeName: null, isDone: false },
 ]
 
 const meta: Meta<typeof ShoppingList> = {
@@ -30,6 +28,12 @@ const meta: Meta<typeof ShoppingList> = {
             }
         }
     },
+}
+
+export default meta;
+type Story = StoryObj<typeof ShoppingList>;
+
+export const Default: Story = {
     decorators: [
         (Story) => (
             <ListContextProvider listCategories={mockListCategories} initialListItems={mockListItems}>
@@ -38,15 +42,10 @@ const meta: Meta<typeof ShoppingList> = {
                         <Story />
                     </Stack>
                 </Stack>
-            </ListContextProvider >
+            </ListContextProvider>
         )
-    ]
+    ],
 }
-
-export default meta;
-type Story = StoryObj<typeof ShoppingList>;
-
-export const Default: Story = {}
 
 export const Empty: Story = {
     parameters: {
@@ -58,16 +57,13 @@ export const Empty: Story = {
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
+            <ListContextProvider listCategories={[]} initialListItems={[]}>
                 <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
                     <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
                         <Story />
                     </Stack>
                 </Stack>
-            </ListContextProvider >
+            </ListContextProvider>
         )
     ],
-    args: {
-        categorizedItems: []
-    }
 }

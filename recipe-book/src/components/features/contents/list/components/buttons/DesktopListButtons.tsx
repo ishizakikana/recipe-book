@@ -1,5 +1,3 @@
-'use client'
-
 import { ButtonGroup, Stack } from '@mui/material';
 import BulkToggleStatusButton from './button/BulkToggleStatusButton';
 import CreateButton from './button/CreateButton';

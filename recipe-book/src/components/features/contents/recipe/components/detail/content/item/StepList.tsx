@@ -14,7 +14,7 @@ export default function StepList({
         <List>
             {steps.map((step) => (
                 <div key={step.id}>
-                    <ListItem alignItems='flex-start'>
+                    <ListItem alignItems='flex-start' slotProps={{ root: { 'aria-label': 'step-item' } }}>
                         <ListItemAvatar sx={{ mt: 0.4 }}>
                             <Avatar sx={{ width: 30, height: 30, bgcolor: 'primary.main' }}>{step.stepNumber}</Avatar>
                         </ListItemAvatar>
@@ -24,7 +24,7 @@ export default function StepList({
                             {step.seasonings && step.seasonings.length > 0 && (
                                 <List disablePadding>
                                     {step.seasonings.map(seasoning => (
-                                        <ListItem key={seasoning.id} disablePadding component='div'>
+                                        <ListItem key={seasoning.id} disablePadding component='div' slotProps={{ root: { 'aria-label': 'seasoning-item' } }}>
                                             <Typography component='div' fontSize={14}>
                                                 {seasoning.name} - {seasoning.volume}
                                             </Typography>

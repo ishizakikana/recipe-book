@@ -3,17 +3,19 @@ import Loading from '@/app/loading';
 import { RecipeDetail } from '@/types/viewModel';
 import { Box, Divider, Paper, Stack } from '@mui/material';
 import { useEffect } from 'react';
-import { useRecipeContext } from '../../hooks/useRecipeContext';
-import RecipeTitle from './content/item/title/RecipeTitle';
+import { useRecipeContext as defaultUseRecipeContext } from '../../hooks/useRecipeContext';
+import RecipeTitle from './content/item/header/RecipeTitle';
 import RecipeContent from './content/RecipeContent';
 
 /**
  * レシピ詳細カード
  */
 export default function RecipeDetailCard({
-    initialValue
+    initialValue,
+    useRecipeContext = defaultUseRecipeContext
 }: {
     initialValue: RecipeDetail
+    useRecipeContext?: typeof defaultUseRecipeContext
 }) {
 
     const { recipeDetail, setRecipeDetail } = useRecipeContext();

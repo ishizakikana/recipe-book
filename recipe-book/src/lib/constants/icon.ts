@@ -12,6 +12,12 @@ const iconMap = {
     soup: faMugSaucer
 };
 
+/**
+ * アイコン情報取得
+ * 
+ * @param key キー
+ * @returns アイコン情報
+ */
 export const getIcon = (key: string) => {
     if (key in iconMap) {
         return iconMap[key as keyof typeof iconMap];
