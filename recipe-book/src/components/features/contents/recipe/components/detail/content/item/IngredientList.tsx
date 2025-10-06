@@ -1,6 +1,5 @@
 import { RecipeIngredient } from '@/types/viewModel';
 import { Box, Divider, List, ListItem, Typography } from '@mui/material';
-import { RecipeIngredient } from '@prisma/client';
 
 /**
  * 材料リスト
@@ -16,7 +15,8 @@ export default function IngredientList({
     }
 
     return (
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}
+            role='list' aria-label='材料リスト'>
             <List>
                 {ingredients.map(ingredient => (
                     <div key={ingredient.id}>

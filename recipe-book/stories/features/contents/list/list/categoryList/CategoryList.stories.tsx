@@ -1,8 +1,9 @@
 import CategoryList from '@/components/features/contents/list/components/list/categoryList/CategoryList';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
-import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Box, Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { within } from '@testing-library/react';
 
 const mockCategories = [
     { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
@@ -23,7 +24,6 @@ const meta: Meta<typeof CategoryList> = {
         layout: 'fullscreen',
         docs: {
             source: {
-                code: '<CategoryList category={category} items={items} />'
                 code: '<CategoryList category={category} items={items} />'
             }
         }
@@ -65,7 +65,18 @@ const meta: Meta<typeof CategoryList> = {
 export default meta;
 type Story = StoryObj<typeof CategoryList>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        expect(canvas.getByText(mockCategories[0].name)).toBeInTheDocument();
+        mockItems.forEach(item => {
+            expect(canvas.getByText(item.name)).toBeInTheDocument();
+            expect(canvas.getByText(item.volume)).toBeInTheDocument();
+        })
+    }
+}
 
 export const Variant: Story = {
     parameters: {
@@ -84,5 +95,17 @@ export const Variant: Story = {
                     items={mockItems} />
             ))}
         </Stack>
-    )
+    ),
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        mockCategories.forEach(category => {
+            expect(canvas.getByText(category.name)).toBeInTheDocument();
+        })
+        mockItems.forEach(item => {
+            expect(canvas.getAllByText(item.name).length).toBe(mockCategories.length);
+            expect(canvas.getAllByText(item.volume).length).toBe(mockCategories.length);
+        })
+    }
 }

@@ -37,10 +37,10 @@ export const Default: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const button = await canvas.findByRole('button', { 'name': 'ログアウト' });
-
         await userEvent.click(button);
-
         expect(mockLogout).toHaveBeenCalled();
     },
 }

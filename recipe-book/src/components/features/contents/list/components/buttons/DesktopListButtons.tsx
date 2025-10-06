@@ -10,7 +10,7 @@ export default function DesktopListButtons() {
 
     return (
         <Stack width='100%' alignItems='center'>
-            <ButtonGroup variant='outlined'>
+            <ButtonGroup variant='outlined' aria-label='リスト操作ボタン'>
                 <CreateButton />
 
                 {[false, true].map((markAsDone, idx) => (

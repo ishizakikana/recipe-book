@@ -8,11 +8,7 @@ import { ElementType, JSX, ReactNode } from 'react';
 /**
  * フォームモーダル
  */
-<<<<<<<< HEAD:recipe-book/src/components/ui/dialog/FormDialog.tsx
 export default function FormDialog({
-========
-export default function FormModal({
->>>>>>>> 0ff436540f19bbabde4ce06302739be686834fe4:recipe-book/src/components/ui/dialog/FormModal.tsx
     children,
     open,
     title,

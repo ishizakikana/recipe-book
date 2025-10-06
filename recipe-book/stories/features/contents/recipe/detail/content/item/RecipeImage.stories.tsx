@@ -51,8 +51,9 @@ type Story = StoryObj<typeof RecipeImage>
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const image = await canvas.findByRole('img', { name: 'レシピ1の画像' });
 
+        // 表示確認
+        const image = await canvas.findByRole('img', { name: 'レシピ1の画像' });
         expect(image).toBeInTheDocument();
         expect(image).toHaveAttribute('src', expect.stringContaining('https://res.cloudinary.com/drf6p5cyv/image/upload/no_image.jpg'));
     }

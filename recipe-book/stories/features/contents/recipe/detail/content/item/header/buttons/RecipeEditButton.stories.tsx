@@ -11,19 +11,6 @@ const meta: Meta<typeof RecipeEditButton> = {
         docs: {
             source: {
                 code: '<RecipeEditButton recipeId={recipeId} />'
-<<<<<<<< HEAD:recipe-book/stories/features/contents/recipe/detail/content/item/header/buttons/RecipeEditButton.stories.tsx
-            }
-        }
-    },
-    argTypes: {
-        recipeId: {
-            control: false,
-            description: 'レシピID',
-            table: {
-                category: 'props',
-                type: { summary: 'number' }
-========
->>>>>>>> 0ff436540f19bbabde4ce06302739be686834fe4:recipe-book/stories/features/contents/recipe/detail/content/item/title/buttons/RecipeEditButton.stories.tsx
             }
         }
     },
@@ -47,8 +34,9 @@ type Story = StoryObj<typeof RecipeEditButton>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        await userEvent.click(canvas.getByRole('button'));
 
+        // クリック
+        await userEvent.click(canvas.getByRole('button'));
         expect(mockPush).toHaveBeenCalledWith('/recipe/1/edit');
     }
 }

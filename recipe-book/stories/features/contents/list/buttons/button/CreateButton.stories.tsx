@@ -1,6 +1,5 @@
 import CreateButton from '@/components/features/contents/list/components/buttons/button/CreateButton';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
-import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { ItemFormInput } from '@/components/features/contents/list/types/itemFormInput';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
@@ -39,13 +38,12 @@ const meta: Meta<typeof CreateButton> = {
         docs: {
             source: {
                 code: '<CreateButton />'
-                code: '<CreateButton />'
             }
         }
     },
     decorators: [
         (Story) => (
-            <ListContextProvider listCategories={mockCategories} initialListItems={[]}>
+            <ListContextProvider listCategories={mockListCategories} initialListItems={[]}>
                 <Story />
             </ListContextProvider>
         )
@@ -82,9 +80,12 @@ export const Desktop: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリックしてモーダル表示
         const button = await canvas.findByRole('button', { name: '項目を追加' });
         await userEvent.click(button);
 
+        // モーダル非表示
         const closeButton = screen.getByRole('button', { name: 'キャンセル' });
         await userEvent.click(closeButton);
     }
@@ -98,7 +99,6 @@ export const Mobile: Story = {
             },
             source: {
                 code: '<CreateButton mobile />'
-                code: '<CreateButton mobile />'
             }
         }
     },
@@ -107,9 +107,12 @@ export const Mobile: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリックしてモーダル表示
         const button = await canvas.findByText('項目を追加');
         await userEvent.click(button);
 
+        // モーダル非表示
         const closeButton = screen.getByRole('button', { name: 'キャンセル' });
         await userEvent.click(closeButton);
     }
@@ -129,7 +132,7 @@ export const SubmitSuccess: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
-        // モーダル画面を表示
+        // モーダル画面表示
         const button = await canvas.findByRole('button', { name: '項目を追加' });
         await userEvent.click(button);
 
@@ -167,7 +170,7 @@ export const SubmitError: Story = {
     args: {
         useCreateItemForm: () => ({
             ...mockUseCreateItemForm(),
-            submitError: 'サーバーでエラーが発生しました。',
+            submitError: 'エラーが発生しました。',
             onCreate: async (data: ItemFormInput) => {
                 action('create')(data);
                 return false;
@@ -177,7 +180,7 @@ export const SubmitError: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
-        // モーダル画面を表示
+        // モーダル画面表示
         const button = await canvas.findByRole('button', { name: '項目を追加' });
         await userEvent.click(button);
 

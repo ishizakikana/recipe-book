@@ -77,8 +77,8 @@ export const Default: Story = {
         await userEvent.click(accordion);
         await waitFor(() => {
             expect(step1Seasonings).not.toBeVisible();
+            expect(canvas.getAllByRole('textbox').length).toBe(2);
         })
-        expect(canvas.getAllByRole('textbox').length).toBe(2);
 
         // アコーディオン再展開
         await userEvent.click(accordion);

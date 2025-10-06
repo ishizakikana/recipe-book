@@ -1,26 +1,15 @@
+import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
 import { getRequestParams, handleApi } from '@/lib/server/api';
-import { toRecipeDetail } from '@/lib/server/converter/recipeConverter';
 import { recipeRepository } from '@/lib/server/repositories/recipeRepository';
-import { RecipeDetailResponse, RecipeUpdateResponse } from '@/types/entity';
-import { StepSummary } from '@/types/viewModel';
-import { RecipeIngredient } from '@prisma/client';
+import { RecipeDetail } from '@/types/viewModel';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     return handleApi(req, async () => {
-        const { json } = await getRequestParams(req, { requiredParams: ['id', 'data'] });
-        const { id, data } = json as { id: number, data: { recipe: any, ingredients: any[], steps: any[] } };
+        const { json } = await getRequestParams(req, { requiredParams: ['data'] });
+        const { data } = json as { data: RecipeFormInput };
 
-        const recipe: RecipeUpdateResponse = await recipeRepository.updateRecipe(id, data.recipe);
-        const ingredients: RecipeIngredient[] = await recipeRepository.updateIngredients(id, data.ingredients);
-        const steps: StepSummary[] = await recipeRepository.updateSteps(id, data.steps);
-
-        const result: RecipeDetailResponse = {
-            ...recipe,
-            ingredients,
-            steps: steps
-        }
-
-        return NextResponse.json(toRecipeDetail(result), { status: 200 });
+        const result: RecipeDetail = await recipeRepository.update(data);
+        return NextResponse.json(result, { status: 200 });
     })
 }

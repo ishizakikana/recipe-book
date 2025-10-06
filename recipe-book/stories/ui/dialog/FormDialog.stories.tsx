@@ -143,17 +143,20 @@ export const Default: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = canvasElement as HTMLElement;
-        const button = canvas.querySelector('button');
 
-        await userEvent.click(button!);
+        // ダイアログ表示
+        const openButton = canvas.querySelector('button');
+        await userEvent.click(openButton!);
 
+        // ダイアログ非表示（キャンセルボタン）
         const cancelButton = screen.getByRole('button', { name: 'キャンセル' });
         await userEvent.click(cancelButton);
         await waitFor(() => {
             expect(screen.queryByText('Modal')).not.toBeVisible();
         });
 
-        await userEvent.click(button!);
+        // ダイアログ非表示（バックドロップクリック）
+        await userEvent.click(openButton!);
         const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
         if (backdrop) {
             await userEvent.click(backdrop);
@@ -162,7 +165,8 @@ export const Default: Story = {
             expect(screen.queryByText('Modal')).not.toBeVisible();
         });
 
-        await userEvent.click(button!);
+        // ダイアログ非表示（Escキー）
+        await userEvent.click(openButton!);
         await userEvent.keyboard('{Escape}');
         await waitFor(() => {
             expect(screen.queryByText('Modal')).not.toBeVisible();
@@ -273,19 +277,23 @@ export const Blocking: Story = {
     argTypes: disableAllArgTypes<ModalArgs>(meta.argTypes),
     play: async ({ canvasElement }) => {
         const canvas = canvasElement as HTMLElement;
-        const button = canvas.querySelector('button');
 
-        await userEvent.click(button!);
+        // ダイアログ表示
+        const openButton = canvas.querySelector('button');
+        await userEvent.click(openButton!);
 
+        // バックドロップクリックで非表示にならない
         const backdrop = document.querySelector('[class*="MuiBackdrop-root"]');
         if (backdrop) {
             await userEvent.click(backdrop);
         }
         expect(screen.queryByText('Blocking Modal')).toBeInTheDocument();
 
+        // Escキーで非表示にならない
         await userEvent.keyboard('{Escape}');
         expect(screen.queryByText('Blocking Modal')).toBeInTheDocument();
 
+        // キャンセルボタンで非表示
         const cancelButton = screen.getByRole('button', { name: 'キャンセル' });
         await userEvent.click(cancelButton);
 

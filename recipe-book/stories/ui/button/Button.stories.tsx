@@ -154,6 +154,12 @@ export const Default: Story = {
     play: async ({ args, canvasElement }) => {
         const canvas = within(canvasElement);
         const button = canvas.getByRole('button');
+
+        // 表示確認
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveTextContent(String(args.children));
+
+        // クリック
         await userEvent.click(button);
         expect(args.onClick).toHaveBeenCalled();
     }

@@ -37,16 +37,18 @@ export const Default: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // 各リンクをクリック
         const recipeButton = await canvas.findByRole('button', { name: 'レシピ' });
-        const calendarButton = await canvas.findByRole('button', { name: 'カレンダー' });
-        const listButton = await canvas.findByRole('button', { name: '買い物リスト' });
-
         await userEvent.click(recipeButton);
-        await userEvent.click(calendarButton);
-        await userEvent.click(listButton);
-
         expect(mockPush).toHaveBeenCalledWith('/recipe');
+
+        const calendarButton = await canvas.findByRole('button', { name: 'カレンダー' });
+        await userEvent.click(calendarButton);
         expect(mockPush).toHaveBeenCalledWith('/calendar');
+
+        const listButton = await canvas.findByRole('button', { name: '買い物リスト' });
+        await userEvent.click(listButton);
         expect(mockPush).toHaveBeenCalledWith('/list');
 
         expect(mockOnClose).toHaveBeenCalledTimes(3);

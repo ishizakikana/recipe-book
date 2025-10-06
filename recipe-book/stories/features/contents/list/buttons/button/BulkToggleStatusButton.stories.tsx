@@ -1,6 +1,5 @@
 import BulkToggleStatusButton from '@/components/features/contents/list/components/buttons/button/BulkToggleStatusButton';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
-import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Stack } from '@mui/material';
 import { expect } from '@storybook/jest';
 import type { Meta, StoryObj } from '@storybook/nextjs';
@@ -14,13 +13,6 @@ const mockUpdateAll = fn(async (isDone, onFinally) => {
 const meta: Meta<typeof BulkToggleStatusButton> = {
     title: 'Features/List/Buttons/Button/BulkToggleStatusButton',
     component: BulkToggleStatusButton,
-    decorators: [
-        (Story) => (
-            <ListContextProvider listCategories={[]} initialListItems={[]}>
-                <Story />
-            </ListContextProvider>
-        )
-    ],
     decorators: [
         (Story) => (
             <ListContextProvider listCategories={[]} initialListItems={[]}>
@@ -67,16 +59,15 @@ export const Desktop: Story = {
             },
             source: {
                 code: '<BulkToggleStatusButton />'
-                code: '<BulkToggleStatusButton />'
             }
         }
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const button = await canvas.findByRole('button', { name: 'すべて未完了' });
-
         await userEvent.click(button);
-
         expect(mockUpdateAll).toHaveBeenCalledTimes(1);
 
         await new Promise(resolve => setTimeout(resolve, 1100));
@@ -91,7 +82,6 @@ export const Mobile: Story = {
             },
             source: {
                 code: '<BulkToggleStatusButton mobile />'
-                code: '<BulkToggleStatusButton mobile />'
             }
         }
     },
@@ -100,10 +90,10 @@ export const Mobile: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const button = await canvas.findByText('すべて未完了');
-
         await userEvent.click(button);
-
         expect(mockUpdateAll).toHaveBeenCalledTimes(1);
 
         await new Promise(resolve => setTimeout(resolve, 1100));
@@ -117,7 +107,6 @@ export const MarkAsDone: Story = {
                 story: '完了状態に切り替え'
             },
             source: {
-                code: '<BulkToggleStatusButton markAsDone />'
                 code: '<BulkToggleStatusButton markAsDone />'
             }
         }
@@ -140,7 +129,6 @@ export const MarkAsUnDone: Story = {
                 story: '未完了状態に切り替え'
             },
             source: {
-                code: '<BulkToggleStatusButton />'
                 code: '<BulkToggleStatusButton />'
             }
         }

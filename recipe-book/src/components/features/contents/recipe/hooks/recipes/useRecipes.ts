@@ -24,14 +24,13 @@ export function useRecipes() {
         updateState(result);
     }
 
+    const deleteRecipe = async (id: number) => {
+        // await deleteData(id);
+        // deleteState(id);
+    }
+
     return {
-        update: async (data: RecipeFormInput) => {
-            const result = await updateData(data);
-            updateState(result);
-        },
-        delete: async (id: number) => {
-            await deleteData(id);
-            deleteState(id);
-        }
+        update,
+        delete: deleteRecipe
     }
 }

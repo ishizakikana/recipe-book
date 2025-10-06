@@ -1,6 +1,8 @@
 import Alert from '@/components/ui/feedback/Alert';
 import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta } from '@storybook/nextjs';
+import { within } from '@testing-library/react';
 import { disableAllArgTypes } from '../../__utils__/utils';
 
 const meta: Meta<typeof Alert> = {
@@ -52,6 +54,14 @@ export const Default: Story = {
                 `.trim()
             }
         }
+    },
+    play: async ({ args, canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        const alert = canvas.getByText(String(args.children));
+        expect(alert).toBeInTheDocument();
+        expect(alert).toHaveTextContent(String(args.children));
     }
 }
 
@@ -82,4 +92,4 @@ export const Severity: Story = {
         </Stack>
     ),
     argTypes: disableAllArgTypes<AlertArgs>(meta.argTypes)
-};
+}

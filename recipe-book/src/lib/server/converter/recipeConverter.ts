@@ -1,7 +1,6 @@
 import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
 import { RecipeDetailResponse, RecipeSummaryResponse, RecipeUpdateRequest } from '@/types/entity';
 import { RecipeDetail, RecipeIngredient, RecipeStepSummary, RecipeSummary } from '@/types/viewModel';
-import { RecipeSeasoning } from '@prisma/client';
 
 /**
  * レシピ概要変換
@@ -62,25 +61,16 @@ export function toRecipeRequest(
         volume: i.split(' ')[1]
     }))
 
-    const seasonings: { stepId: number, items: RecipeSeasoning[] }[] = [];
-    const steps = recipe.steps.map((step, idx) => {
-        const items = step.seasonings?.split('\n').map((s, idx) => ({
-            stepId: step.id,
-            items: {
-                id: `${String(recipe.id).padStart(4, '0')}${String(idx).padStart(2, '0')}`,      // ex) 000101 レシピID + インデックス
-                name: s.split(' ')[0],
-                volume: s.split(' ')[1]
-            }
+    const steps = recipe.steps.map((s, idx) => ({
+        id: s.id,
+        stepNumber: idx + 1,
+        text: s.text,
+        seasonings: s.seasonings?.split('\n').map((se, sidx) => ({
+            id: `${String(recipe.id).padStart(4, '0')}${String(idx + 1).padStart(2, '0')}${String(sidx).padStart(2, '0')}`,      // ex) 00010101 レシピID + 作業手順ID + インデックス
+            name: se.split(' ')[0],
+            volume: se.split(' ')[1]
         }))
-
-        seasonings.push({ stepId: step.id ?? 0, items: items ?? [] })
-        return {
-            id: step.id ?? 0,
-            recipeId: recipe.id,
-            stepNumber: idx + 1,
-            text: step.text
-        }
-    })
+    }))
 
     return {
         id: recipe.id,
@@ -93,8 +83,7 @@ export function toRecipeRequest(
             shelfLife: recipe.shelfLife ?? null,
         },
         ingredients,
-        steps,
-        seasonings: seasonings.items.length > 0 ? seasonings : undefined,
+        steps
     }
 }
 

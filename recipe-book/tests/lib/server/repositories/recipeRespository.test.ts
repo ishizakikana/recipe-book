@@ -29,7 +29,6 @@ describe('recipeRepository', () => {
             id: 1,
             name: 'test recipe',
             imageUrl: 'test_image',
-            categoryId: 1,
             category: {
                 id: 1,
                 name: 'test category',
@@ -143,6 +142,12 @@ describe('recipeRepository', () => {
                 where: { id: 1 },
                 include: expect.any(Object)
             });
+        })
+    })
+
+    describe('update', () => {
+        test('レシピの更新に成功する', async () => {
+
         })
     })
 })

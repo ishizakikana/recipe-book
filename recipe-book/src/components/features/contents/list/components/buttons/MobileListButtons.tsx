@@ -26,6 +26,8 @@ export default function MobileListButtons() {
             <Menu
                 anchorEl={anchorEl}
                 open={open}
+                role='group'
+                aria-label='リスト操作ボタン'
                 onClose={onClose}>
 
                 <CreateButton mobile />

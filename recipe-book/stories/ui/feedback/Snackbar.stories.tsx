@@ -1,7 +1,9 @@
 import Button from '@/components/ui/button/Button';
 import Snackbar from '@/components/ui/feedback/Snackbar';
 import { Box, Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { within } from '@testing-library/react';
 import { useState } from 'react';
 import { disableAllArgTypes } from '../../__utils__/utils';
 
@@ -85,6 +87,27 @@ export const Default: Story = {
                     onClose={() => setOpen(false)} />
             </Box>
         )
+    },
+    play: async ({ args, canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        const button = canvas.getByRole('button');
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveTextContent('open');
+
+        // スナックバー非表示
+        expect(canvas.queryByText(String(args.message))).not.toBeInTheDocument();
+
+        // ボタンクリックでスナックバー表示
+        await button.click();
+        const snackbar = await canvas.findByText(String(args.message));
+        expect(snackbar).toBeInTheDocument();
+        expect(snackbar).toHaveTextContent(String(args.message));
+
+        // スナックバーが自動で非表示になるのを待つ
+        await new Promise((resolve) => setTimeout(resolve, 6000));
+        expect(canvas.queryByText(String(args.message))).not.toBeInTheDocument();
     }
 }
 

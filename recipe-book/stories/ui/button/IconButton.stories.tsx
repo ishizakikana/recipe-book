@@ -152,6 +152,8 @@ export const Default: Story = {
     play: async ({ args, canvasElement }) => {
         const canvas = within(canvasElement);
         const button = canvas.getByRole('button');
+
+        // クリック
         await userEvent.click(button);
         expect(args.onClick).toHaveBeenCalled();
     }

@@ -17,7 +17,8 @@ module.exports = {
     '!src/**/*.d.ts',
     '!src/**/components/**/*.tsx',
     '!src/**/types/**/*.ts',
-    '!src/lib/emotion.ts'
+    '!src/lib/emotion.ts',
+    '!src/styles/**',
   ],
   coverageReporters: ['text', 'html', 'lcov', 'json'],
   coverageDirectory: 'coverage/jest',

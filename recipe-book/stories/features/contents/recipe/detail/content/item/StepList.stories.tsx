@@ -1,22 +1,19 @@
 import StepList from '@/components/features/contents/recipe/components/detail/content/item/StepList';
-import { StepSummary } from '@/types/viewModel';
+import { RecipeStepSummary } from '@/types/viewModel';
 import { Box } from '@mui/material';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { within } from '@testing-library/react';
 
-const mockSteps: StepSummary[] = [
-    { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [], recipeId: 1 },
-    { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [], recipeId: 1 },
+const mockSteps: RecipeStepSummary[] = [
+    { id: 1, stepNumber: 1, text: 'レシピ手順1', seasonings: [] },
     {
         id: 2, stepNumber: 2, text: 'レシピ手順2', seasonings: [
             { id: '00010201', name: '塩', volume: '少々' },
             { id: '00010202', name: 'にんにくチューブ', volume: '少々' },
         ],
-        recipeId: 1
     },
-    { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [], recipeId: 1 },
-    { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [], recipeId: 1 },
+    { id: 3, stepNumber: 3, text: 'レシピ手順3', seasonings: [] },
 ]
 
 const meta: Meta<typeof StepList> = {
@@ -58,10 +55,15 @@ type Story = StoryObj<typeof StepList>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const steps = await canvas.findAllByRole('listitem', { name: 'step-item' });
-        const seasonings = await canvas.findAllByLabelText('seasoning-item');
 
+        // 表示確認
+        const steps = await canvas.findAllByRole('listitem', { name: 'step-item' });
         expect(steps).toHaveLength(3);
-        expect(seasonings).toHaveLength(2);
+        mockSteps.forEach(step => {
+            expect(canvas.getByText(step.text)).toBeInTheDocument();
+            step.seasonings.forEach(seasoning => {
+                expect(canvas.getByText(`${seasoning.name} - ${seasoning.volume}`)).toBeInTheDocument();
+            });
+        });
     },
 }

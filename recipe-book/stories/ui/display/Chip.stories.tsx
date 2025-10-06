@@ -1,6 +1,8 @@
 import Chip from '@/components/ui/display/Chip';
 import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { within } from '@testing-library/react';
 import { disableAllArgTypes } from '../../__utils__/utils';
 
 const meta: Meta<typeof Chip> = {
@@ -43,6 +45,14 @@ export const Default: Story = {
                 `.trim()
             }
         }
+    },
+    play: async ({ args, canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        const chip = canvas.getByText(args.label);
+        expect(chip).toBeInTheDocument();
+        expect(chip).toHaveTextContent(args.label);
     }
 }
 

@@ -22,10 +22,10 @@ type Story = StoryObj<typeof StartButton>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const button = await canvas.findByRole('button', { name: 'はじめる' });
-
         await userEvent.click(button);
-
         expect(mockPush).toHaveBeenCalledWith('/login');
     }
 }

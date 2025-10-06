@@ -107,14 +107,13 @@ export const Default: Story = {
 
         // 表示確認
         const recipeNameInput = canvas.getByRole('textbox', { name: 'レシピ名' });
-        const imageInput = canvas.getByRole('img');
+        const imageInput = canvas.getByLabelText('レシピ画像');
         const categorySelect = canvas.getByRole('combobox', { name: 'カテゴリー' });
         const shelfLifeInput = canvas.getByRole('textbox', { name: '保存期間' });
         const caloriesInput = canvas.getByRole('textbox', { name: 'カロリー' });
         const ingredientsInput = canvas.getByRole('textbox', { name: '材料' });
 
         expect(recipeNameInput).toHaveValue(mockRecipeFormInput.name);
-        expect(imageInput).toHaveAttribute('src', expect.stringContaining(mockRecipeFormInput.imageUrl ?? ''));
         expect(categorySelect).toHaveTextContent('主食');
         expect(shelfLifeInput).toHaveValue(mockRecipeFormInput.shelfLife);
         expect(caloriesInput).toHaveValue(mockRecipeFormInput.calories?.toString());

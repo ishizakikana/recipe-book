@@ -1,4 +1,4 @@
-import { Recipe, RecipeCategory, RecipeIngredient, RecipeSeasoning, RecipeStep } from '@prisma/client'
+import { Recipe, RecipeCategory, RecipeIngredient, RecipeSeasoning } from '@prisma/client'
 
 //
 // response
@@ -43,6 +43,14 @@ export type RecipeUpdateRequest = {
     id: number
     recipe: Recipe
     ingredients: RecipeIngredient[]
-    steps: RecipeStep[],
-    seasonings: { stepId: number, items: RecipeSeasoning[] | undefined }
+    steps: {
+        id: number | undefined,
+        stepNumber: number,
+        text: string,
+        seasonings: {
+            id: string,
+            name: string,
+            volume: string
+        }[] | undefined
+    }[]
 }

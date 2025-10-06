@@ -14,7 +14,7 @@ export default function RecipeContent({
 }) {
 
     return (
-        <Stack sx={{ gap: 3, my: 3, mx: 2 }}>
+        <Stack sx={{ gap: 3, my: 3, mx: 2 }} role='region' aria-label='レシピコンテンツ'>
             <Stack direction='row' sx={{ gap: 2 }}>
                 <Box sx={{
                     position: 'relative', minHeight: 250,

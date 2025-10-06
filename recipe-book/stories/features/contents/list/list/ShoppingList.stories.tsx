@@ -1,7 +1,9 @@
 import ShoppingList from '@/components/features/contents/list/components/list/ShoppingList';
 import ListContextProvider from '@/components/features/contents/list/providers/ListContextProvider';
 import { Stack } from '@mui/material';
+import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
+import { within } from '@testing-library/react';
 
 const mockListCategories = [
     { id: 1, name: '野菜', icon: 'carrot', color: 'teal' },
@@ -21,7 +23,7 @@ const meta: Meta<typeof ShoppingList> = {
     title: 'Features/List/List/ShoppingList',
     component: ShoppingList,
     parameters: {
-        layout: 'fullscreen',
+
         docs: {
             source: {
                 code: '<ShoppingList />'
@@ -37,14 +39,20 @@ export const Default: Story = {
     decorators: [
         (Story) => (
             <ListContextProvider listCategories={mockListCategories} initialListItems={mockListItems}>
-                <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
-                    <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
-                        <Story />
-                    </Stack>
+                <Stack width='100vh'>
+                    <Story />
                 </Stack>
             </ListContextProvider>
         )
     ],
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        mockListCategories.forEach(category => {
+            expect(canvas.getByText(category.name)).toBeInTheDocument();
+        });
+    }
 }
 
 export const Empty: Story = {
@@ -58,12 +66,16 @@ export const Empty: Story = {
     decorators: [
         (Story) => (
             <ListContextProvider listCategories={[]} initialListItems={[]}>
-                <Stack width='100%' height='100%' justifyContent='center' alignItems='center'>
-                    <Stack py={3} justifyContent='center' alignItems='center' width='60%'>
-                        <Story />
-                    </Stack>
+                <Stack width='100vh'>
+                    <Story />
                 </Stack>
             </ListContextProvider>
         )
     ],
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        expect(canvas.getByText('アイテムがありません')).toBeInTheDocument();
+    }
 }

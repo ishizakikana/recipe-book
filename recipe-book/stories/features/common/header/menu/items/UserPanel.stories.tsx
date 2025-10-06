@@ -41,8 +41,9 @@ export const Default: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const userName = await canvas.findByText(mockUser.name);
 
-        expect(userName).toBeInTheDocument();
+        // 表示確認
+        expect(await canvas.findByText(mockUser.name)).toBeInTheDocument();
+        expect(await canvas.findByRole('button', { name: 'ログアウト' })).toBeInTheDocument();
     }
 }

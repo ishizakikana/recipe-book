@@ -54,11 +54,11 @@ type Story = StoryObj<typeof ListItem>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const checkbox = await canvas.findByRole('checkbox');
-
         await userEvent.click(checkbox);
         await userEvent.click(checkbox);
-
         expect(mockUpdate).toHaveBeenCalledTimes(1);
 
         await new Promise(resolve => setTimeout(resolve, 1100));
@@ -78,11 +78,11 @@ export const Checked: Story = {
     },
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
+
+        // クリック
         const checkbox = await canvas.findByRole('checkbox');
-
         await userEvent.click(checkbox);
         await userEvent.click(checkbox);
-
         expect(mockUpdate).toHaveBeenCalledTimes(1);
 
         await new Promise(resolve => setTimeout(resolve, 1100));

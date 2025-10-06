@@ -1,13 +1,14 @@
 import IngredientList from '@/components/features/contents/recipe/components/detail/content/item/IngredientList';
 import { RecipeIngredient } from '@/types/viewModel';
+import { Box } from '@mui/material';
 import { expect } from '@storybook/jest';
 import { Meta, StoryObj } from '@storybook/nextjs';
 import { within } from '@testing-library/react';
 
 const mockIngredients: RecipeIngredient[] = [
-    { id: '000101', name: 'レシピ材料1', volume: '100g', recipeId: 1 },
-    { id: '000102', name: 'レシピ材料2', volume: '200g', recipeId: 1 },
-    { id: '000103', name: 'レシピ材料3', volume: '300g', recipeId: 1 },
+    { id: '000101', name: 'レシピ材料1', volume: '100g' },
+    { id: '000102', name: 'レシピ材料2', volume: '200g' },
+    { id: '000103', name: 'レシピ材料3', volume: '300g' },
 ]
 
 const meta: Meta<typeof IngredientList> = {
@@ -48,9 +49,15 @@ type Story = StoryObj<typeof IngredientList>;
 export const Default: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const ingredient = await canvas.findAllByRole('listitem', { name: 'ingredients-item' });
 
-        expect(ingredient).toHaveLength(3);
+        // 表示確認
+        mockIngredients.forEach(ingredient => {
+            expect(canvas.getByText(ingredient.name)).toBeInTheDocument();
+
+            if (ingredient.volume) {
+                expect(canvas.getByText(ingredient.volume)).toBeInTheDocument();
+            }
+        });
     }
 }
 
@@ -68,8 +75,7 @@ export const Empty: Story = {
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
 
-        // 材料リストが存在しないこと
-        const ingredients = await canvas.queryAllByRole('listitem', { name: 'ingredients-item' });
-        expect(ingredients).toHaveLength(0);
+        // 材料リストが存在しない
+        expect(canvas.queryByRole('list', { name: '材料リスト' })).not.toBeInTheDocument();
     }
 }

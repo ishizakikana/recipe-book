@@ -1,5 +1,5 @@
 'use client'
-import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 const links = [
@@ -25,14 +25,16 @@ export default function MenuLinks({
     }
 
     return (
-        <List>
-            {links.map(link => (
-                <ListItem key={link.text} disablePadding>
-                    <ListItemButton onClick={() => onClick(link.path)}>
-                        <ListItemText primary={link.text} sx={{ color: 'white' }} />
-                    </ListItemButton>
-                </ListItem>
-            ))}
-        </List>
+        <Box role='navigation' aria-label='メニューリンクリスト'>
+            <List>
+                {links.map(link => (
+                    <ListItem key={link.text} disablePadding>
+                        <ListItemButton onClick={() => onClick(link.path)}>
+                            <ListItemText primary={link.text} sx={{ color: 'white' }} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
     )
 }

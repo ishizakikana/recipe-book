@@ -37,7 +37,16 @@ const meta: Meta<typeof LoginForm> = {
 export default meta;
 type Story = StoryObj<typeof LoginForm>;
 
-export const Default: Story = {}
+export const Default: Story = {
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+
+        // 表示確認
+        expect(canvas.getByRole('textbox', { name: 'ユーザーID' })).toBeInTheDocument();
+        expect(canvas.getByLabelText('パスワード')).toBeInTheDocument();
+        expect(canvas.getByRole('button', { name: 'ログイン' })).toBeInTheDocument();
+    }
+}
 
 export const Loading: Story = {
     parameters: {
