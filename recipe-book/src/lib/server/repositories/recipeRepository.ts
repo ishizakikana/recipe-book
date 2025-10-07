@@ -1,10 +1,10 @@
 import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
+import { toRecipeDetail, toRecipeRequest, toRecipeSummary } from "@/lib/server/converter/recipeConverter";
+import { prisma } from '@/lib/server/db/prisma';
+import { createRepository } from "@/lib/server/repositories/baseRepository";
 import { RecipeDetailResponse, RecipeStepSummaryResponse, RecipeSummaryResponse } from "@/types/entity";
 import { RecipeDetail, RecipeSummary } from '@/types/viewModel';
 import { Recipe, RecipeIngredient } from "@prisma/client";
-import { toRecipeDetail, toRecipeRequest, toRecipeSummary } from "../converter/recipeConverter";
-import { prisma } from "../db/prisma";
-import { createRepository } from "./baseRepository";
 
 const base = createRepository<Recipe>('recipe', '/recipe');
 
