@@ -4,6 +4,9 @@ import Button from '@/components/ui/button/Button'
 import { Container, Stack, Typography } from '@mui/material'
 import { useEffect } from 'react'
 
+/**
+ * エラー画面
+ */
 export default function Error({
     error,
     reset,
@@ -20,7 +23,7 @@ export default function Error({
         <Container>
             <Stack direction='column' gap={2} sx={{ pt: 8, textAlign: 'center' }}>
 
-                <Typography variant='h5' fontWeight={700}>エラーが発生しました</Typography>
+                <Typography variant='h5' fontWeight={700}>エラーが発生しました。</Typography>
                 <Typography variant='body1'>{error.message}</Typography>
 
                 <Button pt={3} onClick={() => reset()}>

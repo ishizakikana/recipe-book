@@ -1,7 +1,7 @@
 import { apiGet, apiPost } from '@/lib/client/fetch';
 import { ERROR_MESSAGES } from '@/lib/constants/messages';
 
-// fetch をモック
+//モック
 global.fetch = jest.fn();
 
 describe('fetch', () => {
@@ -10,7 +10,7 @@ describe('fetch', () => {
     });
 
     describe('apiGet', () => {
-        it('成功時にJSONを返す', async () => {
+        test('成功時にJSONを返す', async () => {
             (fetch as jest.Mock).mockResolvedValue({
                 ok: true,
                 json: jest.fn().mockResolvedValue({ data: 'ok' })
@@ -29,7 +29,27 @@ describe('fetch', () => {
             );
         });
 
-        it('APIエラー時(JSONあり)にエラーメッセージを投げる', async () => {
+        test('成功時に空のレスポンスを返す', async () => {
+            (fetch as jest.Mock).mockResolvedValue({
+                ok: true,
+                status: 204,
+                json: jest.fn()
+            } as unknown as Response)
+
+            const result = await apiGet<{ data: string }>('/test');
+
+            expect(result).toEqual({});
+            expect(fetch).toHaveBeenCalledWith(
+                'http://localhost/api/test',
+                expect.objectContaining({
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    cache: 'no-store'
+                })
+            );
+        })
+
+        test('APIエラー時(JSONあり)にエラーメッセージを投げる', async () => {
             (fetch as jest.Mock).mockResolvedValue({
                 ok: false,
                 url: 'http://localhost/api/test',
@@ -41,7 +61,7 @@ describe('fetch', () => {
             );
         });
 
-        it('APIエラー時(JSONなし, statusTextあり)', async () => {
+        test('APIエラー時(JSONなし, statusTextあり)', async () => {
             (fetch as jest.Mock).mockResolvedValue({
                 ok: false,
                 statusText: 'Internal Server Error',
@@ -53,7 +73,7 @@ describe('fetch', () => {
             );
         });
 
-        it('APIエラー時(JSONなし, statusTextなし)', async () => {
+        test('APIエラー時(JSONなし, statusTextなし)', async () => {
             (fetch as jest.Mock).mockResolvedValue({
                 ok: false,
                 json: jest.fn().mockRejectedValue(new Error('Invalid JSON'))
@@ -66,7 +86,7 @@ describe('fetch', () => {
     });
 
     describe('apiPost', () => {
-        it('成功時にJSONを返す', async () => {
+        test('成功時にJSONを返す', async () => {
             (fetch as jest.Mock).mockResolvedValue({
                 ok: true,
                 json: jest.fn().mockResolvedValue({ result: 'posted' })

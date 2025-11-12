@@ -83,4 +83,23 @@ describe("apiGetServer", () => {
             ERROR_MESSAGES.SERVER_ERROR
         );
     });
+
+    test('本番環境ではvercelのURLを使用する', async () => {
+        process.env.VERCEL_URL = 'dummy.vercel.app';
+
+        global.fetch = jest.fn().mockResolvedValue({
+            ok: true,
+            json: jest.fn().mockResolvedValue({ data: "ok" })
+        } as any);
+
+        await apiGetServer<{ data: string }>("/test");
+
+        expect(fetch).toHaveBeenCalledWith(
+            'https://recipe-book-git-develop-ishizakikanas-projects.vercel.app/api/test',
+            expect.objectContaining({
+                method: "GET",
+            })
+        );
+        delete process.env.VERCEL_URL;
+    })
 });

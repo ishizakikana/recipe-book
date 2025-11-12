@@ -53,6 +53,10 @@ export async function apiPost<T>(
     return await handleResponse<T>(res);
 }
 
+//
+// private
+//
+
 /**
  * ベースURL取得
  * 
@@ -68,10 +72,6 @@ function getBaseUrl(): string {
     // ローカル
     return 'http://localhost:3000';
 }
-
-//
-// private
-//
 
 /**
  * エラーハンドリング
@@ -89,7 +89,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
 
         try {
             const error: ApiError = await res.json();
-            errorMsg = res.url + ' ' + error.message || errorMsg;
+            errorMsg = res.url + ' ' + error.message;
         } catch {
             errorMsg = res.statusText || errorMsg;
         }
@@ -97,7 +97,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
         throw new Error(errorMsg);
     }
 
-    // 204 No Content
+    // 204 No Content (空のレスポンス)
     if (res.status === 204) {
         return {} as T;
     }

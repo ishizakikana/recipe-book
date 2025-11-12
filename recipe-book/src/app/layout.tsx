@@ -15,11 +15,15 @@ const geistMono = Noto_Sans_JP({
   subsets: ['latin'],
 });
 
+// メタデータ
 export const metadata: Metadata = {
   title: 'RECIPE BOOK',
   description: 'わたしのレシピ本',
 };
 
+/**
+ * ルートレイアウト
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

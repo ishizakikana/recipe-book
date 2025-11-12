@@ -9,6 +9,7 @@ import { RecipeFormInput } from '../../types/edit';
  * 
  * @returns 
  *  updateData（レシピ更新関数）
+ *  deleteData（レシピ削除関数）
  */
 export function useRecipesActions() {
 
@@ -26,6 +27,12 @@ export function useRecipesActions() {
         return result;
     }
 
+    /**
+     * レシピ削除
+     * 
+     * @param id 削除するレシピID
+     * @return {Promise<void>}
+     */
     const deleteData = async (id: number): Promise<void> => {
         await apiPost('/recipe/delete', { id });
     }

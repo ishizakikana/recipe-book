@@ -38,7 +38,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "stories/__utils__/utils.ts"
-  ],
+, "jest.setup.js", "tests/__mocks__/style.js"  ],
   "exclude": [
     "node_modules"
   ]

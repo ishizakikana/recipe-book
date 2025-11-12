@@ -44,7 +44,7 @@ export default function RecipeTitle({
 
                 <Stack direction='row'>
                     <RecipeEditButton recipeId={recipe.id} />
-                    <RecipeDeleteButton recipeName={recipe.name} recipeId={recipe.id} />
+                    <RecipeDeleteButton recipeId={recipe.id} recipeName={recipe.name} />
                 </Stack>
             </Stack>
         </Stack>

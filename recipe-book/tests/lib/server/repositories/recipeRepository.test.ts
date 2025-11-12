@@ -1,7 +1,6 @@
 import { RecipeFormInput } from '@/components/features/contents/recipe/types/edit';
 import { toRecipeDetail, toRecipeRequest, toRecipeSummary } from '@/lib/server/converter/recipeConverter';
 import { prisma } from '@/lib/server/db/prisma';
-import { recipeRepository } from '@/lib/server/repositories/recipeRepository';
 
 // モック
 jest.mock('@/lib/server/db/prisma', () => ({
@@ -32,23 +31,47 @@ jest.mock('@/lib/server/converter/recipeConverter', () => ({
     toRecipeRequest: jest.fn(),
 }));
 
-jest.mock('@/lib/server/repositories/baseRepository', () => ({
-    createRepository: jest.fn(() => ({
-        findAll: jest.fn(),
-        update: jest.fn(),
-    })),
-}));
+jest.mock('next/cache', () => ({
+    revalidatePath: jest.fn()
+}))
 
 describe('recipeRepository', () => {
     const mockRecipe = { id: 1, title: 'Test Recipe' } as any;
     const mockSummary = { id: 1, name: 'Summary' } as any;
     const mockDetail = { id: 1, name: 'Detail' } as any;
 
+    let recipeRepository: any;
+    let createRepositorySpy: jest.SpyInstance;
+
     beforeEach(() => {
         jest.clearAllMocks();
+
+        jest.isolateModules(() => {
+            const baseRepo = require('@/lib/server/repositories/baseRepository');
+
+            createRepositorySpy = jest.spyOn(baseRepo, 'createRepository');
+            recipeRepository = require('@/lib/server/repositories/recipeRepository').recipeRepository;
+        });
     });
 
     describe('findAllRecipeSummariesByConditions', () => {
+        test('createRepository が正しい引数で呼ばれること', () => {
+            expect(createRepositorySpy).toHaveBeenCalledWith('recipe', '/recipe');
+        });
+
+        test('base の関数が展開されていること', () => {
+            expect(typeof recipeRepository.update).toBe('function');
+            expect(typeof recipeRepository.delete).toBe('function');
+        });
+
+        test('無効化されたメソッドが undefined になっていること', () => {
+            expect(recipeRepository.findAll).toBeUndefined();
+            expect(recipeRepository.findAllByConditions).toBeUndefined();
+            expect(recipeRepository.findById).toBeUndefined();
+            expect(recipeRepository.create).toBeUndefined();
+            expect(recipeRepository.deleteAll).toBeUndefined();
+        });
+
         test('条件指定なしで全件取得できる', async () => {
             (prisma.recipe.findMany as jest.Mock).mockResolvedValue([mockRecipe]);
             (toRecipeSummary as jest.Mock).mockReturnValue(mockSummary);

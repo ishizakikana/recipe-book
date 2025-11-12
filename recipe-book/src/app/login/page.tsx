@@ -3,6 +3,9 @@ import CenteredContainer from '@/components/layout/CenteredContainer';
 import { getUserFromAuthToken } from '@/lib/server/token';
 import { redirect } from 'next/navigation';
 
+/**
+ * ログイン画面
+ */
 export default async function LoginPage() {
     const user = await getUserFromAuthToken();
 

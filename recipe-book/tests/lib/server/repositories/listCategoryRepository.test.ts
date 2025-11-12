@@ -1,24 +1,37 @@
-import * as baseRepo from '@/lib/server/repositories/baseRepository';
-import { listCategoryRepository } from '@/lib/server/repositories/listCategoryRepository';
-import { TextDecoder, TextEncoder } from 'util';
+jest.mock('@/lib/server/db/prisma', () => ({
+    prisma: {
+        listCategory: {
+            findAll: jest.fn(),
+            findAllByConditions: jest.fn(),
+            findById: jest.fn(),
+            findUnique: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
+            deleteAll: jest.fn()
+        }
+    }
+}))
 
-(global as any).TextEncoder = TextEncoder;
-(global as any).TextDecoder = TextDecoder;
-
+jest.mock('next/cache', () => ({
+    revalidatePath: jest.fn()
+}))
 
 describe('listCategoryRepository', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
+    let listCategoryRepository: any;
+    let createRepositorySpy: jest.SpyInstance;
+
+    beforeAll(() => {
+        jest.isolateModules(() => {
+            const baseRepo = require('@/lib/server/repositories/baseRepository');
+
+            createRepositorySpy = jest.spyOn(baseRepo, 'createRepository');
+            listCategoryRepository = require('@/lib/server/repositories/listCategoryRepository').listCategoryRepository;
+        });
+    })
 
     test('createRepository が正しい引数で呼ばれること', () => {
-        const spy = jest.spyOn(baseRepo, 'createRepository');
-        // listCategoryRepository を再インポートし直すことで spy が反映される
-        jest.isolateModules(() => {
-            require('@/lib/repository/listCategoryRepository');
-        });
-
-        expect(spy).toHaveBeenCalledWith('listCategory', '/list');
+        expect(createRepositorySpy).toHaveBeenCalledWith('listCategory', '/list');
     });
 
     test('base の関数が展開されていること', () => {

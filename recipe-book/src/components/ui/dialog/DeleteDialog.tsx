@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { ReactNode } from 'react';
+import Alert from '../feedback/Alert';
 
 /**
  * 削除モーダル
@@ -12,12 +13,14 @@ export default function DeleteDialog({
     open,
     target,
     loading,
+    error,
     onDeleteButtonClick,
     onClose
 }: {
     open: boolean;
     target?: ReactNode;
     loading?: boolean;
+    error?: string;
     onDeleteButtonClick?: () => void;
     onClose?: () => void;
 }) {
@@ -38,6 +41,9 @@ export default function DeleteDialog({
             </DialogTitle>
 
             <DialogContent sx={{ mx: 3, my: 4, p: 0 }}>
+                <Alert severity='error' visible={!!error}>
+                    {error}
+                </Alert>
                 <Typography variant='body1'>
                     {target} を削除しますか?
                 </Typography>

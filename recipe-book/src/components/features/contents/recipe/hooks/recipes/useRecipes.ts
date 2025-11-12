@@ -9,10 +9,11 @@ import { useRecipesState } from './useRecipesState';
  * 
  * @returns 
  *  update（レシピ更新関数）
+ *  delete（レシピ削除関数）
  */
 export function useRecipes() {
-    const { updateData } = useRecipesActions();
-    const { updateState } = useRecipesState();
+    const { updateData, deleteData } = useRecipesActions();
+    const { updateState, deleteState } = useRecipesState();
 
     /**
      * レシピ更新
@@ -24,9 +25,14 @@ export function useRecipes() {
         updateState(result);
     }
 
+    /**
+     * レシピ削除
+     * 
+     * @param id 削除するレシピID
+     */
     const deleteRecipe = async (id: number) => {
-        // await deleteData(id);
-        // deleteState(id);
+        await deleteData(id);
+        deleteState(id);
     }
 
     return {

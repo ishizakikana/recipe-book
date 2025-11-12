@@ -4,6 +4,15 @@ import { recipeRepository } from '@/lib/server/repositories/recipeRepository';
 import { RecipeDetail } from '@/types/viewModel';
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * レシピ更新 (/api/recipe/update)
+ * 
+ * レシピ情報を更新する
+ * { data: RecipeFormInput }
+ * 
+ * @param req リクエスト
+ * @returns  レスポンス
+ */
 export async function POST(req: NextRequest) {
     return handleApi(req, async () => {
         const { json } = await getRequestParams(req, { requiredParams: ['data'] });

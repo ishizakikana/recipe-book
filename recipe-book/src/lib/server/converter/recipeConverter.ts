@@ -22,13 +22,13 @@ export function toRecipeSummary(
         category: recipe.category,
         calories: recipe.calories ?? undefined,
         shelfLife: recipe.shelfLife ?? undefined,
-        keywords: [recipe.name, ...recipe.ingredients?.map(i => i.name) ?? []],
+        keywords: [recipe.name, ...recipe.ingredients.map(i => i.name)],
         visible
     }
 }
 
 /**
- * レシピ詳細変更
+ * レシピ詳細変換
  * 
  * DBから取得したレシピデータをレシピ詳細へ変換します。
  * 
@@ -50,6 +50,12 @@ export function toRecipeDetail(
     }
 }
 
+/**
+ * レシピ更新リクエスト変換
+ * 
+ * @param recipe レシピ編集フォーム
+ * @returns レシピ更新リクエスト
+ */
 export function toRecipeRequest(
     recipe: RecipeFormInput
 ): RecipeUpdateRequest {
@@ -142,7 +148,8 @@ function formatIngredients(recipe: RecipeDetailResponse): RecipeIngredient[] {
         const orderB = Number(b.id.slice(-2));
         return orderA - orderB;
     }).map(i => ({
-        ...i,
+        id: i.id,
+        name: i.name,
         volume: i.volume ?? undefined
     }))
 }
@@ -160,7 +167,7 @@ function formatSteps(recipe: RecipeDetailResponse): RecipeStepSummary[] {
         .sort((a, b) => a.stepNumber - b.stepNumber)
         .map(step => {
 
-            const seasonings = step.seasonings?.sort((a, b) => {
+            const seasonings = step.seasonings.sort((a, b) => {
                 const orderA = Number(a.id.slice(-2));
                 const orderB = Number(b.id.slice(-2));
                 return orderA - orderB;

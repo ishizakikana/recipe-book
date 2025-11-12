@@ -44,8 +44,9 @@ async function handleResponse<T>(res: Response): Promise<T> {
         let errorMsg: string = ERROR_MESSAGES.SERVER_ERROR;
 
         try {
+            // TODO　エラーメッセージがキモイ　修正する
             const error: ApiError = await res.json();
-            errorMsg = res.url + ' ' + error.message || errorMsg;
+            errorMsg = res.url + ' ' + error.message;
         } catch {
             errorMsg = res.statusText || errorMsg;
         }
