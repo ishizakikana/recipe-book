@@ -10,13 +10,15 @@ import * as ReactHookForm from 'react-hook-form';
 
 // モック
 const mockReset = jest.fn();
-const mockUpdate = jest.fn();
+const mockCreateRecipe = jest.fn();
+const mockUpdateRecipe = jest.fn();
 const mockUseForm = ReactHookForm.useForm as jest.Mock;
 
 jest.mock('@/components/features/contents/recipe/hooks/recipes/useRecipes', () => {
     return {
         useRecipes: () => ({
-            update: mockUpdate
+            createRecipe: mockCreateRecipe,
+            updateRecipe: mockUpdateRecipe
         })
     }
 })
@@ -108,7 +110,7 @@ describe('useRecipeEditForm', () => {
             const { result } = renderUseRecipeEditForm(null);
 
             expect(result.current.control._defaultValues).toEqual({
-                id: undefined,
+                id: 0,
                 name: undefined,
                 categoryId: undefined,
                 imageUrl: undefined,
@@ -133,9 +135,9 @@ describe('useRecipeEditForm', () => {
         })
     })
 
-    describe('onUpdate', () => {
-        test('成功時は入力値とエラーメッセージをクリアし、true を返す', async () => {
-            mockUpdate.mockResolvedValue(true);
+    describe('onRegister', () => {
+        test('新規登録成功時は入力値とエラーメッセージをクリアし、true を返す', async () => {
+            mockCreateRecipe.mockResolvedValue(true);
             mockUseForm.mockImplementation(() => ({
                 register: jest.fn(),
                 reset: mockReset,
@@ -148,17 +150,23 @@ describe('useRecipeEditForm', () => {
 
             let success;
             await act(async () => {
-                success = await result.current.onUpdate(mockRecipeFormInput);
+                success = await result.current.onRegister({
+                    ...mockRecipeFormInput,
+                    id: 0
+                });
             })
 
-            expect(mockUpdate).toHaveBeenCalledWith(mockRecipeFormInput);
+            expect(mockCreateRecipe).toHaveBeenCalledWith({
+                ...mockRecipeFormInput,
+                id: 0
+            });
             expect(mockReset).toHaveBeenCalled();
             expect(result.current.submitError).toBeNull();
             expect(success).toBe(true);
         })
 
-        test('失敗時はエラーメッセージをセットし、false を返す', async () => {
-            mockUpdate.mockRejectedValue(new Error('Update failed'));
+        test('新規登録失敗時はエラーメッセージをセットし、false を返す', async () => {
+            mockCreateRecipe.mockRejectedValue(new Error('Update failed'));
             mockUseForm.mockImplementation(() => ({
                 register: jest.fn(),
                 reset: mockReset,
@@ -172,17 +180,23 @@ describe('useRecipeEditForm', () => {
 
             let success;
             await act(async () => {
-                success = await result.current.onUpdate(mockRecipeFormInput);
+                success = await result.current.onRegister({
+                    ...mockRecipeFormInput,
+                    id: 0
+                });
             })
 
-            expect(mockUpdate).toHaveBeenCalledWith(mockRecipeFormInput);
+            expect(mockCreateRecipe).toHaveBeenCalledWith({
+                ...mockRecipeFormInput,
+                id: 0
+            });
             expect(mockReset).not.toHaveBeenCalled();
             expect(result.current.submitError).toBe('Update failed');
             expect(success).toBe(false);
         })
 
-        test('予期しない型のエラーがスローされたとき、unknown エラーメッセージを設定する', async () => {
-            mockUpdate.mockRejectedValue('Some string error');
+        test('新規登録処理にて予期しない型のエラーがスローされたとき、unknown エラーメッセージを設定する', async () => {
+            mockCreateRecipe.mockRejectedValue('Some string error');
             mockUseForm.mockImplementation(() => ({
                 register: jest.fn(),
                 reset: mockReset,
@@ -196,10 +210,85 @@ describe('useRecipeEditForm', () => {
 
             let success;
             await act(async () => {
-                success = await result.current.onUpdate(mockRecipeFormInput);
+                success = await result.current.onRegister({
+                    ...mockRecipeFormInput,
+                    id: 0
+                });
             })
 
-            expect(mockUpdate).toHaveBeenCalledWith(mockRecipeFormInput);
+            expect(mockReset).not.toHaveBeenCalled();
+            expect(result.current.submitError).toBe(ERROR_MESSAGES.UNKNOWN_ERROR);
+            expect(success).toBe(false);
+        })
+
+        test('更新成功時は入力値とエラーメッセージをクリアし、true を返す', async () => {
+            mockUpdateRecipe.mockResolvedValue(true);
+            mockUseForm.mockImplementation(() => ({
+                register: jest.fn(),
+                reset: mockReset,
+                control: {},
+                handleSubmit: (fn: any) => fn,
+                formState: { errors: {} }
+            }))
+
+            const { result } = renderUseRecipeEditForm(mockRecipe);
+
+            let success;
+            await act(async () => {
+                success = await result.current.onRegister(mockRecipeFormInput);
+            })
+
+            expect(mockUpdateRecipe).toHaveBeenCalledWith(mockRecipeFormInput);
+            expect(mockReset).toHaveBeenCalled();
+            expect(result.current.submitError).toBeNull();
+            expect(success).toBe(true);
+        })
+
+        test('更新失敗時はエラーメッセージをセットし、false を返す', async () => {
+            mockUpdateRecipe.mockRejectedValue(new Error('Update failed'));
+            mockUseForm.mockImplementation(() => ({
+                register: jest.fn(),
+                reset: mockReset,
+                control: {},
+                handleSubmit: (fn: any) => fn,
+                formState: { errors: {} }
+            }))
+
+
+            const { result } = renderUseRecipeEditForm(mockRecipe);
+
+            let success;
+            await act(async () => {
+                success = await result.current.onRegister(mockRecipeFormInput);
+            })
+
+            expect(mockUpdateRecipe).toHaveBeenCalledWith(mockRecipeFormInput);
+            expect(mockReset).not.toHaveBeenCalled();
+            expect(result.current.submitError).toBe('Update failed');
+            expect(success).toBe(false);
+        })
+
+        test('更新処理にて予期しない型のエラーがスローされたとき、unknown エラーメッセージを設定する', async () => {
+            mockCreateRecipe.mockRejectedValue('Some string error');
+            mockUseForm.mockImplementation(() => ({
+                register: jest.fn(),
+                reset: mockReset,
+                control: {},
+                handleSubmit: (fn: any) => fn,
+                formState: { errors: {} }
+            }))
+
+
+            const { result } = renderUseRecipeEditForm(mockRecipe);
+
+            let success;
+            await act(async () => {
+                success = await result.current.onRegister({
+                    ...mockRecipeFormInput,
+                    id: 0
+                });
+            })
+
             expect(mockReset).not.toHaveBeenCalled();
             expect(result.current.submitError).toBe(ERROR_MESSAGES.UNKNOWN_ERROR);
             expect(success).toBe(false);

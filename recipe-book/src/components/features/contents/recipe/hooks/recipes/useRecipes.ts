@@ -8,19 +8,32 @@ import { useRecipesState } from './useRecipesState';
  * ローカル状態とDBの同期処理を一括で行います。
  * 
  * @returns 
- *  update（レシピ更新関数）
- *  delete（レシピ削除関数）
+ *  createRecipe（レシピ新規登録関数）
+ *  updateRecipe（レシピ更新関数）
+ *  deleteRecipe（レシピ削除関数）
  */
 export function useRecipes() {
-    const { updateData, deleteData } = useRecipesActions();
-    const { updateState, deleteState } = useRecipesState();
+    const { createData, updateData, deleteData } = useRecipesActions();
+    const { createState, updateState, deleteState } = useRecipesState();
+
+    /**
+     * レシピ新規登録
+     * 
+     * @param data 新規登録するレシピ
+     * @returns 新規登録したレシピ
+     */
+    const createRecipe = async (data: RecipeFormInput) => {
+        const result = await createData(data);
+        createState(result);
+        return result;
+    }
 
     /**
      * レシピ更新
      * 
      * @param data 更新するレシピ
      */
-    const update = async (data: RecipeFormInput) => {
+    const updateRecipe = async (data: RecipeFormInput) => {
         const result = await updateData(data);
         updateState(result);
     }
@@ -36,7 +49,8 @@ export function useRecipes() {
     }
 
     return {
-        update,
-        delete: deleteRecipe
+        createRecipe,
+        updateRecipe,
+        deleteRecipe
     }
 }

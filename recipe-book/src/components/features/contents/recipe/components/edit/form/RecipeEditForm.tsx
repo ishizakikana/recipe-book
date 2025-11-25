@@ -29,7 +29,7 @@ export default function RecipeEditForm({
         categoryOptions,
         register,
         handleSubmit,
-        onUpdate,
+        onRegister,
         submitError,
         formErrors,
         loading
@@ -37,7 +37,8 @@ export default function RecipeEditForm({
 
     // 送信イベント
     const onSubmit = async (data: RecipeFormInput) => {
-        const success = await onUpdate(data);
+
+        const success = await onRegister(data);
         if (success) {
             router.replace('/recipe');
             setTimeout(() => {
@@ -76,7 +77,7 @@ export default function RecipeEditForm({
                         render={({ field }) => (
                             <SelectBox
                                 label='カテゴリー'
-                                defaultValue={field.value}
+                                value={field.value ?? ''}
                                 options={categoryOptions}
                                 onChange={field.onChange}
                                 error={!!formErrors?.categoryId}

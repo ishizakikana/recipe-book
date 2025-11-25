@@ -25,7 +25,7 @@ export const useRecipeEditForm = (
 ) => {
 
     const { recipeCategories } = useRecipeContext();
-    const { update } = useRecipes();
+    const { createRecipe, updateRecipe } = useRecipes();
 
     const {
         register,
@@ -36,7 +36,7 @@ export const useRecipeEditForm = (
     } = useForm<RecipeFormInput>({
         resolver: zodResolver(schema),
         defaultValues: {
-            id: recipe?.id,
+            id: recipe?.id ?? 0,
             name: recipe?.name,
             categoryId: recipe?.category.id.toString(),
             imageUrl: recipe?.imageUrl,
@@ -55,17 +55,25 @@ export const useRecipeEditForm = (
     const [submitError, setSubmitError] = useState<string | null>(null);
 
     // カテゴリセレクトボックスオプション
-    const categoryOptions: SelectOption[] = recipeCategories.map(c =>
-        ({ label: c.name, value: c.id.toString() })
-    )
+    const categoryOptions: SelectOption[] = recipeCategories
+        .sort((a, b) => a.id - b.id)
+        .map(c =>
+            ({ label: c.name, value: c.id.toString() })
+        )
 
-    // レシピ更新
-    const onUpdate = async (data: RecipeFormInput) => {
+    // レシピ登録
+    const onRegister = async (data: RecipeFormInput) => {
         try {
-            await update(data);       // データ更新
+            if (data.id === 0) {
+                await createRecipe(data);     // 新規登録
+            } else {
+                await updateRecipe(data);       // 更新
+            }
+
             reset();        // 入力値リセット
             setSubmitError(null); // エラーメッセージクリア
             return true;
+
         } catch (e) {
             const msg = e instanceof Error ? e.message : ERROR_MESSAGES.UNKNOWN_ERROR;
             setSubmitError(msg);
@@ -81,6 +89,6 @@ export const useRecipeEditForm = (
         submitError,
         formErrors: errors,
         loading: isSubmitting,
-        onUpdate,
+        onRegister
     }
 }

@@ -1,7 +1,16 @@
 import { getRequestParams, handleApi } from "@/lib/server/api";
 import { recipeRepository } from "@/lib/server/repositories/recipeRepository";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
+/**
+ * レシピ削除 (/api/recipe/delete)
+ * 
+ * レシピ情報を削除する
+ * { id: number }
+ * 
+ * @param req リクエスト
+ * @returns レスポンス
+ */
 export async function POST(req: NextRequest) {
     return handleApi(req, async () => {
         const { json } = await getRequestParams(req, { requiredParams: ['id'] });
@@ -9,6 +18,6 @@ export async function POST(req: NextRequest) {
 
         await recipeRepository.delete(id);
 
-        return new Response(null, { status: 204 });
+        return NextResponse.json(null, { status: 204 });
     })
 }

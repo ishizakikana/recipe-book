@@ -54,6 +54,75 @@ const findRecipeDetailById = async (id: number): Promise<RecipeDetail | null> =>
 }
 
 /**
+ * レシピ新規登録
+ * 
+ * レシピ、レシピ材料、作業手順、調味料を新規登録します。
+ * 
+ * @param form レシピ編集フォーム
+ * @returns 登録したレシピ概要
+ */
+const create = async (form: RecipeFormInput): Promise<RecipeDetail> => {
+    const { id, recipe, ingredients, steps } = toRecipeRequest(form);
+
+    // レシピ登録
+    const insertedRecipe = await prisma.recipe.create({
+        data: recipe,
+        include: {
+            category: true
+        }
+    })
+
+    // レシピ材料登録
+    const insertedIngredients: RecipeIngredient[] = await Promise.all(
+        ingredients.map(i => prisma.recipeIngredient.create({
+            data: i
+        }))
+    )
+
+    // 作業手順・調味料登録
+    const updatedSteps = await Promise.all(steps.map(async step => {
+        let newStep: RecipeStepSummaryResponse = {} as RecipeStepSummaryResponse;
+
+        // 作業手順登録
+        newStep = {
+            ...await prisma.recipeStep.create({
+                data: {
+                    recipeId: id,
+                    stepNumber: step.stepNumber,
+                    text: step.text
+                }
+            }),
+            seasonings: []
+        }
+
+        // 調味料追加
+        if (step.seasonings) {
+            newStep = {
+                ...newStep,
+                seasonings: await Promise.all(step.seasonings.map((s, idx) =>
+                    prisma.recipeSeasoning.create({
+                        data: {
+                            id: `${String(id).padStart(4, '0')}${String(newStep!.id).padStart(2, '0')}${String(idx).padStart(2, '0')}`,      // ex) 00010101 レシピID + 作業手順ID + インデックス
+                            stepId: newStep!.id,
+                            name: s.name,
+                            volume: s.volume
+                        }
+                    })
+                ))
+            }
+        }
+
+        return newStep;
+    }))
+
+    return toRecipeDetail({
+        ...insertedRecipe,
+        ingredients: insertedIngredients,
+        steps: updatedSteps
+    })
+}
+
+/**
  * レシピ更新
  * 
  * レシピ、レシピ材料、作業手順、調味料を更新します。
@@ -144,11 +213,11 @@ export const recipeRepository = {
     ...base,
     findAllRecipeSummariesByConditions,
     findRecipeDetailById,
+    create,
     update,
 
     findAll: undefined,
     findAllByConditions: undefined,
     findById: undefined,
-    create: undefined,
     deleteAll: undefined,
 }   

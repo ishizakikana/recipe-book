@@ -49,7 +49,7 @@ describe("apiGetServer", () => {
         } as any);
 
         await expect(apiGetServer("/test")).rejects.toThrow(
-            "http://localhost:3000/api/test Not Found"
+            "Not Found"
         );
     });
 

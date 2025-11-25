@@ -89,7 +89,7 @@ async function handleResponse<T>(res: Response): Promise<T> {
 
         try {
             const error: ApiError = await res.json();
-            errorMsg = res.url + ' ' + error.message;
+            errorMsg = error.message;
         } catch {
             errorMsg = res.statusText || errorMsg;
         }

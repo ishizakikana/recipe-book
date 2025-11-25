@@ -8,7 +8,7 @@ import { Typography } from '@mui/material';
 export default function IndexPage() {
     return (
         <CenteredContainer direction='column' gap={2}>
-            <Typography variant='h5'>RECIPE BOOK</Typography>
+            <Typography variant='h5' color='primary.dark'>RECIPE BOOK</Typography>
             <StartButton />
         </CenteredContainer>
     )

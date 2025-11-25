@@ -57,7 +57,7 @@ describe('fetch', () => {
             } as unknown as Response);
 
             await expect(apiGet('/test')).rejects.toThrow(
-                'http://localhost/api/test Not Found'
+                'Not Found'
             );
         });
 

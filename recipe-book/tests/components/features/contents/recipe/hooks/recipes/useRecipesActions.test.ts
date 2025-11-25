@@ -16,6 +16,70 @@ describe('useRecipesActions', () => {
         jest.clearAllMocks();
     });
 
+    describe('createData', () => {
+        test('正常時、レシピを新規登録できる', async () => {
+            const { result } = renderHook(() => useRecipesActions());
+
+            const recipeFormInput: RecipeFormInput = {
+                id: 1,
+                name: 'レシピ',
+                categoryId: '2',
+                imageUrl: 'http://example.com/updated.jpg',
+                shelfLife: '7days',
+                calories: 250,
+                ingredients: '材料1\n材料2',
+                steps: [
+                    { id: 1, text: '手順1', seasonings: '調味料1\n調味料2' },
+                    { id: 2, text: '手順2', seasonings: undefined }
+                ]
+            }
+
+            const expectRecipe: RecipeDetail = {
+                id: 1,
+                name: 'レシピ',
+                category: { id: 2, name: 'Category 2', icon: '', color: '' },
+                ingredients: [
+                    { id: '000100', name: '材料1', volume: undefined },
+                    { id: '000101', name: '材料2', volume: undefined }
+                ],
+                steps: [
+                    {
+                        id: 1, text: '手順1', stepNumber: 1, seasonings: [
+                            { id: '000100', name: '調味料1', volume: undefined },
+                            { id: '000101', name: '調味料2', volume: undefined }
+                        ]
+                    },
+                    { id: 2, text: '手順2', stepNumber: 2, seasonings: [] }
+                ],
+                shelfLife: '冷蔵7日',
+                calories: 250,
+                imageUrl: 'http://example.com/updated.jpg',
+            }
+
+            await act(async () => {
+                mockApiPost.mockResolvedValue(expectRecipe);
+                const resultRecipe = await result.current.createData(recipeFormInput);
+                expect(resultRecipe).toEqual(expectRecipe);
+            })
+
+            expect(mockApiPost).toHaveBeenCalledWith('/recipe/create', {
+                data: {
+                    id: recipeFormInput.id,
+                    name: recipeFormInput.name,
+                    categoryId: recipeFormInput.categoryId,
+                    imageUrl: recipeFormInput.imageUrl,
+                    calories: recipeFormInput.calories,
+                    shelfLife: recipeFormInput.shelfLife,
+                    ingredients: '材料1\n材料2',
+                    steps: [
+                        { id: 1, text: '手順1', seasonings: '調味料1\n調味料2' },
+                        { id: 2, text: '手順2', seasonings: undefined }
+                    ]
+                }
+            });
+        });
+    })
+
     describe('updateData', () => {
         test('正常時、レシピを更新できる', async () => {
             const { result } = renderHook(() => useRecipesActions());

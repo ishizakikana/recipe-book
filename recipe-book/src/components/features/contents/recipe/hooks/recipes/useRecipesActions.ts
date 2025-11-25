@@ -5,13 +5,24 @@ import { RecipeFormInput } from '../../types/edit';
 /**
  * レシピDB操作カスタムフック
  * 
- * DBへレシピの更新を行います。
+ * DBへレシピの新規登録・更新・削除を行います。
  * 
  * @returns 
+ *  createData（レシピ新規登録関数）
  *  updateData（レシピ更新関数）
  *  deleteData（レシピ削除関数）
  */
 export function useRecipesActions() {
+
+    /**
+     * レシピ新規登録
+     * 
+     * @param data 新規登録するレシピ
+     * @returns {Promise<RecipeDetail>} 新規登録したレシピ
+     */
+    const createData = async (data: RecipeFormInput): Promise<RecipeDetail> => {
+        return await apiPost('/recipe/create', { data });
+    }
 
     /**
      * レシピ更新
@@ -20,11 +31,7 @@ export function useRecipesActions() {
      * @returns {Promise<RecipeDetail>} 更新したレシピ
      */
     const updateData = async (data: RecipeFormInput): Promise<RecipeDetail> => {
-
-        // レシピ更新
-        const result: RecipeDetail = await apiPost('/recipe/update', { data });
-
-        return result;
+        return await apiPost('/recipe/update', { data });
     }
 
     /**
@@ -38,6 +45,7 @@ export function useRecipesActions() {
     }
 
     return {
+        createData,
         updateData,
         deleteData
     }

@@ -3,6 +3,7 @@ import RecipeSummaryCard from '@/components/features/contents/recipe/components/
 import SearchAccordion from '@/components/features/contents/recipe/components/recipes/search/SearchAccordion';
 import { Box, Grid } from '@mui/material';
 import { useRecipeContext as defaultUseRecipeContext } from '../../hooks/useRecipeContext';
+import RecipeAddButton from './RecipeAddButton';
 
 /**
  * レシピ一覧コンテナ
@@ -33,6 +34,8 @@ export default function RecipesContainer({
                         </Grid>
                     )}
             </Grid>
+
+            <RecipeAddButton />
         </Box>
     )
 }

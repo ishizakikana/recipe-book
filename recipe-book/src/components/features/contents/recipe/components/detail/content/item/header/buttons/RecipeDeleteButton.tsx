@@ -32,9 +32,6 @@ export default function RecipeDeleteButton({
         if (result) {
             onClose();
             router.push('/recipe'); // レシピ一覧へ遷移
-            console.log('削除完了');
-        } else {
-
         }
     }
 

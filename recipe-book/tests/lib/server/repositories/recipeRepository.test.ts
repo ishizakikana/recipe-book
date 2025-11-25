@@ -8,6 +8,7 @@ jest.mock('@/lib/server/db/prisma', () => ({
         recipe: {
             findMany: jest.fn(),
             findUnique: jest.fn(),
+            create: jest.fn(),
             update: jest.fn(),
         },
         recipeIngredient: {
@@ -68,7 +69,6 @@ describe('recipeRepository', () => {
             expect(recipeRepository.findAll).toBeUndefined();
             expect(recipeRepository.findAllByConditions).toBeUndefined();
             expect(recipeRepository.findById).toBeUndefined();
-            expect(recipeRepository.create).toBeUndefined();
             expect(recipeRepository.deleteAll).toBeUndefined();
         });
 
@@ -125,6 +125,51 @@ describe('recipeRepository', () => {
             const result = await recipeRepository.findRecipeDetailById(999);
 
             expect(result).toBeNull();
+        });
+    });
+
+    describe('create', () => {
+        const mockForm = { id: 1 } as RecipeFormInput;
+        const mockRequest = {
+            recipe: { title: 'inserted' },
+            ingredients: [{ id: 1 }],
+            steps: [
+                { id: 1, stepNumber: 1, text: 'mix', seasonings: [{ name: 'salt', volume: '1g' }] },
+                { id: 0, stepNumber: 2, text: 'bake', seasonings: undefined },
+            ],
+        };
+
+        beforeEach(() => {
+            (toRecipeRequest as jest.Mock).mockReturnValue(mockRequest);
+            (toRecipeDetail as jest.Mock).mockReturnValue(mockDetail);
+            (prisma.recipe.create as jest.Mock).mockResolvedValue({ id: 1, title: 'inserted', category: {} });
+            (prisma.recipeIngredient.create as jest.Mock).mockResolvedValue({ id: 1 });
+            (prisma.recipeStep.create as jest.Mock).mockResolvedValue({ id: 2, recipeId: 1 });
+            (prisma.recipeSeasoning.create as jest.Mock).mockResolvedValue({ id: '00010100' });
+        });
+
+        test('レシピを登録できる', async () => {
+            const result = await recipeRepository.create(mockForm);
+
+            expect(toRecipeRequest).toHaveBeenCalledWith(mockForm);
+            expect(prisma.recipeIngredient.create).toHaveBeenCalledTimes(1);
+            expect(prisma.recipeStep.create).toHaveBeenCalledTimes(2);
+            expect(prisma.recipeSeasoning.create).toHaveBeenCalledTimes(1);
+            expect(toRecipeDetail).toHaveBeenCalledTimes(1);
+            expect(result).toEqual(mockDetail);
+        })
+
+        test('seasonings がない場合でもエラーにならない', async () => {
+            const noSeasoningSteps = [{ id: 0, stepNumber: 1, text: 'test' }];
+            (toRecipeRequest as jest.Mock).mockReturnValue({
+                ...mockRequest,
+                steps: noSeasoningSteps,
+            });
+
+            await recipeRepository.update(mockForm);
+
+            expect(prisma.recipeStep.create).toHaveBeenCalled();
+            expect(prisma.recipeSeasoning.create).not.toHaveBeenCalled();
         });
     });
 

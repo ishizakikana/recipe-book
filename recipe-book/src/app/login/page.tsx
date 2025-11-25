@@ -1,6 +1,7 @@
 import LoginForm from '@/components/features/login/components/LoginForm';
 import CenteredContainer from '@/components/layout/CenteredContainer';
 import { getUserFromAuthToken } from '@/lib/server/token';
+import { Typography } from '@mui/material';
 import { redirect } from 'next/navigation';
 
 /**
@@ -15,7 +16,8 @@ export default async function LoginPage() {
     }
 
     return (
-        <CenteredContainer>
+        <CenteredContainer direction='column' gap={2}>
+            <Typography variant='h5' color='primary.dark'>RECIPE BOOK</Typography>
             <LoginForm />
         </CenteredContainer>
     )

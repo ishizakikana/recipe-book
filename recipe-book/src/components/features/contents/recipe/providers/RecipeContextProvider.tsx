@@ -1,7 +1,7 @@
 'use client'
 import { RecipeDetail, RecipeSummary } from '@/types/viewModel';
 import { RecipeCategory } from '@prisma/client';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { RecipeContext } from '../hooks/useRecipeContext';
 
 /**
@@ -27,6 +27,10 @@ export default function RecipeContextProvider({
         setRecipeSummaries,
         setRecipeDetail
     }
+
+    useEffect(() => {
+        console.log('setRecipeDetail', recipeDetail);
+    }, [recipeDetail])
 
     return (
         <RecipeContext.Provider value={data}>

@@ -25,7 +25,6 @@ export default function RecipeDetailCard({
 
         if (recipeDetail?.id === initialValue.id) return;
         setRecipeDetail(initialValue);
-
     }, [initialValue, recipeDetail, setRecipeDetail]);
 
     if (!recipeDetail || recipeDetail?.id !== initialValue.id) {
