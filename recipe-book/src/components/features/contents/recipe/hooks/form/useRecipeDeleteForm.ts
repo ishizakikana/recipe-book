@@ -10,7 +10,7 @@ import { useRecipes } from "../recipes/useRecipes";
  * 　loading (削除中フラグ)
  */
 export function useRecipeDeleteForm() {
-    const { delete: deleteRecipe } = useRecipes();
+    const { deleteRecipe } = useRecipes();
 
     // ローディング管理
     const [loading, setLoading] = useState(false);

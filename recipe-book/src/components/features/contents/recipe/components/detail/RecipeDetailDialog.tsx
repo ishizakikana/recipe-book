@@ -30,11 +30,9 @@ export default function RecipeDetailDialog({
 
         if (recipeDetail?.id === initialValue.id) return;
         setRecipeDetail(initialValue);
-        console.log('recipeDetail', recipeDetail);
-        console.log('initialValue', initialValue)
-        console.log('recipe detail dialog');
+    }, [initialValue, setRecipeDetail]);
 
-    }, [initialValue, recipeDetail, setRecipeDetail]);
+    if (!open) return null;
 
     if (!recipeDetail || recipeDetail.id !== initialValue.id) {
         return <Loading />;
